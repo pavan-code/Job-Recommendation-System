@@ -1,0 +1,51 @@
+use jobrecommendationsystem;
+
+create table employee (
+	id int primary key auto_increment not null,
+	username varchar(255),
+    email varchar(255),
+    password varchar(255),
+    address varchar(255),
+    mobile varchar(255),
+    skills varchar(1255),
+    experience float,
+    noticeperiod int,
+    resume mediumblob,
+	image mediumblob
+    );
+
+create table credentials (
+	id int primary key auto_increment not null,
+	email varchar(255),
+    password varchar(255),
+    type varchar(100),
+	empid int
+    );
+
+create table job (
+	id int primary key auto_increment,
+    jobname varchar(255),
+    company varchar(255),
+    companytype varchar(255),
+    minexperience float,
+    salary float,
+    location varchar(255),
+    description varchar(1255),
+    openings int,
+    jobtype varchar(255),
+    skills varchar(1255),
+    website varchar(255)
+    );
+
+
+create table employer (
+	id int primary key auto_increment not null,
+	username varchar(255),
+    email varchar(255),
+    password varchar(255),
+    address varchar(255),
+    mobile varchar(255),
+	company varchar(100)
+    );
+
+insert into employer (username, email, password, address, mobile, company) values ('admin', 'admin@gmail.com', 'admin', 'add', '234', 'Konnect');
