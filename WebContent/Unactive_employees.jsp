@@ -39,32 +39,43 @@ label {
 
 		<br>
 		<%-- 		<%=request.getAttribute("emps")%> --%>
+		<br>
 
-		<table class='table table-light table-stripped'>
-			<tr>
-				<td>Id</td>
-				<td>Username</td>
-				<td>Email</td>
-				<td>Mobile</td>
-				<td>Actions</td>
-			</tr>
-
-			<c:forEach var="job" items="${emps}">
-				<td>${job.id}</td>
-				<td>${job.username}</td>
-				<td>${job.email}</td>
-				<td>${job.mobile}</td>
-				<td>
-					<button class='btn btn-primary' data-id="${job.id}"
-						data-email="${job.email}" data-psd="${job.password }"
-						onclick="activate(this)">Activate</button>
-				</td>
-			</c:forEach>
+		<table class='table caption-top table-light table-striped table-bordered '>
+			<caption>List of pending employees</caption>
+			<thead class='table-dark'>
+				<tr>
+					<th>Id</th>
+					<th>Username</th>
+					<th>Email</th>
+					<th>Mobile</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:if test="${fn:length(emps) > 0}">
+					<c:forEach var="job" items="${emps}">
+						<tr>
+							<td>${job.id}</td>
+							<td>${job.username}</td>
+							<td>${job.email}</td>
+							<td>${job.mobile}</td>
+							<td>
+								<button class='btn btn-primary' data-id="${job.id}"
+									data-email="${job.email}" data-psd="${job.password }"
+									onclick="activate(this)">Activate</button>
+							</td>
+						</tr>
+					</c:forEach>
+				</c:if>
+			</tbody>
 		</table>
 		<c:if test="${fn:length(emps) == 0}">
 			<p>No pending employees to activate
 			<p />
 		</c:if>
+		<br>
+		<br>
 	</div>
 	<script>
 		function jobs() {

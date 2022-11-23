@@ -53,12 +53,12 @@ public class StudentDAO {
 					messages.put("id", Integer.toString(rsResultSet.getInt(1)));
 					messages.put("type", role);
 				} else {
-					messages.put("email", role + " doesn't exist");
+					messages.put("message", role + " doesn't exist");
 				}
 			} else
-				messages.put("password", "Incorrect password");
+				messages.put("message", "Incorrect password");
 		} else
-			messages.put("email", role + " doesn't exist");
+			messages.put("message", role + " doesn't exist");
 		return messages;
 	}
 

@@ -140,7 +140,8 @@ public class StudentController extends HttpServlet {
 		String address = request.getParameter("address");
 		String experience = request.getParameter("experience");
 		String image = request.getParameter("image");
-
+		System.out.println("image: " + image);
+		
 		File image1 = new File("D:\\java projects\\Notifier\\WebContent\\images\\" + image);
 		FileInputStream fis = new FileInputStream(image1);
 		Employee emp = new Employee(username, email, password, address, mobile, Float.valueOf(experience), fis);
@@ -184,8 +185,11 @@ public class StudentController extends HttpServlet {
 				response.sendRedirect("LoginDone2.jsp");
 			}
 
-		} else
-			request.getRequestDispatcher("./").forward(request, response);
+		} else {
+			request.setAttribute("messages", messages);
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+		}
+//		response.sendRedirect("index.jsp");
 	}
 
 	private void emppage(HttpServletRequest request, HttpServletResponse response)

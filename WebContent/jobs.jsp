@@ -35,7 +35,7 @@ input {
 	String ctypes = request.getParameter("companytype");
 	String jtypes = request.getParameter("jobtype");
 	String id = request.getParameter("id");
-	out.println(id);
+// 	out.println(id);
 	%>
 	<div class='container'>
 		<div class='row'>
