@@ -35,9 +35,9 @@ label {
 			Employees</button>
 		<button onclick="emprUnactive()" class='btn btn-primary'>Pending
 			Employers</button>
-
+	<br> <br>
 		<h3>All Jobs</h3>
-		<br> <br>
+		<br>
 		<jsp:include page="jobs.jsp">
 			<jsp:param value="<%=request.getAttribute(\"jobs\")%>" name="jobs" />
 		</jsp:include>

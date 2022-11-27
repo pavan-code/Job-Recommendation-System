@@ -13,13 +13,8 @@ public class Employee {
 	private String skills;
 	private float experience;	
 	private int noticeperiod;
-	private InputStream resume;
-	private InputStream image;
-	private String imgstr;
-	
-	
-	
-	
+	private String image;
+
 
 	public Employee(int id, String username, String email, String password, String mobile) {
 		super();
@@ -30,19 +25,8 @@ public class Employee {
 		this.mobile = mobile;
 	}
 
-
-	public String getImgstr() {
-		return imgstr;
-	}
-
-
-	public void setImgstr(String imgstr) {
-		this.imgstr = imgstr;
-	}
-
-
 	public Employee(int id, String username, String email, String password, String address, String mobile,
-			String skills, float experience, int noticeperiod, InputStream resume, InputStream fileInputStream) {
+			String skills, float experience, int noticeperiod, String image) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -52,9 +36,8 @@ public class Employee {
 		this.mobile = mobile;
 		this.skills = skills;
 		this.experience = experience;
-		this.noticeperiod = noticeperiod;
-		this.resume = resume;
-		this.image = fileInputStream;
+		this.noticeperiod = noticeperiod;		
+		this.image = image;
 	}
 	
 
@@ -74,7 +57,7 @@ public class Employee {
 	}
 
 	public Employee(String username, String email, String password, String address, String mobile, String skills,
-			float experience, int noticeperiod, InputStream resume) {
+			float experience, int noticeperiod) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -84,10 +67,10 @@ public class Employee {
 		this.skills = skills;
 		this.experience = experience;
 		this.noticeperiod = noticeperiod;
-		this.resume = resume;
+		
 	}
 	
-	public Employee(String username, String email, String password, String address, String mobile, float experience, InputStream image) {
+	public Employee(String username, String email, String password, String address, String mobile, float experience, String image) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -153,17 +136,12 @@ public class Employee {
 	public void setNoticeperiod(int noticeperiod) {
 		this.noticeperiod = noticeperiod;
 	}
-	public InputStream getResume() {
-		return resume;
-	}
-	public void setResume(InputStream resume) {
-		this.resume = resume;
-	}
-	public InputStream getImage() {
+	
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(InputStream image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
@@ -171,6 +149,6 @@ public class Employee {
 	public String toString() {
 		return "Employee [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password
 				+ ", address=" + address + ", mobile=" + mobile + ", skills=" + skills + ", experience=" + experience
-				+ ", noticeperiod=" + noticeperiod + ", resume=" + resume + ", image=" + image + "]";
+				+ ", noticeperiod=" + noticeperiod + ", image=" + image + "]";
 	}	
 }

@@ -66,7 +66,7 @@ body {
 		<c:if test="${message != \"\"}">
 			<div class="alert alert-danger"
 				<%if (message != "") {
-	out.println("style=\"width: 400px; height: 56px; padding: 12px 20px;\"");
+	out.println("style=\"width: 400px; margin: 0 auto; height: 56px; padding: 12px 20px;\"");
 }%>
 				<%if (message == "") {
 				out.println("style=\"width: 0;height: 0; padding:0; margin:0;\"");
@@ -134,6 +134,7 @@ body {
 	    document.getElementById("errmsg").style.width = "400px";
 	    document.getElementById("errmsg").style.height = "56px";
 	    document.getElementById("errmsg").style.padding = "12px 20px";
+	    document.getElementById("errmsg").style.margin = "0 auto";
 	    return false;  
 	    }  
 				  
@@ -143,6 +144,7 @@ body {
 			document.getElementById("errmsg").style.width = "400px";
 			document.getElementById("errmsg").style.height = "56px";
 			document.getElementById("errmsg").style.padding = "12px 20px";
+			document.getElementById("errmsg").style.margin = "0 auto";
 			return false;
 		} else if (password ==null || password == "") {
 			document.getElementById("errmsg").innerHTML ="Please enter the Password";

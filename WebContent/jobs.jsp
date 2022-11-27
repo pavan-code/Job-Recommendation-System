@@ -11,19 +11,8 @@
 .card {
 	width: 100%;
 }
-
-.col {
-	/*  	border: 1px solid black;  */
-	
-}
-
 .left {
 	width: 200px !important;
-}
-
-.right {
-	/* 	width: 70%; */
-	
 }
 input {
 	width: 10px;
@@ -35,14 +24,24 @@ input {
 	String ctypes = request.getParameter("companytype");
 	String jtypes = request.getParameter("jobtype");
 	String id = request.getParameter("id");
-// 	out.println(id);
+	String path = request.getServletPath();
+	request.setAttribute("path", path.substring(1));	
+
 	%>
 	<div class='container'>
 		<div class='row'>
 			<div class='col col-3 left'>
 				<div class='row'>
 					<h4 class='col'>Filters</h4>
-					<a class='col' href='/Notifier/home'>Clear filters</a>
+					<a class='col' href='/Notifier/
+						<%						
+						if(path.equals("/jobs_admin.jsp")) {
+							out.println("jobs_admin");
+						} else {
+							out.println("home");
+						}
+						%>
+					'>Clear filters</a>
 				</div>
 				<div class='companytype'>
 					<b>Company Type</b> <br>					
@@ -91,7 +90,7 @@ input {
 						}%>/> Others <br>
 				</div>
 				<div class='row'>
-					<button onclick="apply(${id})" class='btn btn-secondary'>Apply
+					<button onclick="apply('${path}')" class='btn btn-secondary'>Apply
 						filter</button>					
 				</div>
 			</div>
@@ -197,15 +196,19 @@ input {
 	
 		console.log(jtypes);
 	}
-	function apply(id) {
+	function apply(path) {		
 		if(ctypes.length == 0)
 			ctypes = [];
 		if(jtypes.length == 0)
 			jtypes = [];
+		if(path == 'jobs_admin.jsp') {			
+			document.location = "/Notifier/jobs_admin?companytype=" + ctypes + "&jobtype=" + jtypes;
+		} else {
 // 		if(id != null)
 // 			document.location = "/Notifier/rcmd_jobs?id="+id+"?companytype=" + ctypes + "&jobtype=" + jtypes;
 // 		else
 			document.location = "/Notifier/home?companytype=" + ctypes + "&jobtype=" + jtypes;
+		}
 	}
 </script>
 </html>

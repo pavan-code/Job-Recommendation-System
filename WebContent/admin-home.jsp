@@ -33,7 +33,7 @@ label {
 		<button onclick="empUnactive()" class='btn btn-primary'>Pending Employees</button>
 		<button onclick="emprUnactive()" class='btn btn-primary'>Pending
 			Employers</button>
-		<br>
+		<br> <br> <br>
 
 	</div>
 

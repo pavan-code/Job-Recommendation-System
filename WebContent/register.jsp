@@ -65,12 +65,12 @@ body {
 						onSubmit="return validate(event);">
 						<div class='row'>
 							<div class='col'>
-								<label>Email</label> <br> <input type="text" name="email"
+								<label>Email</label> <br> <input id="email" type="text" name="email"
 									class="form-control">
 							</div>
 							<br>
 							<div class='col'>
-								<label>Employee Name</label> <br> <input type="text"
+								<label>Employee Name</label> <br> <input id="username" type="text"
 									name="username" class="form-control">
 								<%-- 							<small style='color: red;'>${messages.username}</small> --%>
 							</div>
@@ -78,31 +78,31 @@ body {
 						</div>
 						<div class='row'>
 							<div class='col'>
-								<label>Mobile Number</label> <br> <input type="text"
+								<label>Mobile Number</label> <br> <input id="mobile" type="text"
 									name="mobile" class="form-control">
 							</div>
 							<br>
 							<div class='col'>
-								<label>Password </label> <br> <input type="password"
+								<label>Password </label> <br> <input id="password" type="password"
 									name="password" class="form-control">
 							</div>
 							<br>
 						</div>
 						<div class='row'>
 							<div class='col'>
-								<label>Address</label> <br> <input type="text"
+								<label>Address</label> <br> <input id="address" type="text"
 									name="address" class="form-control">
 							</div>
 							<br>
 							<div class='col'>
-								<label>Experience</label> <br> <input type="number"
+								<label>Experience</label> <br> <input id="experience" type="number"
 									name="experience" class="form-control">
 							</div>
 							<br>
 						</div>
 						<div class='row'>
 							<div class='col'>
-								<label>Profile picture</label> <input type='file' name='image'
+								<label>Profile picture</label> <input id="image" type='file' name='image'
 									class='form-control'>
 							</div>
 						</div>
@@ -147,60 +147,96 @@ body {
 			  console.log("email not valid")
 			    document.getElementById("errmsg").innerHTML ="Please enter a valid Email ID";
 				document.getElementById("errmsg").style.visibility= "visible";
+				document.getElementById("email").style.borderColor= "red";
+				document.regform.email.focus();
 			    return false;  
 			} 
 		  if(email == null || email == "") {
 				console.log("email is null")
 				document.getElementById("errmsg").innerHTML ="Please enter the Email ID";
 				document.getElementById("errmsg").style.visibility= "visible";
+				document.getElementById("email").style.borderColor= "red";
+				document.regform.email.focus();
 				return false;			
+			} if(email != null) {
+			  document.getElementById("email").style.borderColor= "";				
 			}
 		if(username == null || username == "") {
+			document.getElementById("email").style.borderColor= "";
 			console.log("username is null")
 			document.getElementById("errmsg").innerHTML ="Please enter the Username";
 			document.getElementById("errmsg").style.visibility= "visible";
+			document.getElementById("username").style.borderColor= "red";
+			document.regform.username.focus();
 			return false;			
 		} else if(username.length < 3) {
+			document.getElementById("email").style.borderColor= "";
 			console.log("user len")
 			document.getElementById("errmsg").innerHTML ="Username must be at least 3 chars long";
 			document.getElementById("errmsg").style.visibility= "visible";
+			document.getElementById("username").style.borderColor= "red";
+			document.regform.username.focus();
 			return false;			
 		}  else if(mobile == null || mobile == "") {
+			document.getElementById("username").style.borderColor= "";			
 			console.log("mob null")
 			document.getElementById("errmsg").innerHTML ="Please enter the mobile number";
 			document.getElementById("errmsg").style.visibility= "visible";
+			document.getElementById("mobile").style.borderColor= "red";
+			document.regform.mobile.focus();
 			return false;
 		} else if(mobile.length <10 || mobile.length > 10) {
+			document.getElementById("username").style.borderColor= "";
 			console.log("mob len ")
 			document.getElementById("errmsg").innerHTML ="Please enter 10 digit mobile number";
 			document.getElementById("errmsg").style.visibility= "visible";
+			document.getElementById("mobile").style.borderColor= "red";
+			document.regform.mobile.focus();
 			return false;
 		} else if(password == null || password == "") {
+			document.getElementById("mobile").style.borderColor= "";
 			console.log("paass null")
 			document.getElementById("errmsg").innerHTML ="Please enter the password";
 			document.getElementById("errmsg").style.visibility= "visible";
+			document.getElementById("password").style.borderColor= "red";
+			document.regform.password.focus();
 			return false;
-		} else if(password.length < 3) {
-			console.log("pass less 3")
+		} else if(password.length < 6) {
+			document.getElementById("mobile").style.borderColor= "";
+			console.log("pass less 5")
 			document.getElementById("errmsg").innerHTML ="Password must be at least 6 chars long";
 			document.getElementById("errmsg").style.visibility= "visible";
+			document.getElementById("errmsg").style.borderColor= "red";
+			document.getElementById("password").style.borderColor= "red";
+			document.regform.password.focus();			
 			return false;			
 		}  else if(address == null || address == "") {
+			document.getElementById("password").style.borderColor= "";
 			console.log("address null")
 			document.getElementById("errmsg").innerHTML ="Please enter the Address";
 			document.getElementById("errmsg").style.visibility= "visible";
+			document.getElementById("address").style.borderColor= "red";
+			document.regform.address.focus();
 			return false;			
 		} else if(exp == null || exp == "" || exp < 0) {
+			document.getElementById("address").style.borderColor= "";
 			console.log("xep null")
 			document.getElementById("errmsg").innerHTML ="Please enter a valid experience in Years";
 			document.getElementById("errmsg").style.visibility= "visible";
+			document.getElementById("experience").style.borderColor= "red";
+			document.regform.experience.focus();
 			return false;
 		} else if(img == null || img == "") {
+			document.getElementById("experience").style.borderColor= "";
 			console.log("image null")
 			document.getElementById("errmsg").innerHTML ="Please upload a profile picture";
 			document.getElementById("errmsg").style.visibility= "visible";
+			document.getElementById("image").style.borderColor= "red";
+			document.regform.image.focus();
 			return false;
 		} else {
+			document.getElementById("image").style.borderColor= "";
+			document.getElementById("email").style.borderColor= "";
 			console.log("last else")
 			document.getElementById("errmsg").style.visibility= "hidden";
 			document.regform.submit();

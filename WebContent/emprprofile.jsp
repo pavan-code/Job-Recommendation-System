@@ -27,17 +27,15 @@ label {
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
 	<%
-// 	out.println(request.getAttribute("role"));
+	// 	out.println(request.getAttribute("role"));
 	%>
 	<div class='container'>
 		<%
 		// 		if (request.getAttribute("role").equals("Employee")) {
 		com.lms.models.Employer emp = (com.lms.models.Employer) request.getAttribute("employee");
 
-		
 // 		out.println(emp);
 		request.setAttribute("emp", emp);
-
 		%>
 
 		<div class='form'>
@@ -48,7 +46,7 @@ label {
 			<form action="updateempr" method="post" enctype="multipart/form-data">
 				<h5>Personal Details</h5>
 				<div class='row'>
-					
+
 					<div class='col-3'>
 						<label>Employer ID</label> <br> <input type="number" readonly
 							value="${emp.id}" name="id" class="form-control" required>
@@ -93,10 +91,7 @@ label {
 					<br>
 				</div>
 
-				<br> <br>
-				
-
-				<br>
+				<br> <br> <br>
 				<div style='text-align: center;'>
 					<button class="btn btn-primary" style='width: 100%;' type="submit">Update
 						details</button>

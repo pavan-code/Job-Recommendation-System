@@ -62,19 +62,19 @@ public class StudentDAO {
 		return messages;
 	}
 
-	public boolean insertEmployee(Employee student, long l) throws SQLException {
+	public boolean insertEmployee(Employee employee) throws SQLException {
 		String sql = "INSERT INTO employee (username, email, mobile, password, address, experience, image) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 //		PreparedStatement statement1 = jdbcConnection.prepareStatement(sql1);
 
-		statement.setString(1, student.getUsername());
-		statement.setString(2, student.getEmail());
-		statement.setString(3, student.getMobile());
-		statement.setString(4, student.getPassword());
-		statement.setString(5, student.getAddress());
-		statement.setString(6, String.valueOf(student.getExperience()));
-		statement.setBinaryStream(7, (InputStream) student.getImage(), (int) l);
+		statement.setString(1, employee.getUsername());
+		statement.setString(2, employee.getEmail());
+		statement.setString(3, employee.getMobile());
+		statement.setString(4, employee.getPassword());
+		statement.setString(5, employee.getAddress());
+		statement.setString(6, String.valueOf(employee.getExperience()));
+		statement.setString(7, employee.getImage());
 		boolean result = statement.executeUpdate() > 0;
 
 		return result;
@@ -94,7 +94,7 @@ public class StudentDAO {
 			statement = jdbcConnection.prepareStatement(sql1);
 			statement.setString(1, email);
 			statement.setString(2, pwd);
-			statement.setString(3, "Employee");
+			statement.setString(3, role);
 			statement.setInt(4, id);
 			re = statement.executeUpdate();
 			if(re > 0)
@@ -133,28 +133,28 @@ public class StudentDAO {
 		
 	}
 
-	public boolean insertEmployer(Employer student) throws SQLException {
+	public boolean insertEmployer(Employer employer) throws SQLException {
 		String sql = "INSERT INTO employer (username, email, mobile, password, address, company) VALUES(?, ?, ?, ?, ?, ?)";
 		String sql1 = "insert into credentials (email, password, type, empid) values(?, ?, ?, ?)";
 
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 		PreparedStatement statement1 = jdbcConnection.prepareStatement(sql1);
 
-		statement.setString(1, student.getUsername());
-		statement.setString(2, student.getEmail());
-		statement.setString(3, student.getMobile());
-		statement.setString(4, student.getPassword());
-		statement.setString(5, student.getAddress());
-		statement.setString(6, student.getCompany());
+		statement.setString(1, employer.getUsername());
+		statement.setString(2, employer.getEmail());
+		statement.setString(3, employer.getMobile());
+		statement.setString(4, employer.getPassword());
+		statement.setString(5, employer.getAddress());
+		statement.setString(6, employer.getCompany());
 		boolean result = statement.executeUpdate() > 0;
 
 		sql = "select id from employer where email= ?";
 		statement = jdbcConnection.prepareStatement(sql);
-		statement.setString(1, student.getEmail());
+		statement.setString(1, employer.getEmail());
 		ResultSet rs = statement.executeQuery();
 		if (rs.next()) {
-			statement1.setString(1, student.getEmail());
-			statement1.setString(2, student.getPassword());
+			statement1.setString(1, employer.getEmail());
+			statement1.setString(2, employer.getPassword());
 			statement1.setString(3, "Employer");
 			statement1.setInt(4, rs.getInt(1));
 			statement1.executeUpdate();
@@ -206,8 +206,8 @@ public class StudentDAO {
 		ResultSet rs = stmt.executeQuery();
 		while (rs.next()) {
 			Employee e = new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-					rs.getString(6), rs.getString(7), rs.getFloat(8), rs.getInt(9), rs.getBinaryStream("resume"),
-					rs.getBinaryStream("image"));
+					rs.getString(6), rs.getString(7), rs.getFloat(8), rs.getInt(9),
+					rs.getString("image"));
 
 			emps.add(e);
 		}
@@ -224,8 +224,7 @@ public class StudentDAO {
 		if (rs.next()) {
 			emp = new Employee(rs.getInt("id"), rs.getString("username"), rs.getString("email"),
 					rs.getString("password"), rs.getString("address"), rs.getString("mobile"), rs.getString("skills"),
-					rs.getFloat("experience"), rs.getInt("noticeperiod"), rs.getBinaryStream("resume"),
-					rs.getBinaryStream("image"));
+					rs.getFloat("experience"), rs.getInt("noticeperiod"), rs.getString("image"));
 		}
 		return emp;
 	}

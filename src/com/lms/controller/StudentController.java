@@ -1,7 +1,5 @@
 package com.lms.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,12 +19,10 @@ import com.lms.models.Employer;
 import com.lms.models.Job;
 import com.lms.models.StudentDAO;
 
-@MultipartConfig(maxFileSize = 16177215)
+
 public class StudentController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private StudentDAO dao;
-
-//	private NotebookController notebookController = new NotebookController();
 	public void init() {
 		try {
 			dao = new StudentDAO();
@@ -142,11 +138,11 @@ public class StudentController extends HttpServlet {
 		String image = request.getParameter("image");
 		System.out.println("image: " + image);
 		
-		File image1 = new File("D:\\java projects\\Notifier\\WebContent\\images\\" + image);
-		FileInputStream fis = new FileInputStream(image1);
-		Employee emp = new Employee(username, email, password, address, mobile, Float.valueOf(experience), fis);
+//		File image1 = new File("D:\\java projects\\Notifier\\WebContent\\images\\" + image);
+//		FileInputStream fis = new FileInputStream(image1);
+		Employee emp = new Employee(username, email, password, address, mobile, Float.valueOf(experience), image);
 		System.out.println("got emp " + emp);
-		boolean res = dao.insertEmployee(emp, image1.length());
+		boolean res = dao.insertEmployee(emp);
 		if (res)
 			response.sendRedirect("RegistrationDone.jsp");
 	}
@@ -274,7 +270,34 @@ public class StudentController extends HttpServlet {
 
 	private void jobs_admin(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		List<Job> jobs = dao.getJobs();
+		String companytype = request.getParameter("companytype");
+		String jobtype = request.getParameter("jobtype");
+		List<String> ctypes = new ArrayList<>();
+		List<String> jtypes = new ArrayList<>();
+		System.out.println("ctype:" + companytype);
+		List<Job> jobs = null;
+		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty()) {	
+			String[] c = companytype.split(",");
+			for(String ch: c)
+				ctypes.add("'"+ch+"'");
+			String[] j = jobtype.split(",");
+			for(String ch: j)
+				jtypes.add("'"+ch+"'");
+			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes);
+		} else if (companytype != null && !companytype.isEmpty()) {	
+			String[] c = companytype.split(",");
+			for(String ch: c)
+				ctypes.add("'"+ch+"'");
+			jobs = dao.getJobsByCompanyType(ctypes);
+		} else if(jobtype != null && !jobtype.isEmpty()) {
+			String[] c = jobtype.split(",");
+			for(String ch: c)
+				jtypes.add("'"+ch+"'");
+			jobs = dao.getJobsByJobType(jtypes);
+		} else {		
+			jobs = dao.getJobs();
+		}
+		
 		request.setAttribute("jobs", jobs);
 		request.getRequestDispatcher("jobs_admin.jsp").forward(request, response);
 	}

@@ -39,25 +39,25 @@ img {
 			.getAttribute("employees");
 
 	// 	out.println(emp);
-	for (com.lms.models.Employee emp : emps) {
-		if (emp.getImage() != null) {
-			java.io.InputStream inputStream = emp.getImage();
+// 	for (com.lms.models.Employee emp : emps) {
+// 		if (emp.getImage() != null) {
+// 			java.io.InputStream inputStream = emp.getImage();
 
-			java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
-			byte[] buffer = new byte[4096];
-			int bytesRead = -1;
+// 			java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
+// 			byte[] buffer = new byte[4096];
+// 			int bytesRead = -1;
 
-			while ((bytesRead = inputStream.read(buffer)) != -1) {
-		outputStream.write(buffer, 0, bytesRead);
-			}
+// 			while ((bytesRead = inputStream.read(buffer)) != -1) {
+// 		outputStream.write(buffer, 0, bytesRead);
+// 			}
 
-			byte[] imageBytes = outputStream.toByteArray();
+// 			byte[] imageBytes = outputStream.toByteArray();
 
-			String img = java.util.Base64.getEncoder().encodeToString(imageBytes);
+// 			String img = java.util.Base64.getEncoder().encodeToString(imageBytes);
 
-			emp.setImgstr(img);
-		}
-	}
+// 			emp.setImgstr(img);
+// 		}
+// 	}
 	%>
 
 	<div class='container'>
@@ -70,14 +70,16 @@ img {
 					<h3>No employees to display!</h3>
 				</c:if>
 				<c:if test="${employees.size() != 0}">
-
+					
 					<br>
 					<c:forEach var="emp" items="${employees}">
 						<div class="card shadow p-3 mb-3 bg-white rounded">
 							<div class="card-body">
 								<div class='row'>
 									<div class='img col-3'>
-										<img alt="" src="data:image/jpg;base64,${emp.imgstr}"
+<%-- 										<img alt="" src="${pageContext.request.contextPath}/WebContent/images/${emp.image}" --%>
+<!-- 											width='100px'> -->
+											<img alt="employee profile pic" src="/WebContent/images/${emp.image}"
 											width='100px'>
 										<h4 class='card-title'>${emp.username}
 											

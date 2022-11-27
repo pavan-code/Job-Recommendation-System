@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Home</title>
+<title>Profile</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -27,34 +27,33 @@ label {
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
 	<%
-	
+
 	%>
 	<div class='container'>
 		<%
 		// 		if (request.getAttribute("role").equals("Employee")) {
 		com.lms.models.Employee emp = (com.lms.models.Employee) request.getAttribute("employee");
 
-		// 	out.println(emp);
-		if (emp.getImage() != null) {
-			java.io.InputStream inputStream = emp.getImage();
+		// 			out.println(emp);
+		// 		if (emp.getImage() != null) {
+		// 			java.io.InputStream inputStream = emp.getImage();
 
-			java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
-			byte[] buffer = new byte[4096];
-			int bytesRead = -1;
+		// 			java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
+		// 			byte[] buffer = new byte[4096];
+		// 			int bytesRead = -1;
 
-			while ((bytesRead = inputStream.read(buffer)) != -1) {
-				outputStream.write(buffer, 0, bytesRead);
-			}
+		// 			while ((bytesRead = inputStream.read(buffer)) != -1) {
+		// 				outputStream.write(buffer, 0, bytesRead);
+		// 			}
 
-			byte[] imageBytes = outputStream.toByteArray();
+		// 			byte[] imageBytes = outputStream.toByteArray();
 
-			String img = java.util.Base64.getEncoder().encodeToString(imageBytes);
-			// 		out.println(img);
-			request.setAttribute("img", img);
-		}
-		
+		// 			String img = java.util.Base64.getEncoder().encodeToString(imageBytes);
+		// 			// 		out.println(img);
+		// 			request.setAttribute("img", img);
+		// 		}
+
 		request.setAttribute("emp", emp);
-
 		%>
 
 		<div class='form'>
@@ -62,28 +61,28 @@ label {
 				<h2>Update Profile</h2>
 			</div>
 			<hr>
-			<form action="update" method="post" enctype="multipart/form-data">
+			<form action="update" method="post">
 				<h5>Personal Details</h5>
 				<div class='row'>
 					<div class='col-3'>
-						<label>Profile picture</label> <img alt=""
-							src="data:image/jpg;base64,${img}" width='200px'>
+						<label>Profile picture</label> <br> <img
+							alt="profile picture"
+							src="/Notifier/WebContent/images/${emp.image}" width='200px'>
 					</div>
 					<div class='col-3'>
-						<label>Employee ID</label> <br> <input type="number" readonly
-							value="${emp.id}" name="id" class="form-control" required>
+						<label>Employee ID</label> <br> <input type="text" readonly
+							value="${emp.id}" name="id" class="form-control">
 					</div>
 				</div>
 				<div class='row'>
 					<div class='col'>
 						<label>Employee Name</label> <br> <input type="text" readonly
-							value="${emp.username}" name="username" class="form-control"
-							required>
+							value="${emp.username}" name="username" class="form-control">
 					</div>
 					<br>
 					<div class='col'>
 						<label>Email</label> <br> <input type="text" name="email"
-							readonly value="${emp.email}" class="form-control" required>
+							readonly value="${emp.email}" class="form-control">
 					</div>
 					<br>
 				</div>
@@ -118,7 +117,7 @@ label {
 					</div>
 					<br>
 					<div class='col'>
-						<label>Experience (months)</label> <br> <input type="number"
+						<label>Experience (Years)</label> <br> <input type="number"
 							value="${emp.experience}" name="experience" class="form-control"
 							required>
 					</div>
