@@ -9,18 +9,45 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 	crossorigin="anonymous">
+<style>
+.progress {
+   width: 134.4px;
+   height: 24.6px;
+   border-radius: 22.4px;
+   color: #3ab52e;
+   border: 2.2px solid;
+   position: relative;
+}
+
+.progress::before {
+   content: "";
+   position: absolute;
+   margin: 2.2px;
+   inset: 0 100% 0 0;
+   border-radius: inherit;
+   background: currentColor;
+   animation: progress 2s infinite;
+}
+
+@keyframes progress{
+   100% {
+      inset: 0;
+   }
+}
+</style>
 </head>
 <body>
 	<div class='container mt-4'>
-		<div class='alert alert-success'>
+		<div align='center' class='alert alert-success'>
 			<p>Login Successful.</p>
 		</div>
-		<div>
+		<div align='center'>
 			<p>Redirecting to Home page..</p>
+			<div class="progress"></div>
 		</div>
 	</div>
 	<script>
-// 	document.location = "admin";
+		// 	document.location = "admin";
 		setTimeout(function() {
 			document.location = "admin-home";
 		}, 2000);

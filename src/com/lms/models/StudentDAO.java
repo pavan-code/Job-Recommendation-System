@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -79,7 +80,7 @@ public class StudentDAO {
 
 		return result;
 	}
-	
+
 	public boolean activate(int id, String email, String pwd, String role) throws SQLException {
 		String sql1 = "insert into credentials (email, password, type, empid) values(?, ?, ?, ?)";
 		String sql = "update " + role + " set active=? where email= ? and id=?";
@@ -97,40 +98,42 @@ public class StudentDAO {
 			statement.setString(3, role);
 			statement.setInt(4, id);
 			re = statement.executeUpdate();
-			if(re > 0)
+			if (re > 0)
 				return true;
 			return false;
-			
-		}	return false;	
+
+		}
+		return false;
 	}
-	
 
 	public List<Employee> getUnactivatedEmployees() throws SQLException {
 		String sql = "select id, username, email, password, mobile from employee where active is null";
 		List<Employee> emps = new ArrayList<>();
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-		
+
 		ResultSet res = statement.executeQuery();
-		while(res.next()) {
-			Employee emp = new Employee(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5));
-			emps.add(emp);			
+		while (res.next()) {
+			Employee emp = new Employee(res.getInt(1), res.getString(2), res.getString(3), res.getString(4),
+					res.getString(5));
+			emps.add(emp);
 		}
 		return emps;
-		
+
 	}
-	
+
 	public List<Employer> getUnactivatedEmployers() throws SQLException {
 		String sql = "select id, username, email, password, mobile from employer where active is null";
 		List<Employer> emprs = new ArrayList<>();
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-		
+
 		ResultSet res = statement.executeQuery();
-		while(res.next()) {
-			Employer emp = new Employer(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5));
-			emprs.add(emp);			
+		while (res.next()) {
+			Employer emp = new Employer(res.getInt(1), res.getString(2), res.getString(3), res.getString(4),
+					res.getString(5));
+			emprs.add(emp);
 		}
 		return emprs;
-		
+
 	}
 
 	public boolean insertEmployer(Employer employer) throws SQLException {
@@ -193,7 +196,7 @@ public class StudentDAO {
 		while (rs.next()) {
 			Job j = new Job(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getFloat(5),
 					rs.getFloat(6), rs.getString(7), rs.getString(8), rs.getInt(9), rs.getString(10), rs.getString(11),
-					rs.getString(12));
+					rs.getString(12), rs.getInt(13));
 			jobs.add(j);
 		}
 		return jobs;
@@ -206,8 +209,7 @@ public class StudentDAO {
 		ResultSet rs = stmt.executeQuery();
 		while (rs.next()) {
 			Employee e = new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-					rs.getString(6), rs.getString(7), rs.getFloat(8), rs.getInt(9),
-					rs.getString("image"));
+					rs.getString(6), rs.getString(7), rs.getFloat(8), rs.getInt(9), rs.getString("image"));
 
 			emps.add(e);
 		}
@@ -273,22 +275,21 @@ public class StudentDAO {
 					+ "', mobile = '" + emp.getMobile() + "' where id=" + id;
 
 			stmt = jdbcConnection.prepareStatement(sql);
-			
 
 			return stmt.executeUpdate() > 0;
 		} else
 			return false;
 	}
-	
+
 	public List<Job> getJobsByEmprId(int id) throws SQLException {
 		String sql = "select * from job where empid = " + id;
 		PreparedStatement stmt = jdbcConnection.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		List<Job> jobs = new ArrayList<>();
-		while(rs.next()) {
+		while (rs.next()) {
 			Job j = new Job(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getFloat(5),
 					rs.getFloat(6), rs.getString(7), rs.getString(8), rs.getInt(9), rs.getString(10), rs.getString(11),
-					rs.getString(12));
+					rs.getString(12), rs.getInt(13));
 			jobs.add(j);
 		}
 		return jobs;
@@ -296,59 +297,146 @@ public class StudentDAO {
 
 	public List<Job> getJobsByCompanyType(List<String> companytype) throws SQLException {
 		String sql = "select * from job where companytype in (";
-		for(String type: companytype)
-			sql += type+",";
+		for (String type : companytype)
+			sql += type + ",";
 		sql += "'');";
 		System.out.println(sql);
 		PreparedStatement stmt = jdbcConnection.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		List<Job> jobs = new ArrayList<>();
-		while(rs.next()) {
+		while (rs.next()) {
 			Job j = new Job(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getFloat(5),
 					rs.getFloat(6), rs.getString(7), rs.getString(8), rs.getInt(9), rs.getString(10), rs.getString(11),
-					rs.getString(12));
+					rs.getString(12), rs.getInt(13));
 			jobs.add(j);
 		}
 		return jobs;
 	}
+	
+	public List<Job> getRcmdJobsByCompanyType(List<String> ctypes, int id) throws SQLException {
+		List<Job> rcmdjobs = new ArrayList<>();
+		List<Job> filterjobs = getJobsByCompanyType(ctypes);
+		Employee emp = getEmployee(id);
+		String skills = emp.getSkills();
+		float exp = emp.getExperience();
+		List<String> skillslist = new ArrayList<>();
+				
+		for (String skill : skills.split(", "))
+			skillslist.add(skill);
+		System.out.println("skills: " + skillslist.toString());
+
+		for (Job job : filterjobs) {
+			for (String skill : skillslist) {
+				if (job.getSkills().toLowerCase().contains(skill.toLowerCase()) && exp >= job.getMinexperience()) {
+					if (!rcmdjobs.contains(job)) {
+						System.out.println("found: " + job.getJobname());
+						rcmdjobs.add(job);
+					}
+				}
+			}
+		}
+		return rcmdjobs;
+	}
+	
+	public List<Job> getRcmdJobsByJobType(List<String> jtypes, int id) throws SQLException {
+		List<Job> rcmdjobs = new ArrayList<>();
+		List<Job> filterjobs = getJobsByJobType(jtypes);
+		Employee emp = getEmployee(id);
+		String skills = emp.getSkills();
+		float exp = emp.getExperience();
+		List<String> skillslist = new ArrayList<>();
+				
+		for (String skill : skills.split(", "))
+			skillslist.add(skill);
+		System.out.println("skills: " + skillslist.toString());
+
+		for (Job job : filterjobs) {
+			for (String skill : skillslist) {
+				if (job.getSkills().toLowerCase().contains(skill.toLowerCase()) && exp >= job.getMinexperience()) {
+					if (!rcmdjobs.contains(job)) {
+						System.out.println("found: " + job.getJobname());
+						rcmdjobs.add(job);
+					}
+				}
+			}
+		}
+		return rcmdjobs;
+	}
+	
 
 	public List<Job> getJobsByJobType(List<String> jobtype) throws SQLException {
 		String sql = "select * from job where jobtype in (";
-		for(String type: jobtype)
-			sql += type+",";
+		for (String type : jobtype)
+			sql += type + ",";
 		sql += "'');";
 		System.out.println(sql);
 		PreparedStatement stmt = jdbcConnection.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		List<Job> jobs = new ArrayList<>();
-		while(rs.next()) {
+		while (rs.next()) {
 			Job j = new Job(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getFloat(5),
 					rs.getFloat(6), rs.getString(7), rs.getString(8), rs.getInt(9), rs.getString(10), rs.getString(11),
-					rs.getString(12));
+					rs.getString(12), rs.getInt(13));
 			jobs.add(j);
 		}
 		return jobs;
 	}
 
-	public List<Job> getJobsByCompanyTypeAndJobType(List<String> ctypes, List<String> jtypes) throws SQLException {
+	public List<Job> getJobsByCompanyTypeAndJobType(List<String> ctypes, List<String> jtypes, int empid)
+			throws SQLException {
+
 		String sql = "select * from job where jobtype in (";
-		for(String type: jtypes)
-			sql += type+",";
+		for (String type : jtypes)
+			sql += type + ",";
 		sql += "'') and companytype in (";
-		for(String type: ctypes)
-			sql += type+",";
-		sql += "'');";
+		for (String type : ctypes)
+			sql += type + ",";
+		sql += "'')";
+		if (empid != 0)
+			sql += " and empid = ?;";
+		else
+			sql += ";";
+
 		System.out.println(sql);
 		PreparedStatement stmt = jdbcConnection.prepareStatement(sql);
+		if (empid != 0)
+			stmt.setInt(1, empid);
 		ResultSet rs = stmt.executeQuery();
 		List<Job> jobs = new ArrayList<>();
-		while(rs.next()) {
+		while (rs.next()) {
 			Job j = new Job(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getFloat(5),
 					rs.getFloat(6), rs.getString(7), rs.getString(8), rs.getInt(9), rs.getString(10), rs.getString(11),
-					rs.getString(12));
+					rs.getString(12), rs.getInt(13));
 			jobs.add(j);
 		}
 		return jobs;
+	}
+	
+	public List<Job> getRcmdJobsByCompanyTypeAndJobType(List<String> ctypes, List<String> jtypes, int empid)
+			throws SQLException {
+		List<Job> rcmdjobs = new ArrayList<>();
+		List<Job> filterjobs = getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0);
+		System.out.println("filtered: " + filterjobs);
+		Employee emp = getEmployee(empid);
+		String skills = emp.getSkills();
+		float exp = emp.getExperience();
+		List<String> skillslist = new ArrayList<>();
+				
+		for (String skill : skills.split(", "))
+			skillslist.add(skill);
+		System.out.println("skills: " + skillslist.toString());
+
+		for (Job job : filterjobs) {
+			for (String skill : skillslist) {
+				if (job.getSkills().toLowerCase().contains(skill.toLowerCase()) && exp >= job.getMinexperience()) {
+					if (!rcmdjobs.contains(job)) {
+						System.out.println("found: " + job.getJobname());
+						rcmdjobs.add(job);
+					}
+				}
+			}
+		}
+		return rcmdjobs;
 	}
 
 	public List<Job> getRcmdJobs(int id) throws SQLException {
@@ -358,14 +446,15 @@ public class StudentDAO {
 		String skills = emp.getSkills();
 		float exp = emp.getExperience();
 		List<String> skillslist = new ArrayList<>();
-		for(String skill : skills.split(", "))
+				
+		for (String skill : skills.split(", "))
 			skillslist.add(skill);
 		System.out.println("skills: " + skillslist.toString());
-		
-		for(Job job: jobs) {
-			for(String skill: skillslist) {
-				if(job.getSkills().toLowerCase().contains(skill.toLowerCase()) && exp >= job.getMinexperience()) {
-					if(!rcmdjobs.contains(job)) {
+
+		for (Job job : jobs) {
+			for (String skill : skillslist) {
+				if (job.getSkills().toLowerCase().contains(skill.toLowerCase()) && exp >= job.getMinexperience()) {
+					if (!rcmdjobs.contains(job)) {
 						System.out.println("found: " + job.getJobname());
 						rcmdjobs.add(job);
 					}
@@ -374,5 +463,87 @@ public class StudentDAO {
 		}
 //		System.out.println("rcmdjobs: " + rcmdjobs.toString());
 		return rcmdjobs;
+	}
+	
+	public List<Employee> getRcmdEmployees(int empid) throws SQLException {
+		List<Employee> emps = getEmployees();
+		List<Employee> rcemps = new ArrayList<>();
+		List<Job> jobs = getJobsByEmprId(empid);
+		List<String> requiredSkills = new ArrayList<>();
+		List<String> reqskills= new ArrayList<>();
+		for(Job j: jobs) {
+			List<String> skills = Arrays.asList(j.getSkills().split(", "));			
+			requiredSkills.addAll(skills);
+		}
+//		requiredSkills.stream().forEach(skill -> skill.toLowerCase());
+		for(int i=0; i<requiredSkills.size(); i++) {
+			String low = requiredSkills.get(i).toLowerCase();
+			if(!reqskills.contains(low))
+				reqskills.add(low);
+		}
+			
+		for(Employee emp : emps) {
+			for(String skill: emp.getSkills().split(", ")) {
+				if(reqskills.contains(skill.toLowerCase())) {
+					rcemps.add(emp);					
+				}
+			}
+		}
+		System.out.println("emps: " + rcemps);
+		System.out.println("skills: " + reqskills);
+		return rcemps;
+		
+	}
+
+	public Job getJobById(int id) throws SQLException {
+		String sql = "select * from job where id = ?";
+		PreparedStatement stmt = jdbcConnection.prepareStatement(sql);
+		stmt.setInt(1, id);
+		ResultSet rs = stmt.executeQuery();
+		Job j = null;
+		if (rs.next()) {
+			j = new Job(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getFloat(5), rs.getFloat(6),
+					rs.getString(7), rs.getString(8), rs.getInt(9), rs.getString(10), rs.getString(11),
+					rs.getString(12), rs.getInt(13));
+
+		}
+		return j;
+	}
+
+	public Boolean updateJob(Job job, int jobid) throws SQLException {
+
+		String sql = "select * from job where id=" + jobid;
+		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+		ResultSet res = statement.executeQuery();
+		if (res.next()) {
+			sql = "update job set jobname = ?, company = ?, companytype = ?,"
+					+ " minexperience = ?, salary = ?, location = ?,"
+					+ " description = ?, openings = ?, jobtype = ?,"
+					+ " skills = ?, website = ? where id = ?";
+			statement = jdbcConnection.prepareStatement(sql);
+			statement.setString(1, job.getJobname());
+			statement.setString(2, job.getCompany());
+			statement.setString(3, job.getCompanytype());
+			statement.setFloat(4, job.getMinexperience());
+			statement.setFloat(5, job.getSalary());
+			statement.setString(6, job.getLocation());
+			statement.setString(7, job.getDescription());
+			statement.setInt(8, job.getOpenings());
+			statement.setString(9, job.getJobtype());
+			statement.setString(10, job.getSkills());
+			statement.setString(11, job.getWebsite());
+			statement.setInt(12, jobid);
+			Boolean rs = statement.executeUpdate() > 0;			
+			return rs;
+		}
+		return false;
+	}
+
+	public boolean deleteJob(int jobid) throws SQLException {
+		String sql = "delete from job where id= ?";
+		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+		statement.setInt(1, jobid);
+		boolean res = statement.executeUpdate() > 0;
+		return res;
 	}
 }

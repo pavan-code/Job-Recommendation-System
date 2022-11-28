@@ -6,16 +6,52 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <title>Insert title here</title>
 <style>
+.container {
+	padding: 20px;
+	width: 100% !important;
+}
 .card {
 	width: 100%;
 }
+
 .left {
-	width: 200px !important;
+	width: 220px !important;
 }
+
 input {
 	width: 10px;
+}
+
+.rows {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;	
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+input.check {
+	width: 19px;
+	height: 19px;
+}
+label {
+	margin: 0;
+/* 	display: flex; */
+	align-items: center;
 }
 </style>
 </head>
@@ -25,77 +61,119 @@ input {
 	String jtypes = request.getParameter("jobtype");
 	String id = request.getParameter("id");
 	String path = request.getServletPath();
-	request.setAttribute("path", path.substring(1));	
-
+// 			out.println(path);
+	String end = request.getQueryString();
+	// 	out.println(end);
+	request.setAttribute("path", path.substring(1));
+	request.setAttribute("end", end);
+	String role = null;
+	Cookie cookie = null;
+	Cookie[] cookies = request.getCookies();
+	for (Cookie c : cookies) {
+		if (c.getName().equals("role")) {
+			role = c.getValue();
+		}
+	}
 	%>
 	<div class='container'>
 		<div class='row'>
 			<div class='col col-3 left'>
 				<div class='row'>
 					<h4 class='col'>Filters</h4>
-					<a class='col' href='/Notifier/
-						<%						
-						if(path.equals("/jobs_admin.jsp")) {
+					<a class='col'
+						href='/Notifier/
+						<%if (path.equals("/jobs_admin.jsp")) {
 							out.println("jobs_admin");
-						} else {
+						} else if (path.equals("/home.jsp")) {
 							out.println("home");
-						}
-						%>
-					'>Clear filters</a>
+						} else if (path.equals("/empr_jobs.jsp")) {
+							out.println("empr_jobs?id=" + id);
+						} else if (path.equals("/emp-home.jsp")) {
+							out.println("empr-home");
+						} %>
+					'>Clear	filters</a>
 				</div>
 				<div class='companytype'>
-					<b>Company Type</b> <br>					
-					<input type='checkbox' onclick="ctypeclicked()" id="MNC" name='MNC'
+					<h5>Company Type</h5> <label><input type='checkbox'
+						class='check' onclick="ctypeclicked()" id="MNC" name='MNC'
 						<%if (ctypes != null && ctypes.contains("MNC")) {
-							out.print("checked=\"checked\"");
-						}%>/> MNC <br> 
-					<input type='checkbox' onclick="ctypeclicked()"	id="Corporate" name='Corporate'
-					<%if (ctypes != null && ctypes.contains("Corporate")) {
-							out.print("checked=\"checked\"");
-						}%>/> Corporate <br> 
-					<input type='checkbox' onclick="ctypeclicked()" id="Startup" name='Startup'
-					<%if (ctypes != null && ctypes.contains("Startup")) {
-							out.print("checked=\"checked\"");
-						}%>/> Startup <br>
-					<input type='checkbox' onclick="ctypeclicked()" id="Govt" name='Govt/PSU'
-					<%if (ctypes != null && ctypes.contains("Govt/PSU")) {
-							out.print("checked=\"checked\"");
-						}%>/> Govt/PSU <br> 
-					<input type='checkbox' onclick="ctypeclicked()"	id="Others" name='Others'
-					<%if (ctypes != null && ctypes.contains("Others")) {
-							out.print("checked=\"checked\"");
-						}%>/> Others <br>
+	out.print("checked=\"checked\"");
+}%> />
+						MNC</label> <br> <label><input type='checkbox'
+						onclick="ctypeclicked()" class='check' id="Corporate"
+						name='Corporate'
+						<%if (ctypes != null && ctypes.contains("Corporate")) {
+	out.print("checked=\"checked\"");
+}%> />
+						Corporate</label> <br>
+					<label><input type='checkbox' onclick="ctypeclicked()"
+						class='check' id="Startup" name='Startup'
+						<%if (ctypes != null && ctypes.contains("Startup")) {
+	out.print("checked=\"checked\"");
+}%> />
+						Startup </label> <br> <label> <input type='checkbox'
+						onclick="ctypeclicked()" class='check' id="Govt" name='Govt/PSU'
+						<%if (ctypes != null && ctypes.contains("Govt/PSU")) {
+	out.print("checked=\"checked\"");
+}%> />
+						Govt/PSU
+					</label> <br> <label> <input type='checkbox'
+						onclick="ctypeclicked()" class='check' id="Others" name='Others'
+						<%if (ctypes != null && ctypes.contains("Others")) {
+	out.print("checked=\"checked\"");
+}%> />
+						Others
+					</label> <br>
 				</div>
+				<br>
 				<div class='jobtype'>
-					<b>Job Type</b> <br>					
-					<input type='checkbox' onclick="ctypeclicked()" id="Accounting" name='Accounting'
+					<h5>Job Type</h5>
+					<label> <input type='checkbox' class='check'
+						onclick="ctypeclicked()" id="Accounting" name='Accounting'
 						<%if (jtypes != null && jtypes.contains("Accounting")) {
-							out.print("checked=\"checked\"");
-						}%>/> Accounting <br> 
-					<input type='checkbox' onclick="ctypeclicked()"	id="IT" name='IT'
-					<%if (jtypes != null && jtypes.contains("IT")) {
-							out.print("checked=\"checked\"");
-						}%>/> IT <br> 
-					<input type='checkbox' onclick="ctypeclicked()" id="BPO" name='BPO'
-					<%if (jtypes != null && jtypes.contains("BPO")) {
-							out.print("checked=\"checked\"");
-						}%>/> BPO <br>
-					<input type='checkbox' onclick="ctypeclicked()" id="Financial Services" name='Financial Services'
-					<%if (jtypes != null && jtypes.contains("Financial Services/PSU")) {
-							out.print("checked=\"checked\"");
-						}%>/> Financial Services <br> 
-					<input type='checkbox' onclick="ctypeclicked()"	id="jOthers" name='Others'
-					<%if (jtypes != null && jtypes.contains("Others")) {
-							out.print("checked=\"checked\"");
-						}%>/> Others <br>
+	out.print("checked=\"checked\"");
+}%> />
+						Accounting
+					</label> <br> <label> <input type='checkbox' class='check'
+						onclick="ctypeclicked()" id="IT" name='IT'
+						<%if (jtypes != null && jtypes.contains("IT")) {
+	out.print("checked=\"checked\"");
+}%> />
+						IT
+					</label> <br> <label> <input type='checkbox'
+						onclick="ctypeclicked()" class='check' id="BPO" name='BPO'
+						<%if (jtypes != null && jtypes.contains("BPO")) {
+	out.print("checked=\"checked\"");
+}%> />
+						BPO
+					</label> <br> <label> <input type='checkbox'
+						onclick="ctypeclicked()" class='check' id="Financial Services"
+						name='Financial Services'
+						<%if (jtypes != null && jtypes.contains("Financial Services")) {
+	out.print("checked=\"checked\"");
+}%> />
+						Financial Services
+					</label> <br> <label> <input type='checkbox' class='check'
+						onclick="ctypeclicked()" id="Banking" name='Banking'
+						<%if (jtypes != null && jtypes.contains("Banking")) {
+	out.print("checked=\"checked\"");
+}%> />
+						Banking
+					</label> <br> <label> <input type='checkbox'
+						onclick="ctypeclicked()" class='check' id="jOthers" name='Others'
+						<%if (jtypes != null && jtypes.contains("Others")) {
+	out.print("checked=\"checked\"");
+}%> />
+						Others
+					</label> <hr>
 				</div>
 				<div class='row'>
-					<button onclick="apply('${path}')" class='btn btn-secondary'>Apply
-						filter</button>					
+					<button onclick="apply('${path}', ${id}, '${end}')"
+						class='btn btn-secondary btn-block'>Apply filter</button>
 				</div>
 			</div>
 			<div class='col right'>
-				
+
 				<c:if test="${jobs.size() == 0}">
 					<h3>You don't have any job to display!</h3>
 				</c:if>
@@ -105,9 +183,23 @@ input {
 					<c:forEach var="job" items="${jobs}">
 						<div class="card shadow p-3 mb-3 bg-white rounded">
 							<div class="card-body">
-								<h4 class='card-title'>${job.jobname}
-									| <span class='badge badge-pill badge-primary'>${job.jobtype}</span>
-								</h4>
+								<div class='rows'>
+									<h4 class='card-title'>${job.jobname}
+										| <span class='badge badge-pill badge-info'>${job.jobtype}</span>
+									</h4>
+									<div>
+										<c:if test="${role != 'Employee' }">
+											<button onclick="updateJob(${job.id})"
+												class='btn btn-info btn-sm'>
+												<i class='fa fa-edit'></i> Edit
+											</button>
+											<button onclick="deleteJob(${job.id}, '${role}', ${job.eid})"
+												class='btn btn-danger btn-sm'>
+												<i class='fa fa-trash'></i> Delete
+											</button>
+										</c:if>
+									</div>
+								</div>
 								<h5 class='card-subtitle mb-2 text-muted'>${job.company}|
 									${job.companytype}</h5>
 								<div class='card-text'>
@@ -125,7 +217,7 @@ input {
 									<div>
 										<span class='font-weight-bold'>Skills: </span> <span>${job.skills}</span>
 									</div>
-<%-- 									${job.description} --%>
+									<%-- 									${job.description} --%>
 								</div>
 							</div>
 						</div>
@@ -147,9 +239,7 @@ input {
 		if (document.getElementById("MNC").checked) {
 			ctypes[i] = "MNC";
 			i += 1;
-		} else {
-			ctypes.splice(ctypes.indexOf("MNC"), 1)
-		}
+		} 
 		if (document.getElementById("Corporate").checked) {
 			ctypes[i] = "Corporate";
 			i += 1;
@@ -174,8 +264,6 @@ input {
 		if (document.getElementById("Accounting").checked) {
 			jtypes[j] = "Accounting";
 			j += 1;
-		} else {
-			jtypes.splice(jtypes.indexOf("Accounting"), 1)
 		}
 		if (document.getElementById("BPO").checked) {
 			jtypes[j] = "BPO";
@@ -189,6 +277,10 @@ input {
 			jtypes[j] = "IT";
 			j += 1;
 		}
+		if (document.getElementById("Banking").checked) {
+			jtypes[j] = "Banking";
+			j += 1;
+		}
 		if (document.getElementById("jOthers").checked) {
 			jtypes[j] = "Others";
 			j += 1;
@@ -196,19 +288,33 @@ input {
 	
 		console.log(jtypes);
 	}
-	function apply(path) {		
+	function apply(path, id, end) {		
+		console.log(path + " "+id+ " " + end)
 		if(ctypes.length == 0)
 			ctypes = [];
 		if(jtypes.length == 0)
 			jtypes = [];
 		if(path == 'jobs_admin.jsp') {			
 			document.location = "/Notifier/jobs_admin?companytype=" + ctypes + "&jobtype=" + jtypes;
+		} else if(path == 'empr_jobs.jsp') {			
+			document.location = "/Notifier/empr_jobs?id=" + id + "&companytype=" + ctypes + "&jobtype=" + jtypes;
+		} else if(path == 'emp-home.jsp') {			
+			document.location = "/Notifier/empr-home?id=" + id + "&companytype=" + ctypes + "&jobtype=" + jtypes;
+		} else if(end.startsWith("id")) {
+			document.location = "/Notifier/rcmd_jobs?id="+id+"&companytype=" + ctypes + "&jobtype=" + jtypes;
 		} else {
-// 		if(id != null)
-// 			document.location = "/Notifier/rcmd_jobs?id="+id+"?companytype=" + ctypes + "&jobtype=" + jtypes;
-// 		else
 			document.location = "/Notifier/home?companytype=" + ctypes + "&jobtype=" + jtypes;
 		}
+	}
+	
+	function updateJob(jobid) {
+		alert(jobid)
+		document.location = "/Notifier/update_job?jobid=" + jobid;
+	}
+	function deleteJob(jobid, role, eid) {
+// 		alert(jobid = " " + role + " " + eid)
+		console.log(jobid + " " + role + " " + eid);
+		document.location = "/Notifier/deleteJobdetails?jobid="+ jobid + "&role=" + role + "&empid=" + eid;
 	}
 </script>
 </html>

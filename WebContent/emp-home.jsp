@@ -19,6 +19,9 @@
 label {
 	font-weight: bold;
 }
+.center {
+	justify-content: center; 	
+}
 </style>
 </head>
 <body>
@@ -26,14 +29,44 @@ label {
 	<jsp:include page="sidebar.jsp"></jsp:include>
 
 	<div class='container'>
-<%-- 		<%=request.getAttribute("employees")%> --%>
+		<%
+		String eid = request.getParameter("id");
+		String id = null;
+		Cookie cookie = null;
+		Cookie[] cookies = request.getCookies();
+		for (Cookie c : cookies) {
+			if (c.getName().equals("id")) {
+				id = c.getValue();
+				request.setAttribute("id", id);
+			} else if (c.getName().equals("role")) {
+				request.setAttribute("role", c.getValue());
+			}
+		}
+		%>
+		<%-- 		<%=request.getAttribute("employees")%> --%>
 
-		<h3>Find your perfect employee now with Konnect</h3>
-		<br> <br>
-		<jsp:include page="employees.jsp">
-			<jsp:param value="<%=request.getAttribute(\"employees\")%>" name="employees" />
-		</jsp:include>
+		<h3 align='center'>Find your perfect employee now with Konnect</h3>
+		<br> 
+		<div class="row center">
+			<button class='btn btn-primary' onclick="viewjobs(<%out.println(id);%>)">View Jobs</button>
+			<button class='btn btn-primary' onclick="viewemployees(${id})">Recommended Employees</button>
+		</div>
+<!-- 		<hr> -->
+		<jsp:include page="jobs.jsp">
+			<jsp:param value="<%=request.getAttribute(\"jobs\")%>"
+ 				name="jobs" /> 
+ 		</jsp:include>
 	</div>
 
+	<script>
+		function viewjobs(id) {
+			document.location = "empr_jobs?id=" + id;
+		}
+		function viewemployees(empid) {
+// 			alert(empid)
+// 			document.location = "all_emps";
+			document.location = "rcmd_emps?empid="+empid;
+		}
+	</script>
 </body>
 </html>

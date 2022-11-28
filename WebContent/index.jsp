@@ -20,9 +20,10 @@ html {
 	margin: 0;
 	padding: 0;
 }
-
+p {
+	text-align: center;
+}
 body {
-	background-image: url(./notes.jpg);
 	height: 100%;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -32,6 +33,10 @@ body {
 .form {
 	width: 340px;
 	margin: 10px auto;
+}
+
+a:hover {
+	text-decoration: none;
 }
 
 .login {
@@ -69,8 +74,8 @@ body {
 	out.println("style=\"width: 400px; margin: 0 auto; height: 56px; padding: 12px 20px;\"");
 }%>
 				<%if (message == "") {
-				out.println("style=\"width: 0;height: 0; padding:0; margin:0;\"");
-			}%>
+	out.println("style=\"width: 0;height: 0; padding:0; margin:0;\"");
+}%>
 				id="errmsg" role="alert">
 				<%
 				out.println(message);
@@ -92,9 +97,12 @@ body {
 						</div>
 						<br>
 						<div>
-							<label>Password</label> <br> <input type="password"
+							<label>Password</label> <br> <input type="password" id="password"
 								name="password" class="form-control"> <span
 								style='color: red;'>${messages.password}</span>
+							<label>
+								<input onchange="showpassword()" type="checkbox" id="show"> Show Password
+							</label>
 						</div>
 						<br>
 						<div>
@@ -112,8 +120,9 @@ body {
 						</div>
 						<br>
 					</form>
-					Register new <a href="register.jsp">Employee</a>/<a
-						href='RegisterEmployer.jsp'>Employer</a>
+					<p> Register new <a href="register.jsp">Employee</a> /
+						<a href='RegisterEmployer.jsp'>Employer</a>
+					</p>
 				</div>
 			</div>
 		</div>
@@ -121,6 +130,15 @@ body {
 
 </body>
 <script>
+
+	function showpassword() {
+		if(document.getElementById("show").checked) {
+			document.getElementById("password").type = "text";
+		} else {
+			document.getElementById("password").type = "password";
+		}
+		
+	}
 	function validate(event) {
 		event.preventDefault(); // this will prevent the submit event.
 		var email = document.loginform.email.value;

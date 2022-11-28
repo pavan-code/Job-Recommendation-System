@@ -1,0 +1,14 @@
+.cb {
+	
+	background-color: #3f51b5;
+	border: 1px solid white;
+	color: white;
+	min-width: 164px;
+	outline: none;
+	padding: 6px 12px;
+	border-radius: 41px;
+	
+}
+.cb:hover {
+	background-color: rgba(63, 81, 181, 0.88)
+}

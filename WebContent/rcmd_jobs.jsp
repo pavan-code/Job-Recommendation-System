@@ -34,6 +34,18 @@ input {
 	<%
 	String ctypes = request.getParameter("companytype");
 	String jtypes = request.getParameter("jobtype");
+	String id = request.getParameter("id");
+	String path = request.getServletPath();
+		out.println(path);
+	request.setAttribute("path", path.substring(1));
+	String role = null;
+	Cookie cookie = null;
+	Cookie[] cookies = request.getCookies();
+	for (Cookie c : cookies) {
+		if (c.getName().equals("role")) {
+			role = c.getValue();
+		}
+	}
 	%>
 	<div class='container'>
 		<div class='row'>

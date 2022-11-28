@@ -73,6 +73,9 @@ public class StudentController extends HttpServlet {
 			case "/rcmd_jobs":
 				rcmdjobs(request, response);
 				break;
+			case "/rcmd_emps":
+				rcmdemps(request, response);
+				break;
 			case "/jobs_admin":
 				jobs_admin(request, response);
 				break;
@@ -103,6 +106,21 @@ public class StudentController extends HttpServlet {
 			case "/update_active":
 				updateActive(request, response);
 				break;
+			case "/empr_jobs":
+				getJobsByEmployer(request, response);
+				break;
+			case "/all_emps":
+				allEmployees(request, response);
+				break;
+			case "/update_job":
+				updateJob(request, response);
+				break;
+			case "/updateJobdetails":
+				updateJobDetails(request, response);
+				break;
+			case "/deleteJobdetails":
+				deleteJobDetails(request, response);
+				break;
 			default:
 				response.sendRedirect("errorPage.jsp");
 				break;
@@ -111,6 +129,103 @@ public class StudentController extends HttpServlet {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+	}
+
+	private void rcmdemps(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+		int empid = Integer.parseInt(request.getParameter("empid"));
+		List<Employee> emps = dao.getRcmdEmployees(empid);
+		request.setAttribute("employees", emps);
+		request.getRequestDispatcher("all_employees.jsp").forward(request, response);
+	}
+
+	private void deleteJobDetails(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+		int jobid = Integer.parseInt(request.getParameter("jobid"));
+		String role = request.getParameter("role");
+		int empid = Integer.parseInt(request.getParameter("empid"));
+		boolean res = dao.deleteJob(jobid);
+		if(res) {
+			if(role.equals("Employer"))
+				response.sendRedirect("/Notifier/empr_jobs?id=" + empid);
+			else if(role.equals("Admin"))
+				response.sendRedirect("/Notifier/jobs_admin");				
+		}
+	}
+
+	private void updateJobDetails(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+		String jobname = request.getParameter("jobname");
+		String company = request.getParameter("company");
+		String ctype = request.getParameter("companytype");
+		String minexp = request.getParameter("minexperience");
+		String salary = request.getParameter("salary");
+		String location = request.getParameter("location");
+		String desc = request.getParameter("description");
+		String open = request.getParameter("openings");
+		String jobtype = request.getParameter("jobtype");
+		String skills = request.getParameter("skills");
+		String website = request.getParameter("website");
+		int empid = Integer.parseInt(request.getParameter("empid"));
+		int jobid = Integer.parseInt(request.getParameter("jobid"));
+		String role = request.getParameter("role");
+		System.out.println("role: " + role);
+		System.out.println("emoid" + empid);
+		Job j = new Job(jobname, company, ctype, Float.valueOf(minexp), Float.valueOf(salary), location, desc,
+				Integer.parseInt(open), jobtype, skills, website, empid);
+//		System.out.println("job: " + j);
+		boolean res = dao.updateJob(j, jobid);
+		System.out.println("res: " + res);
+		if(res) {
+			if(role.equals("Employer"))
+				response.sendRedirect("/Notifier/empr_jobs?id=" + empid);
+			else if(role.equals("Admin"))
+				response.sendRedirect("/Notifier/jobs_admin");
+		}
+		
+	}
+
+	private void updateJob(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+		int jobid = Integer.parseInt(request.getParameter("jobid"));
+		Job job = dao.getJobById(jobid);
+		request.setAttribute("job", job);
+		request.getRequestDispatcher("update_job.jsp").forward(request, response);
+	}
+
+	private void allEmployees(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+		List<Employee> emps = dao.getEmployees();
+		request.setAttribute("employees", emps);
+		request.getRequestDispatcher("all_employees.jsp").forward(request, response);
+	}
+
+	private void getJobsByEmployer(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+		int empid = Integer.parseInt(request.getParameter("id"));
+		String companytype = request.getParameter("companytype");
+		String jobtype = request.getParameter("jobtype");
+		List<String> ctypes = new ArrayList<>();
+		List<String> jtypes = new ArrayList<>();
+		System.out.println("ctype:" + companytype);
+		List<Job> jobs = null;
+		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty()) {	
+			String[] c = companytype.split(",");
+			for(String ch: c)
+				ctypes.add("'"+ch+"'");
+			String[] j = jobtype.split(",");
+			for(String ch: j)
+				jtypes.add("'"+ch+"'");
+			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, empid);
+		} else if (companytype != null && !companytype.isEmpty()) {	
+			String[] c = companytype.split(",");
+			for(String ch: c)
+				ctypes.add("'"+ch+"'");
+			jobs = dao.getJobsByCompanyType(ctypes);
+		} else if(jobtype != null && !jobtype.isEmpty()) {
+			String[] c = jobtype.split(",");
+			for(String ch: c)
+				jtypes.add("'"+ch+"'");
+			jobs = dao.getJobsByJobType(jtypes);
+		} else {		
+			jobs = dao.getJobsByEmprId(empid);
+		}		
+		request.setAttribute("jobs", jobs);
+		request.getRequestDispatcher("empr_jobs.jsp").forward(request, response);
 	}
 
 	private void updateActive(HttpServletRequest request, HttpServletResponse response)
@@ -203,7 +318,7 @@ public class StudentController extends HttpServlet {
 			String[] j = jobtype.split(",");
 			for(String ch: j)
 				jtypes.add("'"+ch+"'");
-			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes);
+			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0);
 		} else if (companytype != null && !companytype.isEmpty()) {	
 			String[] c = companytype.split(",");
 			for(String ch: c)
@@ -247,8 +362,44 @@ public class StudentController extends HttpServlet {
 	private void emprpage(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		List<Employee> emps = dao.getEmployees();
-//		System.out.println("jobs" + jobs.toString());
+		int empid = 0;		
+		Cookie[] cookies = request.getCookies();
+		for (Cookie c : cookies) {
+			if (c.getName().equals("id")) {
+				empid = Integer.parseInt(c.getValue());				
+			}
+		}
+		
+		String companytype = request.getParameter("companytype");
+		String jobtype = request.getParameter("jobtype");
+		List<String> ctypes = new ArrayList<>();
+		List<String> jtypes = new ArrayList<>();
+		System.out.println("ctype:" + companytype);
+		List<Job> jobs = null;
+		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty()) {	
+			String[] c = companytype.split(",");
+			for(String ch: c)
+				ctypes.add("'"+ch+"'");
+			String[] j = jobtype.split(",");
+			for(String ch: j)
+				jtypes.add("'"+ch+"'");
+			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0);
+		} else if (companytype != null && !companytype.isEmpty()) {	
+			String[] c = companytype.split(",");
+			for(String ch: c)
+				ctypes.add("'"+ch+"'");
+			jobs = dao.getJobsByCompanyType(ctypes);
+		} else if(jobtype != null && !jobtype.isEmpty()) {
+			String[] c = jobtype.split(",");
+			for(String ch: c)
+				jtypes.add("'"+ch+"'");
+			jobs = dao.getJobsByJobType(jtypes);
+		} else {		
+			jobs = dao.getJobsByEmprId(empid);
+		}
+	
 		request.setAttribute("employees", emps);
+		request.setAttribute("jobs", jobs);
 		request.getRequestDispatcher("emp-home.jsp").forward(request, response);
 	}
 
@@ -261,9 +412,37 @@ public class StudentController extends HttpServlet {
 	}
 	
 	private void rcmdjobs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+		String companytype = request.getParameter("companytype");
+		String jobtype = request.getParameter("jobtype");
 		int id = Integer.parseInt(request.getParameter("id"));
+		List<String> ctypes = new ArrayList<>();
+		List<String> jtypes = new ArrayList<>();
+		System.out.println("ctype:" + companytype);
+		System.out.println("jtype:" + jobtype);
+		List<Job> jobs = null;
+		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty()) {	
+			String[] c = companytype.split(",");
+			for(String ch: c)
+				ctypes.add("'"+ch+"'");
+			String[] j = jobtype.split(",");
+			for(String ch: j)
+				jtypes.add("'"+ch+"'");
+			jobs = dao.getRcmdJobsByCompanyTypeAndJobType(ctypes, jtypes, id);
+		} else if (companytype != null && !companytype.isEmpty()) {	
+			String[] c = companytype.split(",");
+			for(String ch: c)
+				ctypes.add("'"+ch+"'");
+			jobs = dao.getRcmdJobsByCompanyType(ctypes, id);
+		} else if(jobtype != null && !jobtype.isEmpty()) {
+			String[] c = jobtype.split(",");
+			for(String ch: c)
+				jtypes.add("'"+ch+"'");
+			jobs = dao.getRcmdJobsByJobType(jtypes, id);
+		} else {		
+			jobs = dao.getRcmdJobs(id);
+		}	
 		System.out.println("id "+ request.getParameter("id"));
-		List<Job> jobs = dao.getRcmdJobs(id);
+		System.out.println("rcmdjobs: " + jobs);
 		request.setAttribute("jobs", jobs);
 		request.getRequestDispatcher("home.jsp").forward(request, response);
 	}
@@ -283,7 +462,7 @@ public class StudentController extends HttpServlet {
 			String[] j = jobtype.split(",");
 			for(String ch: j)
 				jtypes.add("'"+ch+"'");
-			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes);
+			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0);
 		} else if (companytype != null && !companytype.isEmpty()) {	
 			String[] c = companytype.split(",");
 			for(String ch: c)

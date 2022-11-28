@@ -14,16 +14,37 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="styles.css">
 <style>
 body {
 	font-family: "Lato", sans-serif;
+}
+.cb {
+	
+	background-color: #3f51b5;
+	border: 1px solid white;
+	color: white;
+	min-width: 164px;
+	outline: none;
+	padding: 6px 12px;
+	border-radius: 4px;
+	margin: 0 5px;
+}
+.cb:hover {
+	background-color: rgba(63, 81, 181, 0.88)
 }
 
 .container {
 	background-color: #f1f1f1;
 	height: auto;
 }
-
+a h4 {
+	color: white;
+}
+a:hover {
+	text-decoration: none;
+	
+}
 .sidebar {
 	height: 100%;
 	width: 0;
@@ -61,7 +82,7 @@ body {
 }
 
 .navbar {
-	background-color: #39a0ed;
+	background-color: #3f51b5;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -165,7 +186,7 @@ body {
 		<!-- 				class='badge badge-light'>3</span> -->
 		<!-- 		</button> -->
 		&nbsp;
-		<button class='btn btn-dark' onclick="logout()">
+		<button class='cb' onclick="logout()">
 			Log out <i class='fa fa-sign-out'></i>
 		</button>
 	</div>
