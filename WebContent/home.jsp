@@ -18,7 +18,17 @@
 <link rel="stylesheet" href="styles.css">
 
 <style>
-
+::-webkit-scrollbar {
+  width: 2px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: blue; 
+  border-radius: 10px;
+}
 label {
 	font-weight: bold;
 }
@@ -47,6 +57,7 @@ label {
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
+<!-- 	<br> -->
 	<div class='container'>
 		<%
 		String eid = request.getParameter("id");
@@ -79,7 +90,7 @@ label {
 				onclick="recommendedjobs(${id})" class='cb'>Recommended
 				Jobs</button>
 		</div>
-		<hr>
+<!-- 		<hr> -->
 		<jsp:include page="jobs.jsp">
 			<jsp:param value="<%=request.getAttribute(\"jobs\")%>" name="jobs" />
 			<jsp:param value="${eid}" name="eid" />

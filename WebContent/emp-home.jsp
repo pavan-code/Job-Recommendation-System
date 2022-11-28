@@ -16,6 +16,31 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+::-webkit-scrollbar {
+  width: 2px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: blue; 
+  border-radius: 10px;
+}
+.cb {
+	background-color: #3f51b5;
+	border: 1px solid white;
+	color: white;
+	min-width: 164px;
+	outline: none;
+	padding: 6px 12px;
+	border-radius: 4px;
+	margin: 0 5px;
+}
+
+.cb:hover {
+	background-color: rgba(63, 81, 181, 0.88)
+}
 label {
 	font-weight: bold;
 }
@@ -27,7 +52,7 @@ label {
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
-
+<!-- 	<br> -->
 	<div class='container'>
 		<%
 		String eid = request.getParameter("id");
@@ -48,8 +73,8 @@ label {
 		<h3 align='center'>Find your perfect employee now with Konnect</h3>
 		<br> 
 		<div class="row center">
-			<button class='btn btn-primary' onclick="viewjobs(<%out.println(id);%>)">View Jobs</button>
-			<button class='btn btn-primary' onclick="viewemployees(${id})">Recommended Employees</button>
+			<button class='cb' onclick="viewjobs(<%out.println(id);%>)">View Jobs</button>
+			<button class='cb' onclick="viewemployees(${id})">Recommended Employees</button>
 		</div>
 <!-- 		<hr> -->
 		<jsp:include page="jobs.jsp">

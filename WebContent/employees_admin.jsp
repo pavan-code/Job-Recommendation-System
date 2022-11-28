@@ -19,24 +19,58 @@
 label {
 	font-weight: bold;
 }
+
+.cb {
+	background-color: #3f51b5;
+	border: 1px solid white;
+	color: white;
+	min-width: 164px;
+	outline: none;
+	padding: 6px 12px;
+	border-radius: 4px;
+	margin: 0 5px;
+}
+
+.cb:hover {
+	background-color: rgba(63, 81, 181, 0.88)
+}
+
+::-webkit-scrollbar {
+	width: 2px;
+}
+
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: blue;
+	border-radius: 10px;
+}
+
+.center {
+	justify-content: center;
+}
 </style>
 </head>
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
-
+	
 	<div class='container'>
-		<h3>Admin Home Page</h3>
-		<button onclick="jobs()" class='btn btn-primary'>All Jobs</button>
-		<button onclick="employees()" class='btn btn-primary'>All
-			Employees</button>
-			<button onclick="empUnactive()" class='btn btn-primary'>Pending
-			Employees</button>
-		<button onclick="emprUnactive()" class='btn btn-primary'>Pending
-			Employers</button>
 		<br>
-		
-		<h3>All Employees</h3>
+		<h3 align='center'>Admin Home Page</h3>
+		<div class='row center'>
+			<button onclick="jobs()" class='cb'>All Jobs</button>
+			<button onclick="employees()" class='cb'>All Employees</button>
+			<button onclick="empUnactive()" class='cb'>Pending Employees</button>
+			<button onclick="emprUnactive()" class='cb'>Pending
+				Employers</button>
+		</div>
+		<br>
+
+
 
 		<jsp:include page="employees.jsp">
 			<jsp:param value="<%=request.getAttribute(\"employees\")%>"

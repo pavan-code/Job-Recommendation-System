@@ -14,13 +14,13 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css">
 <style>
 body {
 	font-family: "Lato", sans-serif;
 }
+
 .cb {
-	
 	background-color: #3f51b5;
 	border: 1px solid white;
 	color: white;
@@ -30,6 +30,7 @@ body {
 	border-radius: 4px;
 	margin: 0 5px;
 }
+
 .cb:hover {
 	background-color: rgba(63, 81, 181, 0.88)
 }
@@ -38,13 +39,15 @@ body {
 	background-color: #f1f1f1;
 	height: auto;
 }
+
 a h4 {
 	color: white;
 }
+
 a:hover {
 	text-decoration: none;
-	
 }
+
 .sidebar {
 	height: 100%;
 	width: 0;
@@ -87,6 +90,10 @@ a:hover {
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	height: 80px;
+	border-radius: 0 0 20px 20px;
+	z-index: 2;
+	box-shadow: 1px 1px 10px 10px lightgrey;
 }
 
 .app-name {
@@ -163,15 +170,10 @@ a:hover {
 			<a href='/Notifier/admin-home' class='app-name'><h4>Konnect</h4></a>
 		</c:if>
 	</div>
-<!-- 	<div class='search'> -->
-<!-- 		<form action="search"> -->
-<!-- 			<div class='form-group input'> -->
-<!-- 				<i class='fa fa-search' style="font-size: 26px;"></i> <input -->
-<!-- 					type='text' id="search" name="search" -->
-<!-- 					placeholder="Search for jobs.." class='form-control'> -->
-<!-- 			</div> -->
-<!-- 		</form> -->
-<!-- 	</div> -->
+	<!-- 	<div class='search'> --> <!-- 		<form action="search"> --> <!-- 			<div class='form-group input'> -->
+	<!-- 				<i class='fa fa-search' style="font-size: 26px;"></i> <input -->
+	<!-- 					type='text' id="search" name="search" --> <!-- 					placeholder="Search for jobs.." class='form-control'> -->
+	<!-- 			</div> --> <!-- 		</form> --> <!-- 	</div> -->
 
 
 	<div>

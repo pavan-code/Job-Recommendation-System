@@ -43,8 +43,8 @@ i.menu {
 		}
 		%>
 		<div>
-			<h4 style="margin-left: 30px; color: white;'">Hello</h4>
-			<hr style='background-color: white;'>
+<!-- 			<h4 style="margin-left: 30px; color: white;'">Hello</h4> -->
+<!-- 			<hr style='background-color: white;'> -->
 		</div>
 		<hr class='mb-0'>
 

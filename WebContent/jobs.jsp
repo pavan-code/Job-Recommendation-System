@@ -29,7 +29,10 @@
 .left {
 	width: 220px !important;
 }
-
+.right {
+	height: 400px;
+	overflow-y: scroll;
+}
 input {
 	width: 10px;
 }
@@ -47,6 +50,10 @@ a:hover {
 input.check {
 	width: 19px;
 	height: 19px;
+	
+}
+input[type="checkbox"].check:checked  {
+	background-color:red;
 }
 label {
 	margin: 0;
@@ -200,7 +207,7 @@ label {
 										</c:if>
 									</div>
 								</div>
-								<h5 class='card-subtitle mb-2 text-muted'>${job.company}|
+								<h5 class='card-subtitle mb-2 text-muted'>${job.company} |
 									${job.companytype}</h5>
 								<div class='card-text'>
 									<div>
@@ -308,7 +315,7 @@ label {
 	}
 	
 	function updateJob(jobid) {
-		alert(jobid)
+		
 		document.location = "/Notifier/update_job?jobid=" + jobid;
 	}
 	function deleteJob(jobid, role, eid) {

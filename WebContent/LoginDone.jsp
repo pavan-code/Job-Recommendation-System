@@ -27,23 +27,113 @@
    inset: 0 100% 0 0;
    border-radius: inherit;
    background: currentColor;
-   animation: progress-pf82op 2s infinite;
+   animation: progress 2s infinite;
 }
 
-@keyframes progress-pf82op {
+@keyframes progress {
    100% {
       inset: 0;
    }
 }
+
+body{
+  background: #3399ff;  
+  overflow-y: hidden;
+}
+
+
+.circle{
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: ripple 15s infinite;
+  box-shadow: 0px 0px 1px 0px #508fb9;
+}
+
+.sm{
+  width: 200px;
+  height: 200px;
+  left: -100px;
+  bottom: -100px;
+}
+
+.m{
+  width: 400px;
+  height: 400px;
+  left: -200px;
+  bottom: -200px;
+}
+
+.l{
+  width: 600px;
+  height: 600px;
+  left: -300px;
+  bottom: -300px;
+}
+
+.xl{
+  width: 800px;
+  height: 800px;
+  left: -400px;
+  bottom: -400px;
+}
+
+.xxl{
+  width: 1000px;
+  height: 1000px;
+  left: -500px;
+  bottom: -500px;
+}
+
+.s1{
+  opacity: 0.2;
+}
+.s2{
+  opacity: 0.5;
+}
+
+.s3{
+  opacity: 0.7;
+}
+
+.s4{
+  opacity: 0.8;
+}
+
+.s5{
+  opacity: 0.9;
+}
+
+@keyframes ripple{
+  0%{
+    transform: scale(0.8);
+  }
+  
+  50%{
+    transform: scale(1.2);
+  }
+  
+  100%{
+    transform: scale(0.8);
+  }
+}
+
 </style>
 </head>
 <body align='center'>
+<div class='rbg'>
+  <div class='circle xxl s1'></div>
+  <div class='circle xl s2'></div>
+  <div class='circle l s3'></div>
+  <div class='circle m s4'></div>
+  <div class='circle sm s5'></div>
+</div>
 	<div align='center' class='container mt-4'>
 		<div class='alert alert-success'>
-			<p>Login Successful.</p>
+			<h4>Login Successful.</h4>
 		</div>
 		<div align='center'>
-			<p>Redirecting to Home page..</p>
+			<h5>Redirecting to Home page..</h5>
 			<div class="progress"></div>
 		</div>
 	</div>

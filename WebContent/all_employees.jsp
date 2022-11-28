@@ -19,6 +19,20 @@
 label {
 	font-weight: bold;
 }
+.cb {
+	background-color: #3f51b5;
+	border: 1px solid white;
+	color: white;
+	min-width: 164px;
+	outline: none;
+	padding: 6px 12px;
+	border-radius: 4px;
+	margin: 0 5px;
+}
+
+.cb:hover {
+	background-color: rgba(63, 81, 181, 0.88)
+}
 .center {
 	justify-content: center; 	
 }
@@ -41,12 +55,12 @@ label {
 				request.setAttribute("role", c.getValue());
 			}
 		}
-		%>
+		%><br>
 		<h3 align='center'>Find your perfect employee now with Konnect</h3>
 		<br>
 		<div class="row center">
-			<button class='btn btn-primary' onclick="viewjobs(<%out.println(id);%>)">View Jobs</button>
-			<button class='btn btn-primary' onclick="viewemployees(${id})">Recommended Employees</button>
+			<button class='cb' onclick="viewjobs(<%out.println(id);%>)">View Jobs</button>
+			<button class='cb' onclick="viewemployees(${id})">Recommended Employees</button>
 		</div>
 <!-- 		<hr> -->
 		<jsp:include page="employees.jsp">

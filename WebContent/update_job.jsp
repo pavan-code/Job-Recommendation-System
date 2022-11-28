@@ -28,6 +28,38 @@
 	left: 50%;
 	transform: translate(-50%, 0%);
 }
+.cb {
+	background-color: #3f51b5;
+	border: 1px solid white;
+	color: white;
+	min-width: 164px;
+	outline: none;
+	padding: 6px 12px;
+	border-radius: 4px;
+	margin: 0 5px;
+}
+
+.cb:hover {
+	background-color: rgba(63, 81, 181, 0.88)
+}
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: blue; 
+  border-radius: 10px;
+}
+.center {
+	justify-content: center;
+}
 </style>
 </head>
 <body>
@@ -137,7 +169,7 @@
 				</div>
 				<br>
 				<div style='text-align: center;'>
-					<button class="btn btn-primary" style='width: 100%;' type="submit">Update
+					<button class="cb" style='width: 100%;' type="submit">Update
 						Job Details</button>
 				</div>
 			</form>
