@@ -124,6 +124,12 @@ public class StudentController extends HttpServlet {
 			case "/deleteJobdetails":
 				deleteJobDetails(request, response);
 				break;
+			case "/change_pwd":
+				changePwdpage(request, response);
+				break;
+			case "/adminpwdchange":
+				adminpwdchange(request, response);
+				break;
 			default:
 				response.sendRedirect("errorPage.jsp");
 				break;
@@ -132,6 +138,24 @@ public class StudentController extends HttpServlet {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+	}
+
+	private void adminpwdchange(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+		String p1 = request.getParameter("password1");
+		String p2 = request.getParameter("password2");
+		String p3 = request.getParameter("password3");
+		int aid = Integer.parseInt(request.getParameter("aid"));
+		Map<String, String> messages = dao.updateAdminPassword(p1, p2, p3, aid);
+
+		request.setAttribute("messages", messages);
+		request.getRequestDispatcher("admin_change_pwd.jsp").forward(request, response);
+
+	}
+
+	private void changePwdpage(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.getRequestDispatcher("admin_change_pwd.jsp").forward(request, response);
 	}
 
 	private void rcmdemps(HttpServletRequest request, HttpServletResponse response)
@@ -503,7 +527,7 @@ public class StudentController extends HttpServlet {
 		request.setAttribute("employers", emprs);
 		request.getRequestDispatcher("employers_admin.jsp").forward(request, response);
 	}
-	
+
 	private void employees_admin(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		List<Employee> emps = dao.getEmployees();

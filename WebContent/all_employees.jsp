@@ -70,6 +70,7 @@ label {
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
 	<div class="center">
+	<button class='cb' onclick="addjob()">Add Job</button>
 		<button class='cb' onclick="viewjobs(<%out.println(id);%>)">View
 			Jobs</button>
 		<button class='cb' onclick="viewemployees(${id})">Recommended
@@ -83,6 +84,9 @@ label {
 		</jsp:include>
 	</div>
 	<script>
+	function addjob() {
+		document.location = "addjob"
+	}
 	function viewjobs(id) {
 		document.location = "empr_jobs?id=" + id;
 	}

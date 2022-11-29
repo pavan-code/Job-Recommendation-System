@@ -77,6 +77,9 @@ i.menu {
 		<c:if test="${role.equals('Admin')}">
 			<a href="unactive_empr" class='btn'> Pending Job Providers</a>
 		</c:if>
+		<c:if test="${role.equals('Admin')}">
+			<a href="change_pwd" class='btn'> Change Password </a>
+		</c:if>
 		
 	</div>
 	<script>

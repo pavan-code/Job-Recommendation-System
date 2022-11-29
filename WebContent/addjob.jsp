@@ -20,6 +20,17 @@
 	position: relative;
 }
 
+.cb {
+	background-color: #3f51b5;
+	border: 1px solid white;
+	color: white;
+	min-width: 164px;
+	outline: none;
+	padding: 6px 12px;
+	border-radius: 4px;
+	margin: 0 5px;
+}
+
 .form {
 	padding: 20px;
 	width: 600px;
@@ -28,31 +39,53 @@
 	left: 50%;
 	transform: translate(-50%, 0%);
 }
+
+.center {
+	display: flex;
+	justify-content: center;
+	padding: 10px 5px;
+	position: sticky;
+	top: 80px;
+	background: lightgrey;
+	margin: 0 auto;
+	z-index: 1;
+}
+
+.containers {
+	margin: 0 auto;
+	width: 90% !important;
+}
 </style>
 </head>
 <body>
+	<%
+	String id = null;
+	Cookie cookie = null;
+	Cookie[] cookies = request.getCookies();
+	for (Cookie c : cookies) {
+		if (c.getName().equals("id")) {
+			id = c.getValue();
+			request.setAttribute("id", id);
+		} else if (c.getName().equals("role")) {
+			request.setAttribute("role", c.getValue());
+		}
+	}
+	%>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
-	<div class='container'>
-		<%
-		String id = null;
-		Cookie cookie = null;
-		Cookie[] cookies = request.getCookies();
-		for (Cookie c : cookies) {
-			if (c.getName().equals("id")) {
-				id = c.getValue();
-				request.setAttribute("id", id);
-			} else if (c.getName().equals("role")) {
-				request.setAttribute("role", c.getValue());
-			}
-		}
-		%>
+	<div class="center">
+		<button class='cb' onclick="addjob()">Add Job</button>
+		<button class='cb' onclick="viewjobs(<%out.println(id);%>)">View
+			Jobs</button>
+		<button class='cb' onclick="viewemployees(${id})">Recommended
+			Employees</button>
+	</div>
+	<div class='containers'>
 
 		<div class='form card'>
 			<div style='text-align: center;'>
 				<h2>Add new job post</h2>
 			</div>
-			<hr>
 			<form method="post" action="addnewjob">
 				<div class='row'>
 					<div class='col'>
@@ -143,6 +176,16 @@
 			</form>
 		</div>
 	</div>
-
+	<script>
+		function addjob() {
+			document.location = "addjob"
+		}	
+		function viewjobs(id) {
+			document.location = "empr_jobs?id=" + id;
+		}
+		function viewemployees(empid) {
+			document.location = "rcmd_emps?empid="+empid;
+		}
+	</script>
 </body>
 </html>

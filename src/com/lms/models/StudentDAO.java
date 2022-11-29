@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -577,5 +578,34 @@ public class StudentDAO {
 		statement.setInt(1, jobid);
 		boolean res = statement.executeUpdate() > 0;
 		return res;
+	}
+	
+	public Map<String, String> updateAdminPassword(String p1, String p2, String p3, int aid) throws SQLException {
+		String sql = "select * from employer where id = ?";
+		Map<String, String> messages = new HashMap<>();
+		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+		statement.setInt(1, aid);
+		ResultSet rs = statement.executeQuery();
+		if(rs.next()) {
+			if(rs.getString("password").equals(p1)) {
+				sql = "update employer set password = ? where id = ?";
+				statement = jdbcConnection.prepareStatement(sql);
+				statement.setString(1, p2);
+				statement.setInt(2, aid);
+				if(statement.executeUpdate() > 0) {
+					sql = "update credentials set password = ? where empid = ?";
+					statement = jdbcConnection.prepareStatement(sql);
+					statement.setString(1, p2);
+					statement.setInt(2, aid);
+					statement.executeUpdate();
+					messages.put("message", "success");
+				} else 
+					messages.put("message", "Failed to update the password");
+			} else 
+				messages.put("message", "Incorrect current password!");
+		} else {
+			messages.put("message", "Admin not found");
+		}
+		return messages;
 	}
 }

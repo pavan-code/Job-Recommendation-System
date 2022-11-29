@@ -21,8 +21,8 @@ body {
 }
 
 .cb {
-/* 	background-color: #3f51b5; */
-/* 	border: 1px solid white; */
+ 	background-color: #3f51b5; 
+ 	border: 1px solid white; 
 	color: white;
 	min-width: 164px;
 	outline: none;
