@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Home</title>
+<title>Admin | Employers</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -16,18 +16,8 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-::-webkit-scrollbar {
-	width: 2px;
-}
-
-::-webkit-scrollbar-track {
-	box-shadow: inset 0 0 5px grey;
-	border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-	background: blue;
-	border-radius: 10px;
+label {
+	font-weight: bold;
 }
 
 .cb {
@@ -45,8 +35,18 @@
 	background-color: rgba(63, 81, 181, 0.88)
 }
 
-label {
-	font-weight: bold;
+::-webkit-scrollbar {
+	width: 2px;
+}
+
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: blue;
+	border-radius: 10px;
 }
 
 .center {
@@ -57,9 +57,8 @@ label {
 	top: 80px;
 	background: lightgrey;
 	margin: 0 auto;
-	z-index: 1;
+	z-index: 1;	
 }
-
 .containers {
 	margin: 0 auto;
 	width: 90% !important;
@@ -67,42 +66,44 @@ label {
 </style>
 </head>
 <body>
-	<%
-	String eid = request.getParameter("id");
-	String id = null;
-	Cookie cookie = null;
-	Cookie[] cookies = request.getCookies();
-	for (Cookie c : cookies) {
-		if (c.getName().equals("id")) {
-			id = c.getValue();
-			request.setAttribute("id", id);
-		} else if (c.getName().equals("role")) {
-			request.setAttribute("role", c.getValue());
-		}
-	}
-	%>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
-	<div class="center">
-		<button class='cb' onclick="viewjobs(<%out.println(id);%>)">View
-			Jobs</button>
-		<button class='cb' onclick="viewemployees(${id})">Recommended
-			Employees</button>
-	</div>
-
+		<div class='center'>
+			<button onclick="jobs()" class='cb'>All Jobs</button>
+			<button onclick="employees()" class='cb'>All Job Seekers</button>
+		<button onclick="employers()" class='cb'>All Job Providers</button>
+			<button onclick="empUnactive()" class='cb'>Pending Employees</button>
+			<button onclick="emprUnactive()" class='cb'>Pending
+				Employers</button>
+		</div>
+	
 	<div class='containers'>
-		<h3 align='center'>Find your perfect employee now with Konnect</h3>
-		<jsp:include page="jobs.jsp">
-			<jsp:param value="<%=request.getAttribute(\"jobs\")%>" name="jobs" />
+		
+		<h3 align='center'>List of All Job Providers</h3>
+		
+
+
+
+		<jsp:include page="employers.jsp">
+			<jsp:param value="<%=request.getAttribute(\"employers\")%>"
+				name="employers" />
 		</jsp:include>
 	</div>
-
 	<script>
-		function viewjobs(id) {
-			document.location = "empr_jobs?id=" + id;
+		function jobs() {
+			document.location = 'jobs_admin'
 		}
-		function viewemployees(empid) {
-			document.location = "rcmd_emps?empid="+empid;
+		function employees() {
+			document.location = 'employees_admin'
+		}
+		function employers() {
+			document.location = 'employers_admin'
+		}
+		function empUnactive() {
+			document.location = 'unactive_emp'
+		}
+		function emprUnactive() {
+			document.location = 'unactive_empr'
 		}
 	</script>
 </body>

@@ -14,15 +14,15 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="styles.css">
+<!-- <link rel="stylesheet" href="styles.css"> -->
 <style>
 body {
 	font-family: "Lato", sans-serif;
 }
 
 .cb {
-	background-color: #3f51b5;
-	border: 1px solid white;
+/* 	background-color: #3f51b5; */
+/* 	border: 1px solid white; */
 	color: white;
 	min-width: 164px;
 	outline: none;
@@ -40,7 +40,8 @@ body {
 	height: auto;
 }
 
-a h4 {
+a span {
+	font-size: 24px;
 	color: white;
 }
 
@@ -51,6 +52,7 @@ a:hover {
 .sidebar {
 	height: 100%;
 	width: 0;
+	top: 120px;
 	position: fixed;
 	z-index: 1;
 	left: 0;
@@ -91,9 +93,9 @@ a:hover {
 	justify-content: space-between;
 	align-items: center;
 	height: 80px;
-	border-radius: 0 0 20px 20px;
+/* 	border-radius: 0 0 20px 20px; */
 	z-index: 2;
-	box-shadow: 1px 1px 10px 10px lightgrey;
+/* 	box-shadow: 1px 1px 10px 10px lightgrey; */
 }
 
 .app-name {
@@ -104,6 +106,8 @@ a:hover {
 .brand {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
+/* 	border: 1px solid black; */
 }
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
@@ -139,6 +143,7 @@ a:hover {
 	padding: 3px 5px;
 	margin: auto 4px;
 }
+
 </style>
 </head>
 <body>
@@ -158,16 +163,16 @@ a:hover {
 	<nav class="navbar sticky-top">
 	<div class='brand'>
 		<button class="btn" onclick="openNav()">
-			<i style='font-size: 24px' class='fa fa-bars'></i>
+			<i style='font-size: 24px; color: white;' class='fa fa-bars'></i>
 		</button>
 		<c:if test="${role=='Employee'}">
-			<a href='/Notifier/home' class='app-name'><h4>Konnect</h4></a>
+			<a href='/Notifier/home' class='app-name'><span>Konnect</span></a>
 		</c:if>
 		<c:if test="${role=='Employer'}">
-			<a href='/Notifier/empr-home' class='app-name'><h4>Konnect</h4></a>
+			<a href='/Notifier/empr-home' class='app-name'><span>Konnect</span></a>
 		</c:if>
 		<c:if test="${role=='Admin'}">
-			<a href='/Notifier/admin-home' class='app-name'><h4>Konnect</h4></a>
+			<a href='/Notifier/admin-home' class='app-name'><span>Konnect</span></a>
 		</c:if>
 	</div>
 	<!-- 	<div class='search'> --> <!-- 		<form action="search"> --> <!-- 			<div class='form-group input'> -->

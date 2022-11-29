@@ -49,36 +49,33 @@ i.menu {
 		<hr class='mb-0'>
 
 		<c:if test="${role.equals('Employer')}">
-			<a href="addjob" class='btn'><i class='fa fa-book menu'></i>Add
+			<a href="addjob" class='btn'> Add
 				Job</a>
 
 		</c:if>
 
 		<c:if test="${role.equals('Employee')}">
-			<a href="emp-profile?id=${id}&role=${role}" class='btn'><i
-				class='fa fa-book menu'></i>Profile</a>
+			<a href="emp-profile?id=${id}&role=${role}" class='btn'><i class='fa fa-book menu'></i>Profile</a>
 		</c:if>
 
 		<c:if test="${role.equals('Employer')}">
-			<a href="empr-profile?id=${id}&role=${role}" class='btn'><i
-				class='fa fa-book menu'></i>Profile</a>
+			<a href="empr-profile?id=${id}&role=${role}" class='btn'> Profile</a>
 		</c:if>
 
 		<c:if test="${role.equals('Admin')}">
-			<a href="jobs_admin" class='btn'><i
-				class='fa fa-book menu'></i>Jobs</a>
+			<a href="jobs_admin" class='btn'>All Jobs</a>
 		</c:if>
 		<c:if test="${role.equals('Admin')}">
-			<a href="employees_admin" class='btn'><i
-				class='fa fa-book menu'></i>Employees</a>
+			<a href="employees_admin" class='btn'>All Job Seekers</a>
 		</c:if>
 		<c:if test="${role.equals('Admin')}">
-			<a href="unactive_emp" class='btn'><i
-				class='fa fa-book menu'></i>Pending Employees</a>
+			<a href="employers_admin" class='btn'>All Job Providers</a>
 		</c:if>
 		<c:if test="${role.equals('Admin')}">
-			<a href="unactive_empr" class='btn'><i
-				class='fa fa-book menu'></i>Pending Employers</a>
+			<a href="unactive_emp" class='btn'> Pending Job Seekers</a>
+		</c:if>
+		<c:if test="${role.equals('Admin')}">
+			<a href="unactive_empr" class='btn'> Pending Job Providers</a>
 		</c:if>
 		
 	</div>

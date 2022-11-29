@@ -21,6 +21,7 @@
 label {
 	font-weight: bold;
 }
+
 .cb {
 	background-color: #3f51b5;
 	border: 1px solid white;
@@ -35,53 +36,67 @@ label {
 .cb:hover {
 	background-color: rgba(63, 81, 181, 0.88)
 }
+
 ::-webkit-scrollbar {
-  width: 2px;
+	width: 2px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
-  border-radius: 10px;
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 10px;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: blue; 
-  border-radius: 10px;
+	background: blue;
+	border-radius: 10px;
 }
+
 .center {
+	display: flex;
 	justify-content: center;
+	padding: 10px 5px;
+	position: sticky;
+	top: 80px;
+	background: lightgrey;
+	margin: 0 auto;
+	z-index: 1;
+}
+
+.containers {
+	margin: 0 auto;
+	width: 90% !important;
 }
 </style>
 </head>
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
+	<div class='center'>
+		<button onclick="jobs()" class='cb'>All Jobs</button>
+		<button onclick="employees()" class='cb'>All Job Seekers</button>
+		<button onclick="employers()" class='cb'>All Job Providers</button>
+		<button onclick="empUnactive()" class='cb'>Pending Employees</button>
+		<button onclick="emprUnactive()" class='cb'>Pending Employers</button>
+	</div>
 
-	<div class='container'>
-		<br>
-		<h3 align='center'>Admin Home Page</h3>
-		<div class='row center'>
-			<button onclick="jobs()" class='cb'>All Jobs</button>
-			<button onclick="employees()" class='cb'>All Employees</button>
-			<button onclick="empUnactive()" class='cb'>Pending Employees</button>
-			<button onclick="emprUnactive()" class='cb'>Pending
-				Employers</button>
-		</div>
+	<div class='containers'>
 
-		<br>
+		<h3 align='center'>List of Pending Job Providers</h3>
+
+
 		<table
 			class='table caption-top table-light table-striped table-bordered '>
-			<caption>List of pending employers</caption>
+
 
 			<thead class='table-dark'>
 				<tr>
-					<td>Id</td>
-					<td>Username</td>
-					<td>Email</td>
-					<td>Mobile</td>
-					<td>Actions</td>
+					<th>Id</th>
+					<th>Username</th>
+					<th>Email</th>
+					<th>Mobile</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -93,9 +108,8 @@ label {
 							<td>${job.email}</td>
 							<td>${job.mobile}</td>
 							<td>
-								<button class='cb' data-id="${job.id}"
-									data-email="${job.email}" data-psd="${job.password }"
-									onclick="activate(this)">Activate</button>
+								<button class='cb' data-id="${job.id}" data-email="${job.email}"
+									data-psd="${job.password }" onclick="activate(this)">Activate</button>
 							</td>
 						</tr>
 					</c:forEach>
@@ -103,7 +117,7 @@ label {
 			</tbody>
 		</table>
 		<c:if test="${fn:length(emprs) == 0}">
-			<p>No pending employers to activate
+			<p>No pending job providers to activate
 			<p />
 		</c:if>
 		<br> <br>
@@ -114,6 +128,9 @@ label {
 		}
 		function employees() {
 			document.location = 'employees_admin'
+		}
+		function employers() {
+			document.location = 'employers_admin'
 		}
 		function empUnactive() {
 			document.location = 'unactive_emp'

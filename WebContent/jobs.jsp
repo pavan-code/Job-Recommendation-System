@@ -18,9 +18,10 @@
 
 <title>Insert title here</title>
 <style>
-.container {
-	padding: 20px;
-	width: 100% !important;
+.containers {
+/* 	padding: 20px; */
+	width: 90% !important;
+	margin: 0 auto;
 }
 .card {
 	width: 100%;
@@ -30,7 +31,7 @@
 	width: 220px !important;
 }
 .right {
-	height: 400px;
+	height: 470px;
 	overflow-y: scroll;
 }
 input {
@@ -82,7 +83,7 @@ label {
 		}
 	}
 	%>
-	<div class='container'>
+	<div class='containers'>
 		<div class='row'>
 			<div class='col col-3 left'>
 				<div class='row'>
@@ -241,6 +242,7 @@ label {
 	var ctypes = []
 	var jtypes = []
 	function ctypeclicked() {
+// 		console.log(document.getElementsByTagName("label")[1].innerText);
 		let i = 0
 		console.log("clicked");
 		if (document.getElementById("MNC").checked) {

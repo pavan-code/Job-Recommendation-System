@@ -39,6 +39,26 @@ public class StudentDAO {
 		}
 	}
 
+	public boolean getEmployeeByEmail(String email) throws SQLException {
+		String sql = "select email from employee where email=?";
+		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+		statement.setString(1, email);
+		ResultSet rs = statement.executeQuery();
+		if (rs.next())
+			return true;
+		return false;
+	}
+
+	public boolean getEmployerByEmail(String email) throws SQLException {
+		String sql = "select email from employer where email=?";
+		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+		statement.setString(1, email);
+		ResultSet rs = statement.executeQuery();
+		if (rs.next())
+			return true;
+		return false;
+	}
+
 	public Map<String, String> login(String email, String password, String role, Map<String, String> messages)
 			throws SQLException {
 
@@ -216,6 +236,20 @@ public class StudentDAO {
 		return emps;
 	}
 
+	public List<Employer> getEmployers() throws SQLException {
+		List<Employer> emprs = new ArrayList<>();
+		String sql = "select * from employer order by id";
+		PreparedStatement stmt = jdbcConnection.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next()) {
+			Employer e = new Employer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+					rs.getString(6), rs.getString(7));
+
+			emprs.add(e);
+		}
+		return emprs;
+	}
+
 	public Employee getEmployee(int id) throws SQLException {
 		String sql = "select * from employee where id=" + id;
 
@@ -312,7 +346,7 @@ public class StudentDAO {
 		}
 		return jobs;
 	}
-	
+
 	public List<Job> getRcmdJobsByCompanyType(List<String> ctypes, int id) throws SQLException {
 		List<Job> rcmdjobs = new ArrayList<>();
 		List<Job> filterjobs = getJobsByCompanyType(ctypes);
@@ -320,7 +354,7 @@ public class StudentDAO {
 		String skills = emp.getSkills();
 		float exp = emp.getExperience();
 		List<String> skillslist = new ArrayList<>();
-				
+
 		for (String skill : skills.split(", "))
 			skillslist.add(skill);
 		System.out.println("skills: " + skillslist.toString());
@@ -337,7 +371,7 @@ public class StudentDAO {
 		}
 		return rcmdjobs;
 	}
-	
+
 	public List<Job> getRcmdJobsByJobType(List<String> jtypes, int id) throws SQLException {
 		List<Job> rcmdjobs = new ArrayList<>();
 		List<Job> filterjobs = getJobsByJobType(jtypes);
@@ -345,7 +379,7 @@ public class StudentDAO {
 		String skills = emp.getSkills();
 		float exp = emp.getExperience();
 		List<String> skillslist = new ArrayList<>();
-				
+
 		for (String skill : skills.split(", "))
 			skillslist.add(skill);
 		System.out.println("skills: " + skillslist.toString());
@@ -362,7 +396,6 @@ public class StudentDAO {
 		}
 		return rcmdjobs;
 	}
-	
 
 	public List<Job> getJobsByJobType(List<String> jobtype) throws SQLException {
 		String sql = "select * from job where jobtype in (";
@@ -411,7 +444,7 @@ public class StudentDAO {
 		}
 		return jobs;
 	}
-	
+
 	public List<Job> getRcmdJobsByCompanyTypeAndJobType(List<String> ctypes, List<String> jtypes, int empid)
 			throws SQLException {
 		List<Job> rcmdjobs = new ArrayList<>();
@@ -421,7 +454,7 @@ public class StudentDAO {
 		String skills = emp.getSkills();
 		float exp = emp.getExperience();
 		List<String> skillslist = new ArrayList<>();
-				
+
 		for (String skill : skills.split(", "))
 			skillslist.add(skill);
 		System.out.println("skills: " + skillslist.toString());
@@ -446,7 +479,7 @@ public class StudentDAO {
 		String skills = emp.getSkills();
 		float exp = emp.getExperience();
 		List<String> skillslist = new ArrayList<>();
-				
+
 		for (String skill : skills.split(", "))
 			skillslist.add(skill);
 		System.out.println("skills: " + skillslist.toString());
@@ -464,35 +497,35 @@ public class StudentDAO {
 //		System.out.println("rcmdjobs: " + rcmdjobs.toString());
 		return rcmdjobs;
 	}
-	
+
 	public List<Employee> getRcmdEmployees(int empid) throws SQLException {
 		List<Employee> emps = getEmployees();
 		List<Employee> rcemps = new ArrayList<>();
 		List<Job> jobs = getJobsByEmprId(empid);
 		List<String> requiredSkills = new ArrayList<>();
-		List<String> reqskills= new ArrayList<>();
-		for(Job j: jobs) {
-			List<String> skills = Arrays.asList(j.getSkills().split(", "));			
+		List<String> reqskills = new ArrayList<>();
+		for (Job j : jobs) {
+			List<String> skills = Arrays.asList(j.getSkills().split(", "));
 			requiredSkills.addAll(skills);
 		}
 //		requiredSkills.stream().forEach(skill -> skill.toLowerCase());
-		for(int i=0; i<requiredSkills.size(); i++) {
+		for (int i = 0; i < requiredSkills.size(); i++) {
 			String low = requiredSkills.get(i).toLowerCase();
-			if(!reqskills.contains(low))
+			if (!reqskills.contains(low))
 				reqskills.add(low);
 		}
-			
-		for(Employee emp : emps) {
-			for(String skill: emp.getSkills().split(", ")) {
-				if(reqskills.contains(skill.toLowerCase())) {
-					rcemps.add(emp);					
+
+		for (Employee emp : emps) {
+			for (String skill : emp.getSkills().split(", ")) {
+				if (reqskills.contains(skill.toLowerCase())) {
+					rcemps.add(emp);
 				}
 			}
 		}
 		System.out.println("emps: " + rcemps);
 		System.out.println("skills: " + reqskills);
 		return rcemps;
-		
+
 	}
 
 	public Job getJobById(int id) throws SQLException {
@@ -517,8 +550,7 @@ public class StudentDAO {
 		ResultSet res = statement.executeQuery();
 		if (res.next()) {
 			sql = "update job set jobname = ?, company = ?, companytype = ?,"
-					+ " minexperience = ?, salary = ?, location = ?,"
-					+ " description = ?, openings = ?, jobtype = ?,"
+					+ " minexperience = ?, salary = ?, location = ?," + " description = ?, openings = ?, jobtype = ?,"
 					+ " skills = ?, website = ? where id = ?";
 			statement = jdbcConnection.prepareStatement(sql);
 			statement.setString(1, job.getJobname());
@@ -533,7 +565,7 @@ public class StudentDAO {
 			statement.setString(10, job.getSkills());
 			statement.setString(11, job.getWebsite());
 			statement.setInt(12, jobid);
-			Boolean rs = statement.executeUpdate() > 0;			
+			Boolean rs = statement.executeUpdate() > 0;
 			return rs;
 		}
 		return false;

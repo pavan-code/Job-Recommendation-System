@@ -49,27 +49,33 @@ label {
 	background-color: rgba(63, 81, 181, 0.88)
 }
 .center {
+	display: flex;
 	justify-content: center;
+	padding: 10px 5px;
+	position: sticky;
+	top: 80px;
+	background: lightgrey;
+	margin: 0 auto;
+	z-index: 1;	
+}
+.containers {
+	width: 90% !important;
 }
 </style>
 </head>
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
-
-	<div class='container'>
-		<h3 align="center">Admin Home Page</h3>
-		<div class='row center'>
-			<button onclick="jobs()" class='cb'>All Jobs</button>
-			<button onclick="employees()" class='cb'>All Employees</button>
-
-			<button onclick="empUnactive()" class='cb'>Pending Employees</button>
-			<button onclick="emprUnactive()" class='cb'>Pending
-				Employers</button>
-		</div>
-		
-<!-- 		<h3>All Jobs</h3> -->
-		<br>
+	<div class='center'>
+		<button onclick="jobs()" class='cb'>All Jobs</button>
+		<button onclick="employees()" class='cb'>All Job Seekers</button>
+		<button onclick="employers()" class='cb'>All Job Providers</button>
+		<button onclick="empUnactive()" class='cb'>Pending Employees</button>
+		<button onclick="emprUnactive()" class='cb'>Pending Employers</button>
+	</div>
+	<div class='containers'>
+	
+		<h3 align="center">List of All Jobs</h3>		
 		<jsp:include page="jobs.jsp">
 			<jsp:param value="<%=request.getAttribute(\"jobs\")%>" name="jobs" />
 		</jsp:include>
@@ -81,6 +87,9 @@ label {
 		}
 		function employees() {
 			document.location = 'employees_admin'
+		}
+		function employers() {
+			document.location = 'employers_admin'
 		}
 		function empUnactive() {
 			document.location = 'unactive_emp'

@@ -19,22 +19,37 @@
 
 <style>
 ::-webkit-scrollbar {
-  width: 2px;
+	width: 2px;
 }
+
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
-  border-radius: 10px;
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: blue; 
-  border-radius: 10px;
+	background: blue;
+	border-radius: 10px;
 }
+
 label {
 	font-weight: bold;
 }
+
 .center {
+	display: flex;
 	justify-content: center;
- 	
+	padding: 10px 5px;
+	position: sticky;
+	top: 80px;
+	background: lightgrey;
+	margin: 0 auto;
+	z-index: 1;
+}
+
+.containers {
+	margin: 0 auto;
+	width: 90% !important;
 }
 
 .cb {
@@ -51,46 +66,41 @@ label {
 .cb:hover {
 	background-color: rgba(63, 81, 181, 0.88)
 }
-
 </style>
 </head>
 <body>
+	<%
+	String eid = request.getParameter("id");
+	String id = null;
+	Cookie cookie = null;
+	Cookie[] cookies = request.getCookies();
+	for (Cookie c : cookies) {
+		if (c.getName().equals("id")) {
+			id = c.getValue();
+			request.setAttribute("id", id);
+		} else if (c.getName().equals("role")) {
+			request.setAttribute("role", c.getValue());
+		}
+	}
+	%>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
-<!-- 	<br> -->
-	<div class='container'>
-		<%
-		String eid = request.getParameter("id");
-		String id = null;
-		Cookie cookie = null;
-		Cookie[] cookies = request.getCookies();
-		for (Cookie c : cookies) {
-			if (c.getName().equals("id")) {
-				id = c.getValue();
-				request.setAttribute("id", id);
-			} else if (c.getName().equals("role")) {
-				request.setAttribute("role", c.getValue());
-			}
-		}
-		%>
-
-		<h3 align='center'>Find your dream job now with Konnect</h3>
-		<br>
-		<div class='row center' align='center'>
-			<button
-				<%if (eid == null) {
-					out.println("style=\"border: 2px solid blue\"");
-				}%>
-				onclick="alljobs()" class='cb'>All Jobs</button>
-			<button
-				<%
+	<!-- 	<br> -->
+	<div class='center' align='center'>
+		<button
+			<%if (eid == null) {
+	out.println("style=\"border: 2px solid blue\"");
+}%>
+			onclick="alljobs()" class='cb'>All Jobs</button>
+		<button
+			<%
 				if(eid != null) {
 					out.println("style=\"border: 2px solid blue\"");
 				}%>
-				onclick="recommendedjobs(${id})" class='cb'>Recommended
-				Jobs</button>
-		</div>
-<!-- 		<hr> -->
+			onclick="recommendedjobs(${id})" class='cb'>Recommended Jobs</button>
+	</div>
+	<div class='containers'>
+		<h3 align='center'>Find your dream job now with Konnect</h3>
 		<jsp:include page="jobs.jsp">
 			<jsp:param value="<%=request.getAttribute(\"jobs\")%>" name="jobs" />
 			<jsp:param value="${eid}" name="eid" />

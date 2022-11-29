@@ -51,29 +51,36 @@ label {
   border-radius: 10px;
 }
 .center {
+	display: flex;
 	justify-content: center;
+	padding: 10px 5px;
+	position: sticky;
+	top: 80px;
+	background: lightgrey;
+	margin: 0 auto;
+	z-index: 1;	
+}
+.containers {
+	width: 90% !important;
+	margin: 0 auto;
 }
 </style>
 </head>
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
-
-	<div class='container'>
-		<br>
-		<h3 align='center'>Admin Home Page</h3>
-		<div class='row center'>
-			<button onclick="jobs()" class='cb'>All Jobs</button>
-			<button onclick="employees()" class='cb'>All Employees</button>
-			<button onclick="empUnactive()" class='cb'>Pending Employees</button>
-			<button onclick="emprUnactive()" class='cb'>Pending
-				Employers</button>
-		</div>
-
-		<br>
-
+	<div class='center'>
+		<button onclick="jobs()" class='cb'>All Jobs</button>
+		<button onclick="employees()" class='cb'>All Job Seekers</button>
+		<button onclick="employers()" class='cb'>All Job Providers</button>
+		<button onclick="empUnactive()" class='cb'>Pending Employees</button>
+		<button onclick="emprUnactive()" class='cb'>Pending Employers</button>
+	</div>
+	<div class='containers'>
+		
+		<h3 align='center'>List of Pending Job Seekers</h3>
 		<table class='table caption-top table-light table-striped table-bordered '>
-			<caption>List of pending employees</caption>
+			
 			<thead class='table-dark'>
 				<tr>
 					<th>Id</th>
@@ -102,7 +109,7 @@ label {
 			</tbody>
 		</table>
 		<c:if test="${fn:length(emps) == 0}">
-			<p>No pending employees to activate
+			<p>No pending job seekers to activate
 			<p />
 		</c:if>
 		<br>
@@ -114,6 +121,9 @@ label {
 		}
 		function employees() {
 			document.location = 'employees_admin'
+		}
+		function employers() {
+			document.location = 'employers_admin'
 		}
 		function empUnactive() {
 			document.location = 'unactive_emp'

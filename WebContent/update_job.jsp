@@ -20,6 +20,10 @@
 	position: relative;
 }
 
+label {
+	font-weight: bold;
+}
+
 .form {
 	padding: 20px;
 	width: 800px;
@@ -28,6 +32,7 @@
 	left: 50%;
 	transform: translate(-50%, 0%);
 }
+
 .cb {
 	background-color: #3f51b5;
 	border: 1px solid white;
@@ -42,30 +47,51 @@
 .cb:hover {
 	background-color: rgba(63, 81, 181, 0.88)
 }
+
 ::-webkit-scrollbar {
-  width: 2px;
+	width: 2px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
-  border-radius: 10px;
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 10px;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: blue; 
-  border-radius: 10px;
+	background: blue;
+	border-radius: 10px;
 }
+
 .center {
+	display: flex;
 	justify-content: center;
+	padding: 10px 5px;
+	position: sticky;
+	top: 80px;
+	background: lightgrey;
+	margin: 0 auto;
+	z-index: 1;
+}
+
+.containers {
+	margin: 0 auto;
+	width: 90% !important;
 }
 </style>
 </head>
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
-	<div class='container'>
+	<div class='center'>
+		<button onclick="jobs()" class='cb'>All Jobs</button>
+		<button onclick="employees()" class='cb'>All Job Seekers</button>
+		<button onclick="employers()" class='cb'>All Job Providers</button>
+		<button onclick="empUnactive()" class='cb'>Pending Employees</button>
+		<button onclick="emprUnactive()" class='cb'>Pending Employers</button>
+	</div>
+	<div class='containers'>
 		<%
 		com.lms.models.Job job = (com.lms.models.Job) request.getAttribute("job");
 		request.setAttribute("job", job);
@@ -77,35 +103,36 @@
 			if (c.getName().equals("role")) {
 				role = c.getValue();
 			}
-		}	
+		}
 		%>
 
 		<div class='form card'>
 			<div style='text-align: center;'>
 				<h2>Update Job post</h2>
 			</div>
-			<hr>
-			<form method="post" action="updateJobdetails?jobid=${job.id}&role=${role}">
+
+			<form method="post"
+				action="updateJobdetails?jobid=${job.id}&role=${role}">
 				<div class='row'>
 					<div class='col'>
 						<label>Employer ID</label> <input type="number" name="empid"
-							value="${job.eid}" class="form-control"  readonly>
+							value="${job.eid}" class="form-control" readonly>
 					</div>
 				</div>
 				<div class='row'>
 					<div class='col'>
 						<label>Job Name</label> <input type="text" name="jobname"
-							value='${job.jobname}' class="form-control" >
+							value='${job.jobname}' class="form-control">
 					</div>
 					<div class='col'>
 						<label>Company</label> <input type="text" name="company"
-							value='${job.company }' class="form-control" >
+							value='${job.company }' class="form-control">
 					</div>
 				</div>
 				<div class='row'>
 					<div class='col'>
 						<label>Company Type</label> <select class='form-control'
-							 name='companytype' >
+							name='companytype'>
 							<option>--select type--</option>
 							<option>MNC</option>
 							<option>Corporate</option>
@@ -117,27 +144,27 @@
 					<div class='col'>
 						<label>Minimum Experience</label> <input type="number"
 							value="${job.minexperience }" name="minexperience"
-							class="form-control" >
+							class="form-control">
 					</div>
 				</div>
 				<div class='row'>
 					<div class='col'>
 						<label>Salary</label> <input type="number" name="salary"
-						 value="${job.salary }"	class="form-control" >
+							value="${job.salary }" class="form-control">
 					</div>
 					<div class='col'>
 						<label>Location</label> <input type="text" name="location"
-							value="${job.location }" class="form-control" >
+							value="${job.location }" class="form-control">
 					</div>
 				</div>
 				<div class='row'>
 					<div class='col'>
 						<label>Openings</label> <input type="number" name="openings"
-							value="${job.openings }" class="form-control" >
+							value="${job.openings }" class="form-control">
 					</div>
 					<div class='col'>
 						<label>Job Type</label> <select class='form-control'
-							name='jobtype' value='${job.jobtype }' >
+							name='jobtype' value='${job.jobtype }'>
 							<option>--select type--</option>
 							<option>IT</option>
 							<option>Banking</option>
@@ -155,17 +182,16 @@
 				<div class='row'>
 					<div class='col'>
 						<label>Skills</label> <input type="text" name="skills"
-							value="${job.skills}" class="form-control" >
+							value="${job.skills}" class="form-control">
 					</div>
 					<div class='col'>
 						<label>Website</label> <input type="text" name="website"
-							value="${job.website }" class="form-control" >
+							value="${job.website }" class="form-control">
 					</div>
 				</div>
 				<div>
 					<label>Description</label>
-					<textarea name="description" rows='6'
-						 class="form-control" >${job.description }</textarea>
+					<textarea name="description" rows='6' class="form-control">${job.description }</textarea>
 				</div>
 				<br>
 				<div style='text-align: center;'>
@@ -175,6 +201,22 @@
 			</form>
 		</div>
 	</div>
-
+	<script>
+		function jobs() {
+			document.location = 'jobs_admin'
+		}
+		function employees() {
+			document.location = 'employees_admin'
+		}
+		function employers() {
+			document.location = 'employers_admin'
+		}
+		function empUnactive() {
+			document.location = 'unactive_emp'
+		}
+		function emprUnactive() {
+			document.location = 'unactive_empr'
+		}
+	</script>
 </body>
 </html>

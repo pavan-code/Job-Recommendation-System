@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Register Employee</title>
+<title>Register Job Seeker</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -15,7 +17,9 @@ html {
 	margin: 0;
 	padding: 0;
 }
-
+p {
+	text-align: center;
+}
 body {
 	background: url(/welcome_image.jpg);
 	height: 100%;
@@ -28,17 +32,21 @@ body {
 	width: 640px;
 	margin: 10px auto;
 }
-
+a:hover {
+	text-decoration: none;
+}
 .register {
 	margin: auto;
 	padding: 15px;
-	border: 1px solid gray;
+	/* 	border: 1px solid gray; */
 	border-radius: 8px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	background-color: white;
+	z-index: 2;
+	box-shadow: 1px 1px 10px 5px lightblue;
 }
 
 #errmsg {
@@ -50,72 +58,72 @@ body {
 	visibility: hidden;
 }
 
-body{
-  background: #3399ff;  
-  overflow-y: hidden;
+body {
+	background: #3399ff;
+	overflow-y: hidden;
 }
 
-
-.circle{
-  position: absolute;
-  border-radius: 50%;
-  background: white;
-  animation: ripple 15s infinite;
-  box-shadow: 0px 0px 1px 0px #508fb9;
+.circle {
+	position: absolute;
+	border-radius: 50%;
+	background: white;
+	animation: ripple 15s infinite;
+	box-shadow: 0px 0px 1px 0px #508fb9;
 }
 
-.sm{
-  width: 200px;
-  height: 200px;
-  left: -100px;
-  bottom: -100px;
+.sm {
+	width: 200px;
+	height: 200px;
+	left: -100px;
+	bottom: -100px;
 }
 
-.m{
-  width: 400px;
-  height: 400px;
-  left: -200px;
-  bottom: -200px;
+.m {
+	width: 400px;
+	height: 400px;
+	left: -200px;
+	bottom: -200px;
 }
 
-.l{
-  width: 600px;
-  height: 600px;
-  left: -300px;
-  bottom: -300px;
+.l {
+	width: 600px;
+	height: 600px;
+	left: -300px;
+	bottom: -300px;
 }
 
-.xl{
-  width: 800px;
-  height: 800px;
-  left: -400px;
-  bottom: -400px;
+.xl {
+	width: 800px;
+	height: 800px;
+	left: -400px;
+	bottom: -400px;
 }
 
-.xxl{
-  width: 1000px;
-  height: 1000px;
-  left: -500px;
-  bottom: -500px;
+.xxl {
+	width: 1000px;
+	height: 1000px;
+	left: -500px;
+	bottom: -500px;
 }
 
-.s1{
-  opacity: 0.2;
-}
-.s2{
-  opacity: 0.5;
+.s1 {
+	opacity: 0.2;
 }
 
-.s3{
-  opacity: 0.7;
+.s2 {
+	opacity: 0.5;
 }
 
-.s4{
-  opacity: 0.8;
+.s3 {
+	opacity: 0.7;
 }
 
-.s5{
-  opacity: 0.9;
+.s4 {
+	opacity: 0.8;
+}
+
+.s5 {
+	opacity: 0.9;
 }
 
 @keyframes ripple{
@@ -131,49 +139,70 @@ body{
     transform: scale(0.8);
   }
 }
+label {
+	font-weight: bold;
+}
 </style>
 </head>
 <body>
-<div class='rbg'>
-  <div class='circle xxl s1'></div>
-  <div class='circle xl s2'></div>
-  <div class='circle l s3'></div>
-  <div class='circle m s4'></div>
-  <div class='circle sm s5'></div>
-</div>
+	<div class='rbg'>
+		<div class='circle xxl s1'></div>
+		<div class='circle xl s2'></div>
+		<div class='circle l s3'></div>
+		<div class='circle m s4'></div>
+		<div class='circle sm s5'></div>
+	</div>
+	<%
+	java.util.Map<String, String> msg = (java.util.HashMap<String, String>) request.getAttribute("messages");
+	// 	out.println(msg);
+	String message = "";
+	if (msg != null) {
+		message = msg.get("message");
+		// 		out.println(message);
+	}
+	%>
 	<div class="container">
-		<div id="errmsg" class='alert alert-danger'></div>
+		<c:if test="${message != \"\"}">
+			<div class="alert alert-danger"
+				<%if (message != "") {
+	out.println("style=\" visibility: visible; width: 400px; margin: 0 auto; height: 56px; padding: 12px 20px;\"");
+}%>
+				id="errmsg">
+				<%
+				out.println(message);
+				%>
+			</div>
+		</c:if>
 		<div class='row'>
 			<div class='register'>
 				<div class='form'>
 					<div style='text-align: center;'>
-						<h2>Register Employee</h2>
+						<h2>Register Job Seeker</h2>
 					</div>
 					<hr>
 					<form name='regform' action="register" method="post"
 						onSubmit="return validate(event);">
 						<div class='row'>
 							<div class='col'>
-								<label>Email</label> <br> <input id="email" type="text" name="email"
-									class="form-control">
+								<label>Email</label> <br> <input id="email" type="text"
+									name="email" class="form-control">
 							</div>
 							<br>
 							<div class='col'>
-								<label>Employee Name</label> <br> <input id="username" type="text"
-									name="username" class="form-control">
-								<%-- 							<small style='color: red;'>${messages.username}</small> --%>
+								<label>Job Seeker Name</label> <br> <input id="username"
+									type="text" name="username" class="form-control">
 							</div>
 							<br>
 						</div>
 						<div class='row'>
 							<div class='col'>
-								<label>Mobile Number</label> <br> <input id="mobile" type="text"
-									name="mobile" class="form-control">
+								<label>Mobile Number</label> <br> <input id="mobile"
+									type="text" name="mobile" class="form-control">
 							</div>
 							<br>
 							<div class='col'>
-								<label>Password </label> <br> <input id="password" type="password"
-									name="password" class="form-control">
+								<label>Password </label> <br> <input id="password"
+									type="password" name="password" class="form-control">
 							</div>
 							<br>
 						</div>
@@ -184,15 +213,15 @@ body{
 							</div>
 							<br>
 							<div class='col'>
-								<label>Experience</label> <br> <input id="experience" type="number"
-									name="experience" class="form-control">
+								<label>Experience</label> <br> <input id="experience"
+									type="number" name="experience" class="form-control">
 							</div>
 							<br>
 						</div>
 						<div class='row'>
 							<div class='col'>
-								<label>Profile picture</label> <input id="image" type='file' name='image'
-									class='form-control'>
+								<label>Profile picture</label> <input id="image" type='file'
+									name='image' class='form-control'>
 							</div>
 						</div>
 
@@ -202,8 +231,10 @@ body{
 								value="Register">
 						</div>
 						<br>
-
 					</form>
+					<p>
+						Already have an account? <a href="index.jsp">Login </a>
+					</p>
 				</div>
 			</div>
 		</div>

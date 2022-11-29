@@ -142,6 +142,9 @@ body{
 	display: flex;
 	justify-content: space-between;
 }
+label {
+	font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -159,6 +162,7 @@ body{
 	String message = "";
 	if (msg != null) {
 		message = msg.get("message");
+		
 	}
 	%>
 	<div class="container">
@@ -198,18 +202,7 @@ body{
 								<input onchange="showpassword()" type="checkbox" id="show"> Show Password
 							</label>
 						</div>
-<!-- 						<br> -->
-						<div class='roles'>
-							<label>
-								<input name='role' id="Employee" type="checkbox"> Employee
-							</label>
-							<label>
-								<input name='role' id="Employer" type="checkbox"> Employer
-							</label>
-							<label>
-								<input name='role' id="Admin" type="checkbox"> Admin
-							</label>
-						</div>
+<!-- 						<br> -->						
 						<div>
 							<label>Role</label> <select class='form-control' name='type'>
 								<!-- 								<option>--select role--</option> -->

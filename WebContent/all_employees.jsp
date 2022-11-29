@@ -19,6 +19,7 @@
 label {
 	font-weight: bold;
 }
+
 .cb {
 	background-color: #3f51b5;
 	border: 1px solid white;
@@ -33,36 +34,49 @@ label {
 .cb:hover {
 	background-color: rgba(63, 81, 181, 0.88)
 }
+
 .center {
-	justify-content: center; 	
+	display: flex;
+	justify-content: center;
+	padding: 10px 5px;
+	position: sticky;
+	top: 80px;
+	background: lightgrey;
+	margin: 0 auto;
+	z-index: 1;
+}
+
+.containers {
+	margin: 0 auto;
+	width: 90% !important;
 }
 </style>
 </head>
 <body>
+	<%
+	String eid = request.getParameter("id");
+	String id = null;
+	Cookie cookie = null;
+	Cookie[] cookies = request.getCookies();
+	for (Cookie c : cookies) {
+		if (c.getName().equals("id")) {
+			id = c.getValue();
+			request.setAttribute("id", id);
+		} else if (c.getName().equals("role")) {
+			request.setAttribute("role", c.getValue());
+		}
+	}
+	%>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
-	<div class='container'>
-		<%
-		String eid = request.getParameter("id");
-		String id = null;
-		Cookie cookie = null;
-		Cookie[] cookies = request.getCookies();
-		for (Cookie c : cookies) {
-			if (c.getName().equals("id")) {
-				id = c.getValue();
-				request.setAttribute("id", id);
-			} else if (c.getName().equals("role")) {
-				request.setAttribute("role", c.getValue());
-			}
-		}
-		%><br>
-		<h3 align='center'>Find your perfect employee now with Konnect</h3>
-		<br>
-		<div class="row center">
-			<button class='cb' onclick="viewjobs(<%out.println(id);%>)">View Jobs</button>
-			<button class='cb' onclick="viewemployees(${id})">Recommended Employees</button>
-		</div>
-<!-- 		<hr> -->
+	<div class="center">
+		<button class='cb' onclick="viewjobs(<%out.println(id);%>)">View
+			Jobs</button>
+		<button class='cb' onclick="viewemployees(${id})">Recommended
+			Employees</button>
+	</div>
+	<div class='containers'>
+		<h3 align='center'>List of suggested employees</h3>
 		<jsp:include page="employees.jsp">
 			<jsp:param value="<%=request.getAttribute(\"employees\")%>"
 				name="employees" />

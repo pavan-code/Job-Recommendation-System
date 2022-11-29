@@ -60,11 +60,9 @@ img {
 // 	}
 	%>
 
-	<div class='container'>
+	<div class='containers'>
 		<div class='row'>
-			<div class='col col-3 left'>
-				
-			</div>
+		
 			<div class='col right'>
 				<c:if test="${employees.size() == 0}">
 					<h3>No employees to display!</h3>

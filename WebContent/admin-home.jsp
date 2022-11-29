@@ -17,19 +17,23 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 ::-webkit-scrollbar {
-  width: 2px;
+	width: 2px;
 }
+
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
-  border-radius: 10px;
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: blue; 
-  border-radius: 10px;
+	background: blue;
+	border-radius: 10px;
 }
+
 label {
 	font-weight: bold;
 }
+
 .cb {
 	background-color: #3f51b5;
 	border: 1px solid white;
@@ -44,28 +48,39 @@ label {
 .cb:hover {
 	background-color: rgba(63, 81, 181, 0.88)
 }
+
 .center {
+	display: flex;
 	justify-content: center;
+	padding: 10px 5px;
+	position: sticky;
+	top: 80px;
+	background: lightgrey;
+	margin: 0 auto;
+	z-index: 1;
+}
+
+.containers {
+	margin: 0 auto;
+	width: 90% !important;
 }
 </style>
 </head>
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
-<!-- 	<br> -->
-	<div class='container'>
-		<br>
+	<div class='center'>
+		<button onclick="jobs()" class='cb'>All Jobs</button>
+		<button onclick="employees()" class='cb'>All Job Seekers</button>
+		<button onclick="employers()" class='cb'>All Job Providers</button>
+		<button onclick="empUnactive()" class='cb'>Pending Employees</button>
+		<button onclick="emprUnactive()" class='cb'>Pending Employers</button>
+	</div>
+	<!-- 	<br> -->
+	<div class='containers'>
+
 		<h3 align='center'>Admin Home Page</h3>
-		<div class='row center'>
-			<button onclick="jobs()" class='cb'>All Jobs</button>
-			<button onclick="employees()" class='cb'>All
-				Employees</button>
-			<button onclick="empUnactive()" class='cb'>Pending
-				Employees</button>
-			<button onclick="emprUnactive()" class='cb'>Pending
-				Employers</button>
-		</div>
-		<br> <br> <br>
+
 
 	</div>
 
@@ -75,6 +90,9 @@ label {
 		}
 		function employees() {
 			document.location = 'employees_admin'
+		}
+		function employers() {
+			document.location = 'employers_admin'
 		}
 		function empUnactive() {
 			document.location = 'unactive_emp'
