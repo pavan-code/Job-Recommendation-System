@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lms.models.Applications;
 import com.lms.models.Employee;
 import com.lms.models.Employer;
 import com.lms.models.Job;
@@ -130,6 +130,15 @@ public class StudentController extends HttpServlet {
 			case "/adminpwdchange":
 				adminpwdchange(request, response);
 				break;
+			case "/applyjob":
+				applyjob(request, response);
+				break;
+			case "/applied-jobs":
+				appliedjobs(request, response);
+				break;
+			case "/applied-employees":
+				appliedemps(request, response);
+				break;
 			default:
 				response.sendRedirect("errorPage.jsp");
 				break;
@@ -138,6 +147,37 @@ public class StudentController extends HttpServlet {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+	}
+
+	private void appliedemps(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+		int id = Integer.parseInt(request.getParameter("id"));
+		request.setAttribute("emps", dao.getAppliedEmployees(id));
+		request.getRequestDispatcher("applied_emps.jsp").forward(request, response);
+	}
+	
+	private void appliedjobs(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+		int id = Integer.parseInt(request.getParameter("id"));
+		request.setAttribute("jobs", dao.getAppliedJobs(id));
+		request.getRequestDispatcher("applied_jobs.jsp").forward(request, response);
+	}
+
+	private void applyjob(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+		int jobid = Integer.parseInt(request.getParameter("jobid"));
+		int empid = Integer.parseInt(request.getParameter("empid"));
+		int emprid = Integer.parseInt(request.getParameter("emprid"));
+
+		Applications app = new Applications(jobid, empid, "Applied", emprid);
+		System.out.println("app: " + app);
+		Map<String, String> messages = dao.addApplication(app);
+		List<Job> jobs = dao.getAppliedJobs(empid);
+//			response.sendRedirect("/Notifier/home");
+		request.setAttribute("messages", messages);
+		request.setAttribute("empid", empid);
+//			request.setAttribute("applied", "applied");
+		request.getRequestDispatcher("jobstatus.jsp").forward(request, response);
+//		response.sendRedirect("/Notifier/home");
+
 	}
 
 	private void adminpwdchange(HttpServletRequest request, HttpServletResponse response)
@@ -155,6 +195,7 @@ public class StudentController extends HttpServlet {
 
 	private void changePwdpage(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		request.getRequestDispatcher("admin_change_pwd.jsp").forward(request, response);
 	}
 
@@ -372,6 +413,7 @@ public class StudentController extends HttpServlet {
 			jobs = dao.getJobs();
 		}
 		request.setAttribute("jobs", jobs);
+		request.setAttribute("applied", "applied");
 		request.getRequestDispatcher("home.jsp").forward(request, response);
 	}
 

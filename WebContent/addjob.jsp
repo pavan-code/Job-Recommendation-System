@@ -74,11 +74,13 @@
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
 	<div class="center">
-		<button class='cb' onclick="addjob()">Add Job</button>
+		<button class='cb' onclick="addjob()"> <img alt="" src="WebContent/images/notes.png"> Add Job</button>
 		<button class='cb' onclick="viewjobs(<%out.println(id);%>)">View
 			Jobs</button>
 		<button class='cb' onclick="viewemployees(${id})">Recommended
 			Employees</button>
+				<button onclick="viewapps(${id})" class='cb'>View Job Applications</button>
+			
 	</div>
 	<div class='containers'>
 
@@ -177,6 +179,9 @@
 		</div>
 	</div>
 	<script>
+	function viewapps(id) {
+		document.location = "applied-employees?id=" + id;
+	}
 		function addjob() {
 			document.location = "addjob"
 		}	

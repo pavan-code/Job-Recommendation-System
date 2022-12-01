@@ -14,6 +14,8 @@ public class Employee {
 	private float experience;	
 	private int noticeperiod;
 	private String image;
+	
+	private String status;
 
 
 	public Employee(int id, String username, String email, String password, String mobile) {
@@ -38,6 +40,22 @@ public class Employee {
 		this.experience = experience;
 		this.noticeperiod = noticeperiod;		
 		this.image = image;
+	}
+	
+	public Employee(int id, String username, String email, String password, String address, String mobile,
+			String skills, float experience, int noticeperiod, String image, String status) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.address = address;
+		this.mobile = mobile;
+		this.skills = skills;
+		this.experience = experience;
+		this.noticeperiod = noticeperiod;		
+		this.image = image;
+		this.status = status;
 	}
 	
 
@@ -145,10 +163,18 @@ public class Employee {
 		this.image = image;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password
 				+ ", address=" + address + ", mobile=" + mobile + ", skills=" + skills + ", experience=" + experience
-				+ ", noticeperiod=" + noticeperiod + ", image=" + image + "]";
+				+ ", noticeperiod=" + noticeperiod + ", image=" + image + ", status=" + status + "]";
 	}	
 }

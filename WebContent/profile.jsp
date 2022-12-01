@@ -1,3 +1,4 @@
+<%@page import="java.io.File"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -32,26 +33,30 @@ label {
 	<div class='container'>
 		<%
 		// 		if (request.getAttribute("role").equals("Employee")) {
-		com.lms.models.Employee emp = (com.lms.models.Employee) request.getAttribute("employee");
+		com.lms.models.Employee emp = (com.lms.models.Employee) 
+				request.getAttribute("employee");
 
-		// 			out.println(emp);
-		// 		if (emp.getImage() != null) {
-		// 			java.io.InputStream inputStream = emp.getImage();
+// 					out.println(emp);
+				if (emp.getImage() != null) {
+					String imgname = emp.getImage();
+					java.io.InputStream inputStream = new java.io.FileInputStream
+							(new File("D:\\java projects\\Notifier\\WebContent\\images\\" + imgname)); 
 
-		// 			java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
-		// 			byte[] buffer = new byte[4096];
-		// 			int bytesRead = -1;
+					java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
+					byte[] buffer = new byte[4096];
+					int bytesRead = -1;
 
-		// 			while ((bytesRead = inputStream.read(buffer)) != -1) {
-		// 				outputStream.write(buffer, 0, bytesRead);
-		// 			}
+					while ((bytesRead = inputStream.read(buffer)) != -1) {
+						outputStream.write(buffer, 0, bytesRead);
+					}
 
-		// 			byte[] imageBytes = outputStream.toByteArray();
+					byte[] imageBytes = outputStream.toByteArray();
 
-		// 			String img = java.util.Base64.getEncoder().encodeToString(imageBytes);
-		// 			// 		out.println(img);
-		// 			request.setAttribute("img", img);
-		// 		}
+					String img = java.util.Base64.getEncoder().encodeToString(imageBytes);
+					// 		out.println(img);
+					emp.setImage(img);
+					request.setAttribute("img", img);
+				}
 
 		request.setAttribute("emp", emp);
 		%>
@@ -67,7 +72,7 @@ label {
 					<div class='col-3'>
 						<label>Profile picture</label> <br> <img
 							alt="profile picture"
-							src="/Notifier/WebContent/images/${emp.image}" width='200px'>
+							src="data:image/png;base64,${emp.image}" width='200px'>
 					</div>
 					<div class='col-3'>
 						<label>Employee ID</label> <br> <input type="text" readonly

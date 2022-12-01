@@ -48,4 +48,11 @@ create table employer (
 	company varchar(100)
     );
 
+create table applications (
+     id int primary key auto_increment not null,
+     jobid int not null,
+     empid int not null,
+     status varchar(50) not null
+     );
+     
 insert into employer (username, email, password, address, mobile, company) values ('admin', 'admin@gmail.com', 'admin', 'add', '234', 'Konnect');

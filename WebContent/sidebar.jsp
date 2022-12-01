@@ -55,7 +55,7 @@ i.menu {
 		</c:if>
 
 		<c:if test="${role.equals('Employee')}">
-			<a href="emp-profile?id=${id}&role=${role}" class='btn'><i class='fa fa-book menu'></i>Profile</a>
+			<a href="emp-profile?id=${id}&role=${role}" class='btn'>Profile</a>
 		</c:if>
 
 		<c:if test="${role.equals('Employer')}">

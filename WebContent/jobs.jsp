@@ -19,10 +19,11 @@
 <title>Insert title here</title>
 <style>
 .containers {
-/* 	padding: 20px; */
+	/* 	padding: 20px; */
 	width: 90% !important;
 	margin: 0 auto;
 }
+
 .card {
 	width: 100%;
 }
@@ -30,10 +31,12 @@
 .left {
 	width: 220px !important;
 }
+
 .right {
 	height: 470px;
 	overflow-y: scroll;
 }
+
 input {
 	width: 10px;
 }
@@ -41,7 +44,7 @@ input {
 .rows {
 	display: flex;
 	justify-content: space-between;
-	align-items: center;	
+	align-items: center;
 }
 
 a:hover {
@@ -51,16 +54,18 @@ a:hover {
 input.check {
 	width: 19px;
 	height: 19px;
-	
 }
-input[type="checkbox"].check:checked  {
-	background-color:red;
+
+input[type="checkbox"].check:checked {
+	background-color: red;
 }
+
 label {
 	margin: 0;
-/* 	display: flex; */
+	/* 	display: flex; */
 	align-items: center;
 }
+
 </style>
 </head>
 <body>
@@ -69,7 +74,7 @@ label {
 	String jtypes = request.getParameter("jobtype");
 	String id = request.getParameter("id");
 	String path = request.getServletPath();
-// 			out.println(path);
+	// 			out.println(path);
 	String end = request.getQueryString();
 	// 	out.println(end);
 	request.setAttribute("path", path.substring(1));
@@ -83,6 +88,7 @@ label {
 		}
 	}
 	%>
+<!-- 	<div class="alert alert-danger" id="errmsg"></div> -->
 	<div class='containers'>
 		<div class='row'>
 			<div class='col col-3 left'>
@@ -91,19 +97,21 @@ label {
 					<a class='col'
 						href='/Notifier/
 						<%if (path.equals("/jobs_admin.jsp")) {
-							out.println("jobs_admin");
-						} else if (path.equals("/home.jsp")) {
-							out.println("home");
-						} else if (path.equals("/empr_jobs.jsp")) {
-							out.println("empr_jobs?id=" + id);
-						} else if (path.equals("/emp-home.jsp")) {
-							out.println("empr-home");
-						} %>
-					'>Clear	filters</a>
+	out.println("jobs_admin");
+} else if (path.equals("/home.jsp")) {
+	out.println("home");
+} else if (path.equals("/empr_jobs.jsp")) {
+	out.println("empr_jobs?id=" + id);
+} else if (path.equals("/emp-home.jsp")) {
+	out.println("empr-home");
+}%>
+					'>Clear
+						filters</a>
 				</div>
 				<div class='companytype'>
-					<h5>Company Type</h5> <label><input type='checkbox'
-						class='check' onclick="ctypeclicked()" id="MNC" name='MNC'
+					<h5>Company Type</h5>
+					<label><input type='checkbox' class='check'
+						onclick="ctypeclicked()" id="MNC" name='MNC'
 						<%if (ctypes != null && ctypes.contains("MNC")) {
 	out.print("checked=\"checked\"");
 }%> />
@@ -113,9 +121,8 @@ label {
 						<%if (ctypes != null && ctypes.contains("Corporate")) {
 	out.print("checked=\"checked\"");
 }%> />
-						Corporate</label> <br>
-					<label><input type='checkbox' onclick="ctypeclicked()"
-						class='check' id="Startup" name='Startup'
+						Corporate</label> <br> <label><input type='checkbox'
+						onclick="ctypeclicked()" class='check' id="Startup" name='Startup'
 						<%if (ctypes != null && ctypes.contains("Startup")) {
 	out.print("checked=\"checked\"");
 }%> />
@@ -173,7 +180,8 @@ label {
 	out.print("checked=\"checked\"");
 }%> />
 						Others
-					</label> <hr>
+					</label>
+					<hr>
 				</div>
 				<div class='row'>
 					<button onclick="apply('${path}', ${id}, '${end}')"
@@ -206,6 +214,10 @@ label {
 												<i class='fa fa-trash'></i> Delete
 											</button>
 										</c:if>
+										<c:if test="${role == 'Employee' }">
+											<button id="appbtn" onclick="applyjob(${job.id}, '${role}', ${id}, ${job.eid})" class="btn btn-success btn-sm">
+												Apply</button>
+										</c:if>
 									</div>
 								</div>
 								<h5 class='card-subtitle mb-2 text-muted'>${job.company} |
@@ -216,10 +228,12 @@ label {
 											Yrs.</span>
 									</div>
 									<div>
+									<i class='fa fa-money'></i>
 										<span class='font-weight-bold'>Expected Salary: </span> <span>&#8377;
 											${job.salary} LPA</span>
 									</div>
 									<div>
+									<i class='fa fa-map-marker'></i>
 										<span class='font-weight-bold'>Location: </span> <span>${job.location}</span>
 									</div>
 									<div>
@@ -324,6 +338,19 @@ label {
 // 		alert(jobid = " " + role + " " + eid)
 		console.log(jobid + " " + role + " " + eid);
 		document.location = "/Notifier/deleteJobdetails?jobid="+ jobid + "&role=" + role + "&empid=" + eid;
+	}
+	
+	function applyjob(jobid, role, id, empid) {
+		
+		console.log(jobid + " " + role + " " + id + " " + empid);
+		document.location = "/Notifier/applyjob?jobid="+jobid+"&empid="+id+"&emprid="+empid
+		
+// 		setTimeout(() => {
+// 			document.getElementById("appbtn").style.visibility= "hidden";
+// 			document.getElementById("appbtn").style.innerHTML = "Applied";
+// 			document.getElementById("appbtn").style.disabled = true;
+// 			//document.location = "/Notifier/home";
+// 		}, 1500);	
 	}
 </script>
 </html>

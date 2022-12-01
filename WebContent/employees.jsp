@@ -1,3 +1,4 @@
+<%@page import="java.io.File"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -39,25 +40,27 @@ img {
 			.getAttribute("employees");
 
 	// 	out.println(emp);
-// 	for (com.lms.models.Employee emp : emps) {
-// 		if (emp.getImage() != null) {
-// 			java.io.InputStream inputStream = emp.getImage();
+	for (com.lms.models.Employee emp : emps) {
+		if (emp.getImage() != null) {
+			String imgname = emp.getImage();
+			java.io.InputStream inputStream = new java.io.FileInputStream
+			(new File("D:\\java projects\\Notifier\\WebContent\\images\\" + imgname)); 
 
-// 			java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
-// 			byte[] buffer = new byte[4096];
-// 			int bytesRead = -1;
+			java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
+			byte[] buffer = new byte[4096];
+			int bytesRead = -1;
 
-// 			while ((bytesRead = inputStream.read(buffer)) != -1) {
-// 		outputStream.write(buffer, 0, bytesRead);
-// 			}
+			while ((bytesRead = inputStream.read(buffer)) != -1) {
+		outputStream.write(buffer, 0, bytesRead);
+			}
 
-// 			byte[] imageBytes = outputStream.toByteArray();
+			byte[] imageBytes = outputStream.toByteArray();
 
-// 			String img = java.util.Base64.getEncoder().encodeToString(imageBytes);
+			String img = java.util.Base64.getEncoder().encodeToString(imageBytes);
 
-// 			emp.setImgstr(img);
-// 		}
-// 	}
+			emp.setImage(img);
+		}
+	}
 	%>
 
 	<div class='containers'>
@@ -77,7 +80,7 @@ img {
 									<div class='img col-3'>
 <%-- 										<img alt="" src="${pageContext.request.contextPath}/WebContent/images/${emp.image}" --%>
 <!-- 											width='100px'> -->
-											<img alt="employee profile pic" src="/WebContent/images/${emp.image}"
+											<img alt="employee profile pic" src="data:image/png;base64,${emp.image}"
 											width='100px'>
 										<h4 class='card-title'>${emp.username}
 											

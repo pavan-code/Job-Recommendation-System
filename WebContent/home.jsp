@@ -63,6 +63,12 @@ label {
 	margin: 0 5px;
 }
 
+#errmsg {
+	width: 0;
+	margin: 0 auto;
+	text-align: center;
+}
+
 .cb:hover {
 	background-color: rgba(63, 81, 181, 0.88)
 }
@@ -70,6 +76,12 @@ label {
 </head>
 <body>
 	<%
+	java.util.Map<String, String> msg = (java.util.Map<String, String>) request.getAttribute("messages");
+	String message = "";
+	if (msg != null) {
+		message = msg.get("message");
+		// 		out.println(message);
+	}
 	String eid = request.getParameter("id");
 	String id = null;
 	Cookie cookie = null;
@@ -83,21 +95,26 @@ label {
 		}
 	}
 	%>
+	<div id="errmsg"
+		<%if (message.startsWith("Applied")) {
+			out.println("style=\" visibility: visible;width: 400px; margin: 0 auto; height: 56px; padding: 12px 20px;\" class=\"alert alert-success\"");
+		} else if (message.startsWith("Already")) {
+			out.println("class=\"alert alert-danger\" style=\" visibility: visible; width: 400px; margin: 0 auto; height: 56px; padding: 12px 20px;\"");
+		} else {
+			out.println("style=\" visibility: hidden; width: 0; height: 0; padding: 0; margin: 0;\"");
+		}
+		%>>
+		<%if (message != null)
+			out.println(message);
+		%>
+		<button class='btn' onclick="closed()">X</button>
+	</div>
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
-	<!-- 	<br> -->
 	<div class='center' align='center'>
-		<button
-			<%if (eid == null) {
-	out.println("style=\"border: 2px solid blue\"");
-}%>
-			onclick="alljobs()" class='cb'>All Jobs</button>
-		<button
-			<%
-				if(eid != null) {
-					out.println("style=\"border: 2px solid blue\"");
-				}%>
-			onclick="recommendedjobs(${id})" class='cb'>Recommended Jobs</button>
+		<button onclick="alljobs()" class='cb'>All Jobs</button>
+		<button	onclick="recommendedjobs(${id})" class='cb'>Recommended Jobs</button>
+		<button onclick="appjobs(${id})" class='cb'>View Applied Jobs</button>
 	</div>
 	<div class='containers'>
 		<h3 align='center'>Find your dream job now with Konnect</h3>
@@ -113,6 +130,22 @@ label {
 		function recommendedjobs(id) {			
 			document.location = "rcmd_jobs?id="+id
 		}
+		function appjobs(id) {
+			document.location = "applied-jobs?id="+id
+		}
+		
+		function closed() {
+// 			alert('clicked')
+			console.log('sdfsdf')
+			document.getElementById("errmsg").innerHTML = "";
+			document.getElementById("errmsg").style.visibility = "hidden";
+			document.getElementById("errmsg").style.width = "0";
+			document.getElementById("errmsg").style.height= "0";
+			document.getElementById("errmsg").style.margin= "0";
+			document.getElementById("errmsg").style.padding= "0";
+			document.getElementById("errmsg").classList.remove("alert")
+		}
+		
 	</script>
 </body>
 </html>

@@ -579,33 +579,88 @@ public class StudentDAO {
 		boolean res = statement.executeUpdate() > 0;
 		return res;
 	}
-	
+
 	public Map<String, String> updateAdminPassword(String p1, String p2, String p3, int aid) throws SQLException {
 		String sql = "select * from employer where id = ?";
 		Map<String, String> messages = new HashMap<>();
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 		statement.setInt(1, aid);
 		ResultSet rs = statement.executeQuery();
-		if(rs.next()) {
-			if(rs.getString("password").equals(p1)) {
+		if (rs.next()) {
+			if (rs.getString("password").equals(p1)) {
 				sql = "update employer set password = ? where id = ?";
 				statement = jdbcConnection.prepareStatement(sql);
 				statement.setString(1, p2);
 				statement.setInt(2, aid);
-				if(statement.executeUpdate() > 0) {
+				if (statement.executeUpdate() > 0) {
 					sql = "update credentials set password = ? where empid = ?";
 					statement = jdbcConnection.prepareStatement(sql);
 					statement.setString(1, p2);
 					statement.setInt(2, aid);
 					statement.executeUpdate();
 					messages.put("message", "success");
-				} else 
+				} else
 					messages.put("message", "Failed to update the password");
-			} else 
+			} else
 				messages.put("message", "Incorrect current password!");
 		} else {
 			messages.put("message", "Admin not found");
 		}
 		return messages;
+	}
+
+	public Map<String, String> addApplication(Applications app) throws SQLException {
+		Map<String, String> messages = new HashMap<>();
+		String sql = "select * from applications where jobid=? and empid=? and emprid=? and status in ('Applied', 'Selected')";
+		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+		statement.setInt(1, app.getJobid());
+		statement.setInt(2, app.getEmpid());
+		statement.setInt(3, app.getEmprid());
+		ResultSet rs = statement.executeQuery();
+		if (rs.next()) {
+			messages.put("message", "Already applied for this job");
+		} else {
+			sql = "insert into applications (jobid, empid, status, emprid) values(?, ?, ?, ?)";
+			statement = jdbcConnection.prepareStatement(sql);
+			statement.setInt(1, app.getJobid());
+			statement.setInt(2, app.getEmpid());
+			statement.setString(3, app.getStatus());
+			statement.setInt(4, app.getEmprid());
+			boolean res = statement.executeUpdate() > 0;
+			if(res)
+				messages.put("message", "Applied for this job");
+		}
+		return messages;
+	}
+	
+	public List<Job> getAppliedJobs(int id) throws SQLException {
+		List<Job> jobs = new ArrayList<>();
+		String sql = " select j.*, a.status from job j inner join applications a on j.id = a.jobid where a.empid = ?";
+		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+		statement.setInt(1, id);
+		ResultSet rs = statement.executeQuery();
+		while(rs.next()) {
+			Job j = new Job(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getFloat(5), rs.getFloat(6),
+					rs.getString(7), rs.getString(8), rs.getInt(9), rs.getString(10), rs.getString(11),
+					rs.getString(12), rs.getInt(13), rs.getString(14));
+			jobs.add(j);
+		}
+		return jobs;
+	}
+	
+//	select e.*, a.status from employee e inner join applications a on e.id = a.empid where a.emprid = 8 group by a.empid;
+	public List<Employee> getAppliedEmployees(int id) throws SQLException {
+		List<Employee> employees = new ArrayList<>();
+		String sql = "select e.*, a.status from employee e inner join applications a on e.id = a.empid where a.emprid = ? group by a.empid";
+		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+		statement.setInt(1, id);
+		ResultSet rs = statement.executeQuery();
+		while(rs.next()) {
+			Employee emp = new Employee(rs.getInt("id"), rs.getString("username"), rs.getString("email"),
+					rs.getString("password"), rs.getString("address"), rs.getString("mobile"), rs.getString("skills"),
+					rs.getFloat("experience"), rs.getInt("noticeperiod"), rs.getString("image"), rs.getString("status"));
+			employees.add(emp);
+		}
+		return employees;
 	}
 }

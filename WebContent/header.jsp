@@ -87,6 +87,7 @@ a:hover {
 }
 
 .navbar {
+
 	background-color: #3f51b5;
 	display: flex;
 	flex-direction: row;

@@ -75,6 +75,8 @@ label {
 			Jobs</button>
 		<button class='cb' onclick="viewemployees(${id})">Recommended
 			Employees</button>
+				<button onclick="viewapps(${id})" class='cb'>View Job Applications</button>
+			
 	</div>
 	<div class='containers'>
 		<h3 align='center'>List of suggested employees</h3>
@@ -84,6 +86,9 @@ label {
 		</jsp:include>
 	</div>
 	<script>
+	function viewapps(id) {
+		document.location = "applied-employees?id=" + id;
+	}
 	function addjob() {
 		document.location = "addjob"
 	}

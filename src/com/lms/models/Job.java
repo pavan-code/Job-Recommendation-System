@@ -16,12 +16,12 @@ public class Job {
 	private String skills;
 	private String website;
 	
+	private String status;
 	
 	
 	public Job(String jobname, String company, String companytype, float minexperience, float salary,
 			String location, String description, int openings, String jobtype, String skills, String website, int eid) {
 		super();
-		this.eid = eid;
 		this.jobname = jobname;
 		this.company = company;
 		this.companytype = companytype;
@@ -33,6 +33,7 @@ public class Job {
 		this.jobtype = jobtype;
 		this.skills = skills;
 		this.website = website;
+		this.eid = eid;
 	}
 	public Job(int id, String jobname, String company, String companytype, float minexperience, float salary,
 			String location, String description, int openings, String jobtype, String skills, String website) {
@@ -66,6 +67,24 @@ public class Job {
 		this.skills = skills;
 		this.website = website;
 		this.eid = eid;
+	}
+	public Job(int id, String jobname, String company, String companytype, float minexperience, float salary,
+			String location, String description, int openings, String jobtype, String skills, String website, int eid, String status) {
+		super();
+		this.id = id;
+		this.jobname = jobname;
+		this.company = company;
+		this.companytype = companytype;
+		this.minexperience = minexperience;
+		this.salary = salary;
+		this.location = location;
+		this.description = description;
+		this.openings = openings;
+		this.jobtype = jobtype;
+		this.skills = skills;
+		this.website = website;
+		this.eid = eid;
+		this.status = status;
 	}
 	public Job(String jobname, String company, String companytype, float minexperience, float salary, String location,
 			String description, int openings, String jobtype, String skills, String website) {
@@ -161,12 +180,19 @@ public class Job {
 	public void setEid(int eid) {
 		this.eid = eid;
 	}
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	@Override
 	public String toString() {
 		return "Job [id=" + id + ", eid=" + eid + ", jobname=" + jobname + ", company=" + company + ", companytype="
 				+ companytype + ", minexperience=" + minexperience + ", salary=" + salary + ", location=" + location
 				+ ", description=" + description + ", openings=" + openings + ", jobtype=" + jobtype + ", skills="
-				+ skills + ", website=" + website + "]";
+				+ skills + ", website=" + website + ", status=" + status + "]";
 	}
 	
 	
