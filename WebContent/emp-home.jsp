@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Home</title>
+<title>Job Provider | Home</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -84,12 +84,18 @@ label {
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
 	<div class="center">
-	<button class='cb' onclick="addjob()">Add Job</button>
-	<button class='cb' onclick="viewjobs(<%out.println(id);%>)">View
-			Jobs</button>
-	<button class='cb' onclick="viewemployees(${id})">Recommended
-			Employees</button>
-	<button onclick="viewapps(${id})" class='cb'>View Job Applications</button>
+		<button class='cb' onclick="addjob()">
+			<i class='fa fa-suitcase'></i> Add Job
+		</button>
+		<button class='cb' onclick="viewjobs(<%out.println(id);%>)">
+			<i class='fa fa-suitcase'></i> View Jobs
+		</button>
+		<button class='cb' onclick="viewemployees(${id})">
+			<i class='fa fa-user'></i> Recommended Job Seekers
+		</button>
+		<button onclick="viewapps(${id})" class='cb'>
+			<i class='fa fa-user'></i> View Job Applications
+		</button>
 	</div>
 
 	<div class='containers'>

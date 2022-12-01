@@ -65,7 +65,11 @@ label {
 	/* 	display: flex; */
 	align-items: center;
 }
-
+i {	
+	width: 15px;
+	text-align: center;
+	margin-right: 3px;
+}
 </style>
 </head>
 <body>
@@ -201,7 +205,7 @@ label {
 							<div class="card-body">
 								<div class='rows'>
 									<h4 class='card-title'>${job.jobname}
-										| <span class='badge badge-pill badge-info'>${job.jobtype}</span>
+										| <span class='badge badge-pill badge-info'><i class='fa fa-tag'></i> ${job.jobtype}</span>
 									</h4>
 									<div>
 										<c:if test="${role != 'Employee' }">
@@ -216,7 +220,7 @@ label {
 										</c:if>
 										<c:if test="${role == 'Employee' }">
 											<button id="appbtn" onclick="applyjob(${job.id}, '${role}', ${id}, ${job.eid})" class="btn btn-success btn-sm">
-												Apply</button>
+											 <i class='fa fa-plus'></i>	Apply</button>
 										</c:if>
 									</div>
 								</div>
@@ -224,7 +228,7 @@ label {
 									${job.companytype}</h5>
 								<div class='card-text'>
 									<div>
-										<span class='font-weight-bold'>Min. Experience: </span> <span>${job.minexperience}
+										<span class='font-weight-bold'><i class='fa fa-line-chart'></i> Min. Experience: </span> <span>${job.minexperience}
 											Yrs.</span>
 									</div>
 									<div>
@@ -237,7 +241,7 @@ label {
 										<span class='font-weight-bold'>Location: </span> <span>${job.location}</span>
 									</div>
 									<div>
-										<span class='font-weight-bold'>Skills: </span> <span>${job.skills}</span>
+										<span class='font-weight-bold'><i class='fa fa-gear'></i> Skills: </span> <span></i> ${job.skills}</span>
 									</div>
 									<%-- 									${job.description} --%>
 								</div>

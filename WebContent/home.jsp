@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Employee | Home</title>
+<title>Job Seeker | Home</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -112,9 +112,9 @@ label {
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
 	<div class='center' align='center'>
-		<button onclick="alljobs()" class='cb'>All Jobs</button>
-		<button	onclick="recommendedjobs(${id})" class='cb'>Recommended Jobs</button>
-		<button onclick="appjobs(${id})" class='cb'>View Applied Jobs</button>
+		<button onclick="alljobs()" class='cb'><i class='fa fa-suitcase'></i> All Jobs</button>
+		<button	onclick="recommendedjobs(${id})" class='cb'><i class='fa fa-suitcase'></i> Recommended Jobs</button>
+		<button onclick="appjobs(${id})" class='cb'><i class='fa fa-suitcase'></i> View Applied Jobs</button>
 	</div>
 	<div class='containers'>
 		<h3 align='center'>Find your dream job now with Konnect</h3>

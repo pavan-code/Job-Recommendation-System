@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Admin | Pending Employees</title>
+<title>Admin | Pending Job Seekers</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -70,11 +70,11 @@ label {
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
 	<div class='center'>
-		<button onclick="jobs()" class='cb'>All Jobs</button>
-		<button onclick="employees()" class='cb'>All Job Seekers</button>
-		<button onclick="employers()" class='cb'>All Job Providers</button>
-		<button onclick="empUnactive()" class='cb'>Pending Employees</button>
-		<button onclick="emprUnactive()" class='cb'>Pending Employers</button>
+		<button onclick="jobs()" class='cb'> <i class='fa fa-suitcase'></i> All Jobs</button>
+		<button onclick="employees()" class='cb'><i class="fa fa-users"></i> All Job Seekers</button>
+		<button onclick="employers()" class='cb'><i class="fa fa-users"></i> All Job Providers</button>
+		<button onclick="empUnactive()" class='cb'><i class="fa fa-user"></i> Pending Job Seekers</button>
+		<button onclick="emprUnactive()" class='cb'><i class="fa fa-user"></i> Pending Job Providers</button>
 	</div>
 	<div class='containers'>
 		

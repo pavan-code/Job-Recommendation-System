@@ -15,6 +15,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <style>
 ::-webkit-scrollbar {
 	width: 2px;
@@ -70,11 +71,11 @@ label {
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
 	<div class='center'>
-		<button onclick="jobs()" class='cb'>All Jobs</button>
-		<button onclick="employees()" class='cb'>All Job Seekers</button>
-		<button onclick="employers()" class='cb'>All Job Providers</button>
-		<button onclick="empUnactive()" class='cb'>Pending Employees</button>
-		<button onclick="emprUnactive()" class='cb'>Pending Employers</button>
+		<button onclick="jobs()" class='cb'> <i class='fa fa-suitcase'></i> All Jobs</button>
+		<button onclick="employees()" class='cb'><i class="fa fa-users"></i> All Job Seekers</button>
+		<button onclick="employers()" class='cb'><i class="fa fa-users"></i> All Job Providers</button>
+		<button onclick="empUnactive()" class='cb'><i class="fa fa-user"></i> Pending Job Seekers</button>
+		<button onclick="emprUnactive()" class='cb'><i class="fa fa-user"></i> Pending Job Providers</button>
 	</div>
 	<!-- 	<br> -->
 	<div class='containers'>

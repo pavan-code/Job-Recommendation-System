@@ -74,13 +74,18 @@
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
 	<div class="center">
-		<button class='cb' onclick="addjob()"> <img alt="" src="WebContent/images/notes.png"> Add Job</button>
-		<button class='cb' onclick="viewjobs(<%out.println(id);%>)">View
-			Jobs</button>
-		<button class='cb' onclick="viewemployees(${id})">Recommended
-			Employees</button>
-				<button onclick="viewapps(${id})" class='cb'>View Job Applications</button>
-			
+		<button class='cb' onclick="addjob()">
+			<i class='fa fa-suitcase'></i> Add Job
+		</button>
+		<button class='cb' onclick="viewjobs(<%out.println(id);%>)">
+			<i class='fa fa-suitcase'></i> View Jobs
+		</button>
+		<button class='cb' onclick="viewemployees(${id})">
+			<i class='fa fa-user'></i> Recommended Job Seekers
+		</button>
+		<button onclick="viewapps(${id})" class='cb'>
+			<i class='fa fa-user'></i> View Job Applications
+		</button>
 	</div>
 	<div class='containers'>
 
@@ -91,7 +96,7 @@
 			<form method="post" action="addnewjob">
 				<div class='row'>
 					<div class='col'>
-						<label>Employer ID</label> <input type="number" name="empid"
+						<label>Job Provider ID</label> <input type="number" name="empid"
 							value="${id}" class="form-control" required readonly>
 					</div>
 				</div>
@@ -172,7 +177,7 @@
 				</div>
 				<br>
 				<div style='text-align: center;'>
-					<button class="btn btn-primary" style='width: 100%;' type="submit">Add
+					<button class="btn btn-primary" style='width: 100%;' type="submit"><i class='fa fa-plus'></i> Add
 						Job</button>
 				</div>
 			</form>

@@ -99,9 +99,9 @@ label {
 	<jsp:include page="header.jsp"></jsp:include>
 	<jsp:include page="sidebar.jsp"></jsp:include>
 	<div class='center' align='center'>
-		<button onclick="alljobs()" class='cb'>All Jobs</button>
-		<button	onclick="recommendedjobs(${id})" class='cb'>Recommended Jobs</button>
-		<button onclick="appjobs(${id})" class='cb'>View Applied Jobs</button>
+		<button onclick="alljobs()" class='cb'><i class='fa fa-suitcase'></i> All Jobs</button>
+		<button	onclick="recommendedjobs(${id})" class='cb'><i class='fa fa-suitcase'></i> Recommended Jobs</button>
+		<button onclick="appjobs(${id})" class='cb'><i class='fa fa-suitcase'></i> View Applied Jobs</button>
 	</div>
 	<div class='containers'> <br>
 		<h3 align='center'>List of job applications</h3> <br>

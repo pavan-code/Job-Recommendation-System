@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Home</title>
+<title>Job Provider | Profile</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -48,13 +48,13 @@ label {
 				<div class='row'>
 
 					<div class='col-3'>
-						<label>Employer ID</label> <br> <input type="number" readonly
+						<label>Job Provider ID</label> <br> <input type="number" readonly
 							value="${emp.id}" name="id" class="form-control" required>
 					</div>
 				</div>
 				<div class='row'>
 					<div class='col'>
-						<label>Employer Name</label> <br> <input type="text" readonly
+						<label>Job Provider Name</label> <br> <input type="text" readonly
 							value="${emp.username}" name="username" class="form-control"
 							required>
 					</div>
