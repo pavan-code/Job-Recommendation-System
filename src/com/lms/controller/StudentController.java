@@ -585,19 +585,19 @@ public class StudentController extends HttpServlet {
 		String minexp = request.getParameter("minexperience");
 		String salary = request.getParameter("salary");
 		String location = request.getParameter("location");
-		String desc = request.getParameter("description");
 		String open = request.getParameter("openings");
 		String jobtype = request.getParameter("jobtype");
 		String skills = request.getParameter("skills");
 		String website = request.getParameter("website");
+		String desc = request.getParameter("description");
 		int empid = Integer.parseInt(request.getParameter("empid"));
 		System.out.println("emoid" + empid);
 		Job j = new Job(jobname, company, ctype, Float.valueOf(minexp), Float.valueOf(salary), location, desc,
 				Integer.parseInt(open), jobtype, skills, website, empid);
-//		System.out.println("job: " + j);
-		boolean res = dao.insertJob(j);
+		System.out.println("job: " + j);
+		boolean res = dao.insertJob(j);	
 		if (res)
-			response.sendRedirect("/Notifier/home");
+			response.sendRedirect("/Notifier/empr-home");
 	}
 
 	public void change(HttpServletRequest request, HttpServletResponse response) {
@@ -655,7 +655,7 @@ public class StudentController extends HttpServlet {
 
 	public void updateempr(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-
+		System.out.println("id: " + request.getParameter("id"));
 		int id = Integer.parseInt(request.getParameter("id"));
 		String username = request.getParameter("username");
 		String mobile = request.getParameter("mobile");
@@ -663,7 +663,7 @@ public class StudentController extends HttpServlet {
 		String password = request.getParameter("password");
 		String address = request.getParameter("address");
 		String company = request.getParameter("company");
-
+		
 		Employer emp = new Employer(id, username, email, password, address, mobile, company);
 		System.out.println("emo: " + emp);
 		boolean re = dao.updateEmployer(emp);

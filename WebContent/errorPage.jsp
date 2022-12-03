@@ -21,10 +21,6 @@
 	<style>
 	.container {
 		text-align: center;
-/* 		background-image      : url("<c:url value='/images/notes.jpg'/>"); */
-/* background-image      : url("${pageContext.request.contextPath}/images/notes.jpg"); */
-
-/* 		background: url(./images/notes.jpg); */
 	}
 	.error {
 		font-size: 300px;

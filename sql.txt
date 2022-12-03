@@ -10,8 +10,8 @@ create table employee (
     skills varchar(1255),
     experience float,
     noticeperiod int,
-    resume mediumblob,
-	image mediumblob
+	image varchar(255),
+	active boolean    
     );
 
 create table credentials (
@@ -34,7 +34,8 @@ create table job (
     openings int,
     jobtype varchar(255),
     skills varchar(1255),
-    website varchar(255)
+    website varchar(255),
+    empid int
     );
 
 
@@ -45,14 +46,19 @@ create table employer (
     password varchar(255),
     address varchar(255),
     mobile varchar(255),
-	company varchar(100)
+	company varchar(100),
+	active boolean
     );
 
 create table applications (
      id int primary key auto_increment not null,
      jobid int not null,
      empid int not null,
+     emprid int not null,
      status varchar(50) not null
      );
      
 insert into employer (username, email, password, address, mobile, company) values ('admin', 'admin@gmail.com', 'admin', 'add', '234', 'Konnect');
+
+
+

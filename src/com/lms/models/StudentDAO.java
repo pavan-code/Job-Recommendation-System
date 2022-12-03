@@ -20,7 +20,7 @@ public class StudentDAO {
 	private Connection jdbcConnection = null;
 
 	public StudentDAO() throws SQLException {
-		this.jdbcURL = "jdbc:mysql://localhost:3306/jobrecommendationsystem";
+		this.jdbcURL = "jdbc:mysql://localhost:3306/jobrecommendationsystem?autoReconnect=true";
 		this.jdbcUsername = "root";
 		this.jdbsPassword = "root";
 		// System.out.println("set parameters");
@@ -159,10 +159,10 @@ public class StudentDAO {
 
 	public boolean insertEmployer(Employer employer) throws SQLException {
 		String sql = "INSERT INTO employer (username, email, mobile, password, address, company) VALUES(?, ?, ?, ?, ?, ?)";
-		String sql1 = "insert into credentials (email, password, type, empid) values(?, ?, ?, ?)";
+		//String sql1 = "insert into credentials (email, password, type, empid) values(?, ?, ?, ?)";
 
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-		PreparedStatement statement1 = jdbcConnection.prepareStatement(sql1);
+		//PreparedStatement statement1 = jdbcConnection.prepareStatement(sql1);
 
 		statement.setString(1, employer.getUsername());
 		statement.setString(2, employer.getEmail());
@@ -172,19 +172,19 @@ public class StudentDAO {
 		statement.setString(6, employer.getCompany());
 		boolean result = statement.executeUpdate() > 0;
 
-		sql = "select id from employer where email= ?";
-		statement = jdbcConnection.prepareStatement(sql);
-		statement.setString(1, employer.getEmail());
-		ResultSet rs = statement.executeQuery();
-		if (rs.next()) {
-			statement1.setString(1, employer.getEmail());
-			statement1.setString(2, employer.getPassword());
-			statement1.setString(3, "Employer");
-			statement1.setInt(4, rs.getInt(1));
-			statement1.executeUpdate();
-			statement.close();
-			statement1.close();
-		}
+//		sql = "select id from employer where email= ?";
+//		statement = jdbcConnection.prepareStatement(sql);
+//		statement.setString(1, employer.getEmail());
+//		ResultSet rs = statement.executeQuery();
+//		if (rs.next()) {
+//			statement1.setString(1, employer.getEmail());
+//			statement1.setString(2, employer.getPassword());
+//			statement1.setString(3, "Employer");
+//			statement1.setInt(4, rs.getInt(1));
+//			statement1.executeUpdate();
+//			statement.close();
+//			statement1.close();
+//		}
 		return result;
 	}
 
@@ -206,7 +206,8 @@ public class StudentDAO {
 		statement.setString(10, job.getSkills());
 		statement.setString(11, job.getWebsite());
 		statement.setInt(12, job.getEid());
-		return statement.executeUpdate() > 0;
+		boolean res = statement.executeUpdate() > 0;
+		return res;
 	}
 
 	public List<Job> getJobs() throws SQLException {

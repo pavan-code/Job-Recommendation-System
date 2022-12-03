@@ -43,7 +43,7 @@ label {
 				<h2>Update Profile</h2>
 			</div>
 			<hr>
-			<form action="updateempr" method="post" enctype="multipart/form-data">
+			<form action="updateempr" method="post">
 				<h5>Personal Details</h5>
 				<div class='row'>
 
@@ -72,9 +72,10 @@ label {
 					</div>
 					<br>
 					<div class='col'>
-						<label>Password </label> <br> <input type="password"
+						<label>Password </label> <br> <input type="password" id='password'
 							value="${emp.password}" name="password" class="form-control"
 							required>
+						<label> <input id='show' type='checkbox' onclick="showpassword()"> Show Password </label>
 					</div>
 					<br>
 				</div>
@@ -101,6 +102,14 @@ label {
 			</form>
 		</div>
 	</div>
-
+	<script>
+	function showpassword() {
+		if(document.getElementById("show").checked) {
+			document.getElementById("password").type = "text";
+		} else {
+			document.getElementById("password").type = "password";
+		}	
+	}
+	</script>
 </body>
 </html>
