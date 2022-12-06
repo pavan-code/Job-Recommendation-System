@@ -22,10 +22,9 @@ public class SendOTP {
 
 	public static String SendMail(String email, String otp, String type) {
 
-//		final String username = "vinayassignments@gmail.com";
-//		final String password = "l0g1tec3";
-		final String username = "pavankumaranguluri1@gmail.com";
-		final String password = "kyzlwmbywddggdho";
+		final String username = "email";
+		final String password = "pwd";
+		
 		System.out.println("type: " + type);
 		String user = "";
 		String body = "Dear ";
