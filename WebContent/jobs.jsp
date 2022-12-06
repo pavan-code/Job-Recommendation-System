@@ -233,7 +233,7 @@ i {
 									</div>
 									<div>
 									<i class='fa fa-money'></i>
-										<span class='font-weight-bold'>Expected Salary: </span> <span>&#8377;
+										<span class='font-weight-bold'>Expected Salary: </span> <span>&#163;
 											${job.salary} LPA</span>
 									</div>
 									<div>
@@ -241,7 +241,13 @@ i {
 										<span class='font-weight-bold'>Location: </span> <span>${job.location}</span>
 									</div>
 									<div>
-										<span class='font-weight-bold'><i class='fa fa-gear'></i> Skills: </span> <span></i> ${job.skills}</span>
+										<span class='font-weight-bold'><i class='fa fa-gear'></i> Skills: </span> <span> ${job.skills}</span>
+									</div>
+									<div>
+										<span class='font-weight-bold'><i class='fa fa-link'></i> Web site: </span> <span> <a href='${job.website}'>${job.website}</a></span>
+									</div>
+									<div>
+										<span class='font-weight-bold'><i class='fa fa-file-text'></i> Job Description: </span> <span> ${job.description}</span>
 									</div>
 									<%-- 									${job.description} --%>
 								</div>

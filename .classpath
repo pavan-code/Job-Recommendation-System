@@ -14,7 +14,10 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="D:/java projects/Notifier/WebContent/WEB-INF/lib/postgresql-42.2.20.jar"/>
 	<classpathentry kind="lib" path="D:/java projects/Notifier/WebContent/WEB-INF/lib/jstl-1.2.jar"/>
+	<classpathentry kind="lib" path="D:/java projects/Notifier/WebContent/WEB-INF/lib/activation.jar"/>
+	<classpathentry kind="lib" path="D:/java projects/Notifier/WebContent/WEB-INF/lib/mail.jar"/>
+	<classpathentry kind="lib" path="D:/java projects/Notifier/WebContent/WEB-INF/lib/mailapi.jar"/>
+	<classpathentry kind="lib" path="D:/java projects/Notifier/WebContent/WEB-INF/lib/smtp.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

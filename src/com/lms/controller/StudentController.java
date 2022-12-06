@@ -12,6 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.lms.models.Applications;
 import com.lms.models.Employee;
@@ -22,6 +23,7 @@ import com.lms.models.StudentDAO;
 public class StudentController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private StudentDAO dao;
+	private static String actualOTP = null;
 
 	public void init() {
 		try {
@@ -139,6 +141,9 @@ public class StudentController extends HttpServlet {
 			case "/applied-employees":
 				appliedemps(request, response);
 				break;
+			case "/checkOTP":
+				checkOTP(request, response);
+				break;
 			default:
 				response.sendRedirect("errorPage.jsp");
 				break;
@@ -149,13 +154,36 @@ public class StudentController extends HttpServlet {
 		}
 	}
 
-	private void appliedemps(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+	private void checkOTP(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		String otp = request.getParameter("otp");
+		System.out.println("entered otp: " + otp);
+		HttpSession session = request.getSession(false);		
+		System.out.println("actual otp: " + actualOTP);
+		String type = (String) session.getAttribute("type");
+		System.out.println("type: " + type);
+		if (Integer.parseInt(actualOTP) == Integer.parseInt(otp)) {
+			if (type.equalsIgnoreCase("Employee"))
+				response.sendRedirect("LoginDone.jsp");
+			else if (type.equalsIgnoreCase("Employer"))
+				response.sendRedirect("LoginDone1.jsp");
+			else if (type.equalsIgnoreCase("Admin"))
+				response.sendRedirect("LoginDone2.jsp");
+		} else {
+			request.setAttribute("message", "Incorrect OTP!!");
+			request.getRequestDispatcher("otp.jsp").include(request, response);
+		}
+	}
+
+	private void appliedemps(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		request.setAttribute("emps", dao.getAppliedEmployees(id));
 		request.getRequestDispatcher("applied_emps.jsp").forward(request, response);
 	}
-	
-	private void appliedjobs(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+
+	private void appliedjobs(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		request.setAttribute("jobs", dao.getAppliedJobs(id));
 		request.getRequestDispatcher("applied_jobs.jsp").forward(request, response);
@@ -356,25 +384,34 @@ public class StudentController extends HttpServlet {
 		System.out.println(messages + " " + messages.size());
 
 		if (messages.size() == 2 && messages.containsKey("id")) {
-			if (type.equals("Employee")) {
-				Cookie c = new Cookie("id", messages.get("id"));
-				response.addCookie(c);
-				c = new Cookie("role", messages.get("type"));
-				response.addCookie(c);
-				response.sendRedirect("LoginDone.jsp");
-			} else if (type.equals("Employer")) {
-				Cookie c = new Cookie("id", messages.get("id"));
-				response.addCookie(c);
-				c = new Cookie("role", messages.get("type"));
-				response.addCookie(c);
-				response.sendRedirect("LoginDone1.jsp");
-			} else if (type.equals("Admin")) {
-				Cookie c = new Cookie("id", messages.get("id"));
-				response.addCookie(c);
-				c = new Cookie("role", messages.get("type"));
-				response.addCookie(c);
-				response.sendRedirect("LoginDone2.jsp");
-			}
+			Cookie c = new Cookie("id", messages.get("id"));
+			response.addCookie(c);
+			c = new Cookie("role", messages.get("type"));
+			response.addCookie(c);
+			String OTP = SendOTP.getRandomNumberString();
+			actualOTP = OTP;
+			HttpSession session = request.getSession();
+			session.setAttribute("OTP", OTP);
+			session.setAttribute("type", type);
+			SendOTP.SendMail(email, OTP, type);
+			System.out.println("OTP: " + OTP);
+			request.getRequestDispatcher("otp.jsp").include(request, response);
+
+//			if (type.equals("Employee")) {
+//				response.sendRedirect("LoginDone.jsp");
+//			} else if (type.equals("Employer")) {
+//				Cookie c = new Cookie("id", messages.get("id"));
+//				response.addCookie(c);
+//				c = new Cookie("role", messages.get("type"));
+//				response.addCookie(c);
+//				response.sendRedirect("LoginDone1.jsp");
+//			} else if (type.equals("Admin")) {
+//				Cookie c = new Cookie("id", messages.get("id"));
+//				response.addCookie(c);
+//				c = new Cookie("role", messages.get("type"));
+//				response.addCookie(c);
+//				response.sendRedirect("LoginDone2.jsp");
+//			}
 
 		} else {
 			request.setAttribute("messages", messages);
@@ -423,6 +460,10 @@ public class StudentController extends HttpServlet {
 		request.setAttribute("employees", emps);
 		List<Job> jobs = dao.getJobs();
 		request.setAttribute("jobs", jobs);
+		List<Employee> uemps = dao.getUnactivatedEmployees();
+		request.setAttribute("uemps", uemps);
+		List<Employer> uemprs = dao.getUnactivatedEmployers();
+		request.setAttribute("uemprs", uemprs);
 		request.getRequestDispatcher("admin-home.jsp").forward(request, response);
 	}
 
@@ -430,6 +471,10 @@ public class StudentController extends HttpServlet {
 			throws ServletException, IOException, SQLException {
 		List<Employee> emps = dao.getUnactivatedEmployees();
 		request.setAttribute("emps", emps);
+		List<Employee> uemps = dao.getUnactivatedEmployees();
+		request.setAttribute("uemps", uemps);
+		List<Employer> uemprs = dao.getUnactivatedEmployers();
+		request.setAttribute("uemprs", uemprs);
 		request.getRequestDispatcher("Unactive_employees.jsp").forward(request, response);
 	}
 
@@ -437,6 +482,10 @@ public class StudentController extends HttpServlet {
 			throws ServletException, IOException, SQLException {
 		List<Employer> emprs = dao.getUnactivatedEmployers();
 		request.setAttribute("emprs", emprs);
+		List<Employee> uemps = dao.getUnactivatedEmployees();
+		request.setAttribute("uemps", uemps);
+		List<Employer> uemprs = dao.getUnactivatedEmployers();
+		request.setAttribute("uemprs", uemprs);
 		request.getRequestDispatcher("Unactive_employers.jsp").forward(request, response);
 	}
 
@@ -567,6 +616,10 @@ public class StudentController extends HttpServlet {
 			throws ServletException, IOException, SQLException {
 		List<Employer> emprs = dao.getEmployers();
 		request.setAttribute("employers", emprs);
+		List<Employee> uemps = dao.getUnactivatedEmployees();
+		request.setAttribute("uemps", uemps);
+		List<Employer> uemprs = dao.getUnactivatedEmployers();
+		request.setAttribute("uemprs", uemprs);
 		request.getRequestDispatcher("employers_admin.jsp").forward(request, response);
 	}
 
@@ -574,6 +627,10 @@ public class StudentController extends HttpServlet {
 			throws ServletException, IOException, SQLException {
 		List<Employee> emps = dao.getEmployees();
 		request.setAttribute("employees", emps);
+		List<Employee> uemps = dao.getUnactivatedEmployees();
+		request.setAttribute("uemps", uemps);
+		List<Employer> uemprs = dao.getUnactivatedEmployers();
+		request.setAttribute("uemprs", uemprs);
 		request.getRequestDispatcher("employees_admin.jsp").forward(request, response);
 	}
 
@@ -595,7 +652,7 @@ public class StudentController extends HttpServlet {
 		Job j = new Job(jobname, company, ctype, Float.valueOf(minexp), Float.valueOf(salary), location, desc,
 				Integer.parseInt(open), jobtype, skills, website, empid);
 		System.out.println("job: " + j);
-		boolean res = dao.insertJob(j);	
+		boolean res = dao.insertJob(j);
 		if (res)
 			response.sendRedirect("/Notifier/empr-home");
 	}
@@ -663,7 +720,7 @@ public class StudentController extends HttpServlet {
 		String password = request.getParameter("password");
 		String address = request.getParameter("address");
 		String company = request.getParameter("company");
-		
+
 		Employer emp = new Employer(id, username, email, password, address, mobile, company);
 		System.out.println("emo: " + emp);
 		boolean re = dao.updateEmployer(emp);

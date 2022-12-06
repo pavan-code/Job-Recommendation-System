@@ -77,8 +77,10 @@ label {
 		<button onclick="jobs()" class='cb'> <i class='fa fa-suitcase'></i> All Jobs</button>
 		<button onclick="employees()" class='cb'><i class="fa fa-users"></i> All Job Seekers</button>
 		<button onclick="employers()" class='cb'><i class="fa fa-users"></i> All Job Providers</button>
-		<button onclick="empUnactive()" class='cb'><i class="fa fa-user"></i> Pending Job Seekers</button>
-		<button onclick="emprUnactive()" class='cb'><i class="fa fa-user"></i> Pending Job Providers</button>
+		<button onclick="empUnactive()" class='cb'><i class="fa fa-user"></i> Pending Job Seekers
+		<span class="badge badge-pill badge-warning">${fn:length(uemps)}</span></button>
+		<button onclick="emprUnactive()" class='cb'><i class="fa fa-user"></i> Pending Job Providers
+		<span class="badge badge-pill badge-warning">${fn:length(uemprs)}</span></button>
 	</div>
 
 	<div class='containers'>
@@ -139,13 +141,10 @@ label {
 			document.location = 'unactive_empr'
 		}
 		function activate(th) {
-			alert("esdf")
+			
 			let id = th.getAttribute('data-id')
 			let email = th.getAttribute('data-email')
-			let psd = th.getAttribute('data-psd');
-			alert(id)
-			alert(email)
-			//  			request.setAttribute("asd", "asdf")
+			let psd = th.getAttribute('data-psd');			
 			document.location = 'update_active?id=' + id + '&email=' + email
 					+ '&enc=' + psd + '&role=Employer';
 		}
