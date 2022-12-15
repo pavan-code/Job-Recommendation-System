@@ -218,8 +218,11 @@ label {
 						</div>
 						<br>
 					</form>
-					<p> Register new <a href="register.jsp">Employee</a> /
-						<a href='RegisterEmployer.jsp'>Employer</a>
+					<p> Register new <a href="register.jsp">Job Seeker</a> /
+						<a href='RegisterEmployer.jsp'>Job Provider</a>
+					</p>
+					<p>
+						Forgot password? <a href="forgetpassword.jsp">Change it</a>
 					</p>
 				</div>
 			</div>

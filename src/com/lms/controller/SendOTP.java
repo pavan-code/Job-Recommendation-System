@@ -22,9 +22,10 @@ public class SendOTP {
 
 	public static String SendMail(String email, String otp, String type) {
 
-		final String username = "email";
-		final String password = "pwd";
-		
+//		final String username = "vinayassignments@gmail.com";
+//		final String password = "l0g1tec3";
+		final String username = "pavankumaranguluri1@gmail.com";
+		final String password = "kyzlwmbywddggdho";
 		System.out.println("type: " + type);
 		String user = "";
 		String body = "Dear ";
@@ -56,7 +57,7 @@ public class SendOTP {
 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("k.jayasurya694@gmail.com"));
 			message.setSubject("Konnect | Login OTP for Job Recommendation System");
 			message.setText(body);
 			message.setContent("<p>Dear " + user + ",</p>"
