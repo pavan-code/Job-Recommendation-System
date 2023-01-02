@@ -33,7 +33,7 @@
 }
 
 .right {
-	height: 470px;
+	height: 550px;
 	overflow-y: scroll;
 }
 
@@ -70,6 +70,9 @@ i {
 	text-align: center;
 	margin-right: 3px;
 }
+.search {
+	width: 260px;
+}
 </style>
 </head>
 <body>
@@ -77,6 +80,7 @@ i {
 	String ctypes = request.getParameter("companytype");
 	String jtypes = request.getParameter("jobtype");
 	String id = request.getParameter("id");
+	String search = request.getParameter("search");
 	String path = request.getServletPath();
 	// 			out.println(path);
 	String end = request.getQueryString();
@@ -112,6 +116,12 @@ i {
 					'>Clear
 						filters</a>
 				</div>
+				<div class='search'>
+				<h5>Skill</h5>
+					<input type='text' id='skill' placeholder='Ex. Java' class='form-control' />
+				<h5>Location</h5>
+					<input type='text' id='location' placeholder='Ex. London' class='form-control' />
+				</div> <br> <br> <br> <br>  <br> <br> <br>
 				<div class='companytype'>
 					<h5>Company Type</h5>
 					<label><input type='checkbox' class='check'
@@ -323,16 +333,19 @@ i {
 	}
 	function apply(path, id, end) {		
 		console.log(path + " "+id+ " " + end)
+		let skill = document.getElementById("skill").value;
+		let location = document.getElementById("location").value;
+// 		alert("search: " + search)
 		if(ctypes.length == 0)
 			ctypes = [];
 		if(jtypes.length == 0)
 			jtypes = [];
 		if(path == 'jobs_admin.jsp') {			
-			document.location = "/Notifier/jobs_admin?companytype=" + ctypes + "&jobtype=" + jtypes;
+			document.location = "/Notifier/jobs_admin?companytype=" + ctypes + "&jobtype=" + jtypes + "&skill=" + skill + "&location=" + location;
 		} else if(path == 'empr_jobs.jsp') {			
-			document.location = "/Notifier/empr_jobs?id=" + id + "&companytype=" + ctypes + "&jobtype=" + jtypes;
+			document.location = "/Notifier/empr_jobs?id=" + id + "&companytype=" + ctypes + "&jobtype=" + jtypes + "&search=" + search;
 		} else if(path == 'emp-home.jsp') {			
-			document.location = "/Notifier/empr-home?id=" + id + "&companytype=" + ctypes + "&jobtype=" + jtypes;
+			document.location = "/Notifier/empr-home?id=" + id + "&companytype=" + ctypes + "&jobtype=" + jtypes + "&search=" + search;
 		} else if(end.startsWith("id")) {
 			document.location = "/Notifier/rcmd_jobs?id="+id+"&companytype=" + ctypes + "&jobtype=" + jtypes;
 		} else {

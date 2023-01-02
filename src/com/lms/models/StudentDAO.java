@@ -85,7 +85,7 @@ public class StudentDAO {
 	}
 
 	public boolean insertEmployee(Employee employee) throws SQLException {
-		String sql = "INSERT INTO employee (username, email, mobile, password, address, experience, image) VALUES(?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO employee (username, email, mobile, password, address, experience, image, resume, skills) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 //		PreparedStatement statement1 = jdbcConnection.prepareStatement(sql1);
@@ -97,6 +97,8 @@ public class StudentDAO {
 		statement.setString(5, employee.getAddress());
 		statement.setString(6, String.valueOf(employee.getExperience()));
 		statement.setString(7, employee.getImage());
+		statement.setBlob(8, employee.getResume());
+		statement.setString(9, employee.getSkills());
 		boolean result = statement.executeUpdate() > 0;
 
 		return result;
@@ -159,10 +161,11 @@ public class StudentDAO {
 
 	public boolean insertEmployer(Employer employer) throws SQLException {
 		String sql = "INSERT INTO employer (username, email, mobile, password, address, company) VALUES(?, ?, ?, ?, ?, ?)";
-		//String sql1 = "insert into credentials (email, password, type, empid) values(?, ?, ?, ?)";
+		// String sql1 = "insert into credentials (email, password, type, empid)
+		// values(?, ?, ?, ?)";
 
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-		//PreparedStatement statement1 = jdbcConnection.prepareStatement(sql1);
+		// PreparedStatement statement1 = jdbcConnection.prepareStatement(sql1);
 
 		statement.setString(1, employer.getUsername());
 		statement.setString(2, employer.getEmail());
@@ -417,8 +420,8 @@ public class StudentDAO {
 		return jobs;
 	}
 
-	public List<Job> getJobsByCompanyTypeAndJobType(List<String> ctypes, List<String> jtypes, int empid)
-			throws SQLException {
+	public List<Job> getJobsByCompanyTypeAndJobType(List<String> ctypes, List<String> jtypes, int empid, String skills,
+			String loc) throws SQLException {
 
 		String sql = "select * from job where jobtype in (";
 		for (String type : jtypes)
@@ -426,13 +429,13 @@ public class StudentDAO {
 		sql += "'') and companytype in (";
 		for (String type : ctypes)
 			sql += type + ",";
-		sql += "'')";
+		sql += "'') and location like '%" + loc + "%' and skills like '%" + skills + "%'";
 		if (empid != 0)
 			sql += " and empid = ?;";
 		else
 			sql += ";";
 
-		System.out.println(sql);
+		System.out.println("sql: "+sql);
 		PreparedStatement stmt = jdbcConnection.prepareStatement(sql);
 		if (empid != 0)
 			stmt.setInt(1, empid);
@@ -450,7 +453,7 @@ public class StudentDAO {
 	public List<Job> getRcmdJobsByCompanyTypeAndJobType(List<String> ctypes, List<String> jtypes, int empid)
 			throws SQLException {
 		List<Job> rcmdjobs = new ArrayList<>();
-		List<Job> filterjobs = getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0);
+		List<Job> filterjobs = getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0, "");
 		System.out.println("filtered: " + filterjobs);
 		Employee emp = getEmployee(empid);
 		String skills = emp.getSkills();
@@ -628,27 +631,27 @@ public class StudentDAO {
 			statement.setString(3, app.getStatus());
 			statement.setInt(4, app.getEmprid());
 			boolean res = statement.executeUpdate() > 0;
-			if(res)
+			if (res)
 				messages.put("message", "Applied for this job");
 		}
 		return messages;
 	}
-	
+
 	public List<Job> getAppliedJobs(int id) throws SQLException {
 		List<Job> jobs = new ArrayList<>();
 		String sql = " select j.*, a.status from job j inner join applications a on j.id = a.jobid where a.empid = ?";
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 		statement.setInt(1, id);
 		ResultSet rs = statement.executeQuery();
-		while(rs.next()) {
-			Job j = new Job(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getFloat(5), rs.getFloat(6),
-					rs.getString(7), rs.getString(8), rs.getInt(9), rs.getString(10), rs.getString(11),
+		while (rs.next()) {
+			Job j = new Job(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getFloat(5),
+					rs.getFloat(6), rs.getString(7), rs.getString(8), rs.getInt(9), rs.getString(10), rs.getString(11),
 					rs.getString(12), rs.getInt(13), rs.getString(14));
 			jobs.add(j);
 		}
 		return jobs;
 	}
-	
+
 //	select e.*, a.status from employee e inner join applications a on e.id = a.empid where a.emprid = 8 group by a.empid;
 	public List<Employee> getAppliedEmployees(int id) throws SQLException {
 		List<Employee> employees = new ArrayList<>();
@@ -656,12 +659,40 @@ public class StudentDAO {
 		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 		statement.setInt(1, id);
 		ResultSet rs = statement.executeQuery();
-		while(rs.next()) {
+		while (rs.next()) {
 			Employee emp = new Employee(rs.getInt("id"), rs.getString("username"), rs.getString("email"),
 					rs.getString("password"), rs.getString("address"), rs.getString("mobile"), rs.getString("skills"),
-					rs.getFloat("experience"), rs.getInt("noticeperiod"), rs.getString("image"), rs.getString("status"));
+					rs.getFloat("experience"), rs.getInt("noticeperiod"), rs.getString("image"),
+					rs.getString("status"));
 			employees.add(emp);
 		}
 		return employees;
+	}
+
+	public void changePassword(String email, String newpass) throws SQLException {
+		System.out.println("inside dao: " + email + " " + newpass);
+		String sql = "select * from credentials where email=?";
+		System.out.println("sql: " + sql);
+		PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+		statement.setString(1, email);
+		ResultSet rs = statement.executeQuery();
+		if (rs.next()) {
+			String type = rs.getString("type");
+			int uid = rs.getInt("empid");
+			System.out.println(type + " " + uid);
+			if (type.equals("Admin"))
+				sql = "update employer set password = ? where id=?";
+			else
+				sql = "update " + type + " set password = ? where id=?";
+			statement = jdbcConnection.prepareStatement(sql);
+			statement.setString(1, newpass);
+			statement.setInt(2, uid);
+			statement.executeUpdate();
+			sql = "update credentials set password = ? where email = ?";
+			statement = jdbcConnection.prepareStatement(sql);
+			statement.setString(1, newpass);
+			statement.setString(2, email);
+			statement.executeUpdate();
+		}
 	}
 }

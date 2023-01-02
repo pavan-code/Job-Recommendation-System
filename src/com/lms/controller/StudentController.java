@@ -1,5 +1,7 @@
 package com.lms.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ public class StudentController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private StudentDAO dao;
 	private static String actualOTP = null;
+	private static String resetOTP = null;
+	private static String resetMail = null;
 
 	public void init() {
 		try {
@@ -144,6 +148,9 @@ public class StudentController extends HttpServlet {
 			case "/checkOTP":
 				checkOTP(request, response);
 				break;
+			case "/sendotpforreset":
+				sendotpreset(request, response);
+				break;
 			default:
 				response.sendRedirect("errorPage.jsp");
 				break;
@@ -154,11 +161,46 @@ public class StudentController extends HttpServlet {
 		}
 	}
 
+	private void sendotpreset(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
+		String OTP = SendOTP.getRandomNumberString();
+		String email = (String) request.getParameter("email");
+		String eotp = (String) request.getParameter("otp");
+		String newpass = (String) request.getParameter("p");
+		if (email != null) {
+			resetMail = email;
+			resetOTP = OTP;
+			System.out.println("email: " + email);
+			HttpSession session = request.getSession();
+			session.setAttribute("OTP", OTP);
+//		session.setAttribute("type", type);
+			SendOTP.SendMail(email, OTP, "User");
+			System.out.println("OTP: " + OTP);
+			request.setAttribute("OTP", OTP);
+			request.getRequestDispatcher("forgetpassword.jsp").forward(request, response);
+
+		} else if (eotp != null) {
+			if (Integer.parseInt(eotp) == Integer.parseInt(resetOTP)) {
+				System.out.println("otp matched");
+				request.setAttribute("status", "matched");
+			} else {
+				request.setAttribute("status", "unmatched");
+			}
+			request.getRequestDispatcher("forgetpassword.jsp").forward(request, response);
+
+		}
+		if (newpass != null) {
+			System.out.println("got password: " + newpass);
+			dao.changePassword(resetMail, newpass);
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+		}
+	}
+
 	private void checkOTP(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String otp = request.getParameter("otp");
 		System.out.println("entered otp: " + otp);
-		HttpSession session = request.getSession(false);		
+		HttpSession session = request.getSession(false);
 		System.out.println("actual otp: " + actualOTP);
 		String type = (String) session.getAttribute("type");
 		System.out.println("type: " + type);
@@ -222,8 +264,11 @@ public class StudentController extends HttpServlet {
 	}
 
 	private void changePwdpage(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
+			throws ServletException, IOException, SQLException {
+		List<Employee> uemps = dao.getUnactivatedEmployees();
+		request.setAttribute("uemps", uemps);
+		List<Employer> uemprs = dao.getUnactivatedEmployers();
+		request.setAttribute("uemprs", uemprs);
 		request.getRequestDispatcher("admin_change_pwd.jsp").forward(request, response);
 	}
 
@@ -353,12 +398,16 @@ public class StudentController extends HttpServlet {
 		String address = request.getParameter("address");
 		String experience = request.getParameter("experience");
 		String image = request.getParameter("image");
+		String skills = request.getParameter("skills");
+		String resume = request.getParameter("resume");
+
 		System.out.println("image: " + image);
 		Map<String, String> messages = new HashMap<String, String>();
-//		File image1 = new File("D:\\java projects\\Notifier\\WebContent\\images\\" + image);
-//		FileInputStream fis = new FileInputStream(image1);
+		File resu = new File("D:\\java projects\\Notifier\\WebContent\\images\\" + image);
+		FileInputStream fis = new FileInputStream(resu);
 		if (!dao.getEmployeeByEmail(email)) {
-			Employee emp = new Employee(username, email, password, address, mobile, Float.valueOf(experience), image);
+			Employee emp = new Employee(username, email, password, address, mobile, Float.valueOf(experience), image,
+					fis, skills);
 			System.out.println("got emp " + emp);
 			boolean res = dao.insertEmployee(emp);
 			if (res)
@@ -390,6 +439,7 @@ public class StudentController extends HttpServlet {
 			response.addCookie(c);
 			String OTP = SendOTP.getRandomNumberString();
 			actualOTP = OTP;
+			System.out.println("actual otp: " + actualOTP);
 			HttpSession session = request.getSession();
 			session.setAttribute("OTP", OTP);
 			session.setAttribute("type", type);
@@ -582,18 +632,22 @@ public class StudentController extends HttpServlet {
 			throws ServletException, IOException, SQLException {
 		String companytype = request.getParameter("companytype");
 		String jobtype = request.getParameter("jobtype");
+		String skill = request.getParameter("skill");
+		String location = request.getParameter("location");
+		System.out.println("search: " + skill);
 		List<String> ctypes = new ArrayList<>();
 		List<String> jtypes = new ArrayList<>();
 		System.out.println("ctype:" + companytype);
 		List<Job> jobs = null;
-		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty()) {
+		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = companytype.split(",");
 			for (String ch : c)
 				ctypes.add("'" + ch + "'");
 			String[] j = jobtype.split(",");
 			for (String ch : j)
 				jtypes.add("'" + ch + "'");
-			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0);
+			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0, skill, location);
 		} else if (companytype != null && !companytype.isEmpty()) {
 			String[] c = companytype.split(",");
 			for (String ch : c)
@@ -609,6 +663,10 @@ public class StudentController extends HttpServlet {
 		}
 
 		request.setAttribute("jobs", jobs);
+		List<Employee> uemps = dao.getUnactivatedEmployees();
+		request.setAttribute("uemps", uemps);
+		List<Employer> uemprs = dao.getUnactivatedEmployers();
+		request.setAttribute("uemprs", uemprs);
 		request.getRequestDispatcher("jobs_admin.jsp").forward(request, response);
 	}
 

@@ -25,7 +25,7 @@ public class SendOTP {
 //		final String username = "vinayassignments@gmail.com";
 //		final String password = "l0g1tec3";
 		final String username = "pavankumaranguluri1@gmail.com";
-		final String password = "kyzlwmbywddggdho";
+		final String password = "rrmupgrirlorqivy";
 		System.out.println("type: " + type);
 		String user = "";
 		String body = "Dear ";
@@ -57,7 +57,7 @@ public class SendOTP {
 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("k.jayasurya694@gmail.com"));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 			message.setSubject("Konnect | Login OTP for Job Recommendation System");
 			message.setText(body);
 			message.setContent("<p>Dear " + user + ",</p>"
@@ -65,7 +65,7 @@ public class SendOTP {
 					+ "<p style=\"padding: 6px 8px; width: 100px; text-align: center; background: blue; color: white;\">"
 					+ otp + "</p>" + "<p>Regards,</p>" + "<h2 style='color: blue'>Konnect</h2>", "text/html");
 
-			Transport.send(message);
+			//Transport.send(message);
 
 			System.out.println("Done");
 

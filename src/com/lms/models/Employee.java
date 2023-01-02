@@ -1,6 +1,6 @@
 package com.lms.models;
 
-import java.io.InputStream;
+import java.io.FileInputStream;
 
 public class Employee {
 	
@@ -14,7 +14,7 @@ public class Employee {
 	private float experience;	
 	private int noticeperiod;
 	private String image;
-	
+	private FileInputStream resume;	
 	private String status;
 
 
@@ -88,7 +88,9 @@ public class Employee {
 		
 	}
 	
-	public Employee(String username, String email, String password, String address, String mobile, float experience, String image) {
+	public Employee(String username, String email, String password, 
+			String address, String mobile, float experience, String image,
+			FileInputStream resume, String skills) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -97,6 +99,8 @@ public class Employee {
 		this.mobile = mobile;
 		this.experience = experience;
 		this.image = image;
+		this.resume = resume;
+		this.skills = skills;
 	}
 
 
@@ -170,11 +174,21 @@ public class Employee {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+
+	public FileInputStream getResume() {
+		return resume;
+	}
+
+	public void setResume(FileInputStream resume) {
+		this.resume = resume;
+	}
 
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password
 				+ ", address=" + address + ", mobile=" + mobile + ", skills=" + skills + ", experience=" + experience
-				+ ", noticeperiod=" + noticeperiod + ", image=" + image + ", status=" + status + "]";
+				+ ", noticeperiod=" + noticeperiod + ", image=" + image + ", resume=" + resume + ", status=" + status
+				+ "]";
 	}	
 }

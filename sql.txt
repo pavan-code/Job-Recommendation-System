@@ -11,7 +11,8 @@ create table employee (
     experience float,
     noticeperiod int,
 	image varchar(255),
-	active boolean    
+	active boolean,
+	resume blob  
     );
 
 create table credentials (

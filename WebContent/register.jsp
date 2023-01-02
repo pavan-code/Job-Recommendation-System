@@ -56,6 +56,7 @@ a:hover {
 	padding: 12px 20px;
 	text-align: center;
 	visibility: hidden;
+	z-index: 10;
 }
 
 body {
@@ -221,10 +222,19 @@ label {
 						<div class='row'>
 							<div class='col'>
 								<label>Profile picture</label> <input id="image" type='file'
-									name='image' class='form-control'>
+									name='image' class='form-control hidden'> 										
 							</div>
+							<div class='col'>
+								<label>Resume</label> <input id="resume" type='file'
+									name='resume' class='form-control'>
+							</div>							
 						</div>
-
+						<div class='row'>
+							<div class='col'>
+								<label>Skills</label> <input id='skills' type='text'
+								name='skills' class='form-control'>
+							</div>
+						</div>		
 						<br>
 						<div style='text-align: center;'>
 							<input class="btn btn-primary" style='width: 100%;' type="submit"
@@ -251,6 +261,9 @@ label {
 		var address = document.regform.address.value;
 		var exp = document.regform.experience.value;
 		var img = document.regform.image.value;
+		var resume = document.regform.resume.value;
+		var skills = document.regform.skills.value;
+		
 		console.log("=========================")
 		console.log("username: " + username)
 		console.log("email: " + email)
@@ -354,8 +367,22 @@ label {
 			document.getElementById("image").style.borderColor= "red";
 			document.regform.image.focus();
 			return false;
-		} else {
+		} else if(resume == null || resume == "") {
 			document.getElementById("image").style.borderColor= "";
+			console.log("resume null")
+			document.getElementById("errmsg").innerHTML ="Please upload your resume";
+			document.getElementById("errmsg").style.visibility= "visible";
+			document.getElementById("resume").style.borderColor= "red";
+			document.regform.resume.focus();
+		} else if(skills == null || skills == "") {
+			document.getElementById("resume").style.borderColor= "";
+			console.log("skills null")
+			document.getElementById("errmsg").innerHTML ="Please enter the skills , separated";
+			document.getElementById("errmsg").style.visibility= "visible";
+			document.getElementById("skills").style.borderColor= "red";
+			document.regform.skills.focus();
+		}  else {
+			document.getElementById("skills").style.borderColor= "";
 			document.getElementById("email").style.borderColor= "";
 			console.log("last else")
 			document.getElementById("errmsg").style.visibility= "hidden";
