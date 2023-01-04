@@ -334,11 +334,11 @@ public class StudentDAO {
 		return jobs;
 	}
 
-	public List<Job> getJobsByCompanyType(List<String> companytype) throws SQLException {
+	public List<Job> getJobsByCompanyType(List<String> companytype, String skill, String location) throws SQLException {
 		String sql = "select * from job where companytype in (";
 		for (String type : companytype)
 			sql += type + ",";
-		sql += "'');";
+		sql += "'') and location like '%" + location + "%' and skills like '%" + skill + "%';";
 		System.out.println(sql);
 		PreparedStatement stmt = jdbcConnection.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
@@ -352,9 +352,9 @@ public class StudentDAO {
 		return jobs;
 	}
 
-	public List<Job> getRcmdJobsByCompanyType(List<String> ctypes, int id) throws SQLException {
+	public List<Job> getRcmdJobsByCompanyType(List<String> ctypes, int id, String skls, String location) throws SQLException {
 		List<Job> rcmdjobs = new ArrayList<>();
-		List<Job> filterjobs = getJobsByCompanyType(ctypes);
+		List<Job> filterjobs = getJobsByCompanyType(ctypes, skls, location);
 		Employee emp = getEmployee(id);
 		String skills = emp.getSkills();
 		float exp = emp.getExperience();
@@ -377,9 +377,9 @@ public class StudentDAO {
 		return rcmdjobs;
 	}
 
-	public List<Job> getRcmdJobsByJobType(List<String> jtypes, int id) throws SQLException {
+	public List<Job> getRcmdJobsByJobType(List<String> jtypes, int id, String skls, String location) throws SQLException {
 		List<Job> rcmdjobs = new ArrayList<>();
-		List<Job> filterjobs = getJobsByJobType(jtypes);
+		List<Job> filterjobs = getJobsByJobType(jtypes, skls, location);
 		Employee emp = getEmployee(id);
 		String skills = emp.getSkills();
 		float exp = emp.getExperience();
@@ -402,11 +402,11 @@ public class StudentDAO {
 		return rcmdjobs;
 	}
 
-	public List<Job> getJobsByJobType(List<String> jobtype) throws SQLException {
+	public List<Job> getJobsByJobType(List<String> jobtype, String skill, String location) throws SQLException {
 		String sql = "select * from job where jobtype in (";
 		for (String type : jobtype)
 			sql += type + ",";
-		sql += "'');";
+		sql += "'')  and location like '%" + location + "%' and skills like '%" + skill + "%';";
 		System.out.println(sql);
 		PreparedStatement stmt = jdbcConnection.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
@@ -450,10 +450,11 @@ public class StudentDAO {
 		return jobs;
 	}
 
-	public List<Job> getRcmdJobsByCompanyTypeAndJobType(List<String> ctypes, List<String> jtypes, int empid)
+	public List<Job> getRcmdJobsByCompanyTypeAndJobType(List<String> ctypes, List<String> jtypes, int empid,
+			String skls, String location)
 			throws SQLException {
 		List<Job> rcmdjobs = new ArrayList<>();
-		List<Job> filterjobs = getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0, "");
+		List<Job> filterjobs = getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0, skls, location);
 		System.out.println("filtered: " + filterjobs);
 		Employee emp = getEmployee(empid);
 		String skills = emp.getSkills();

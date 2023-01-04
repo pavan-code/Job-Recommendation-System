@@ -80,9 +80,10 @@ i {
 	String ctypes = request.getParameter("companytype");
 	String jtypes = request.getParameter("jobtype");
 	String id = request.getParameter("id");
-	String search = request.getParameter("search");
+	String skill = request.getParameter("skill");
+	String loc = request.getParameter("location");
 	String path = request.getServletPath();
-	// 			out.println(path);
+// 				out.println(path);
 	String end = request.getQueryString();
 	// 	out.println(end);
 	request.setAttribute("path", path.substring(1));
@@ -108,6 +109,8 @@ i {
 	out.println("jobs_admin");
 } else if (path.equals("/home.jsp")) {
 	out.println("home");
+}  else if (path.equals("/admin-home.jsp")) {
+	out.println("admin-home");
 } else if (path.equals("/empr_jobs.jsp")) {
 	out.println("empr_jobs?id=" + id);
 } else if (path.equals("/emp-home.jsp")) {
@@ -118,9 +121,18 @@ i {
 				</div>
 				<div class='search'>
 				<h5>Skill</h5>
-					<input type='text' id='skill' placeholder='Ex. Java' class='form-control' />
+					<input type='text' id='skill' placeholder='Ex. Java' class='form-control' 
+					
+					<% if(skill != null) {
+						out.println("value=\"" + skill + "\"");
+					}%>
+					/>
 				<h5>Location</h5>
-					<input type='text' id='location' placeholder='Ex. London' class='form-control' />
+					<input type='text' id='location' placeholder='Ex. London' class='form-control'
+					<% if(loc != null) {
+						out.println("value=\"" + loc + "\"");
+					}%>
+					 />
 				</div> <br> <br> <br> <br>  <br> <br> <br>
 				<div class='companytype'>
 					<h5>Company Type</h5>
@@ -342,14 +354,16 @@ i {
 			jtypes = [];
 		if(path == 'jobs_admin.jsp') {			
 			document.location = "/Notifier/jobs_admin?companytype=" + ctypes + "&jobtype=" + jtypes + "&skill=" + skill + "&location=" + location;
-		} else if(path == 'empr_jobs.jsp') {			
-			document.location = "/Notifier/empr_jobs?id=" + id + "&companytype=" + ctypes + "&jobtype=" + jtypes + "&search=" + search;
+		} else if(path == 'admin-home.jsp') {			
+			document.location = "/Notifier/admin-home?id=" + id + "&companytype=" + ctypes + "&jobtype=" + jtypes + "&skill=" + skill + "&location=" + location;
+		}  else if(path == 'empr_jobs.jsp') {			
+			document.location = "/Notifier/empr_jobs?id=" + id + "&companytype=" + ctypes + "&jobtype=" + jtypes + "&skill=" + skill + "&location=" + location;
 		} else if(path == 'emp-home.jsp') {			
-			document.location = "/Notifier/empr-home?id=" + id + "&companytype=" + ctypes + "&jobtype=" + jtypes + "&search=" + search;
+			document.location = "/Notifier/empr-home?id=" + id + "&companytype=" + ctypes + "&jobtype=" + jtypes + "&skill=" + skill + "&location=" + location;
 		} else if(end.startsWith("id")) {
-			document.location = "/Notifier/rcmd_jobs?id="+id+"&companytype=" + ctypes + "&jobtype=" + jtypes;
+			document.location = "/Notifier/rcmd_jobs?id="+id+"&companytype=" + ctypes + "&jobtype=" + jtypes + "&skill=" + skill + "&location=" + location;
 		} else {
-			document.location = "/Notifier/home?companytype=" + ctypes + "&jobtype=" + jtypes;
+			document.location = "/Notifier/home?companytype=" + ctypes + "&jobtype=" + jtypes + "&skill=" + skill + "&location=" + location;
 		}
 	}
 	

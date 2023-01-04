@@ -348,26 +348,31 @@ public class StudentController extends HttpServlet {
 		String jobtype = request.getParameter("jobtype");
 		List<String> ctypes = new ArrayList<>();
 		List<String> jtypes = new ArrayList<>();
+		String skill = request.getParameter("skill");
+		String location = request.getParameter("location");
 		System.out.println("ctype:" + companytype);
 		List<Job> jobs = null;
-		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty()) {
+		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = companytype.split(",");
 			for (String ch : c)
 				ctypes.add("'" + ch + "'");
 			String[] j = jobtype.split(",");
 			for (String ch : j)
 				jtypes.add("'" + ch + "'");
-			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, empid);
-		} else if (companytype != null && !companytype.isEmpty()) {
+			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, empid, skill, location);
+		} else if (companytype != null && !companytype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = companytype.split(",");
 			for (String ch : c)
 				ctypes.add("'" + ch + "'");
-			jobs = dao.getJobsByCompanyType(ctypes);
-		} else if (jobtype != null && !jobtype.isEmpty()) {
+			jobs = dao.getJobsByCompanyType(ctypes, skill, location);
+		} else if (jobtype != null && !jobtype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = jobtype.split(",");
 			for (String ch : c)
 				jtypes.add("'" + ch + "'");
-			jobs = dao.getJobsByJobType(jtypes);
+			jobs = dao.getJobsByJobType(jtypes, skill, location);
 		} else {
 			jobs = dao.getJobsByEmprId(empid);
 		}
@@ -476,26 +481,31 @@ public class StudentController extends HttpServlet {
 		String jobtype = request.getParameter("jobtype");
 		List<String> ctypes = new ArrayList<>();
 		List<String> jtypes = new ArrayList<>();
+		String skill = request.getParameter("skill");
+		String location = request.getParameter("location");
 		System.out.println("ctype:" + companytype);
 		List<Job> jobs = null;
-		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty()) {
+		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = companytype.split(",");
 			for (String ch : c)
 				ctypes.add("'" + ch + "'");
 			String[] j = jobtype.split(",");
 			for (String ch : j)
 				jtypes.add("'" + ch + "'");
-			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0);
-		} else if (companytype != null && !companytype.isEmpty()) {
+			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0, skill, location);
+		} else if (companytype != null && !companytype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = companytype.split(",");
 			for (String ch : c)
 				ctypes.add("'" + ch + "'");
-			jobs = dao.getJobsByCompanyType(ctypes);
-		} else if (jobtype != null && !jobtype.isEmpty()) {
+			jobs = dao.getJobsByCompanyType(ctypes, skill, location);
+		} else if (jobtype != null && !jobtype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = jobtype.split(",");
 			for (String ch : c)
 				jtypes.add("'" + ch + "'");
-			jobs = dao.getJobsByJobType(jtypes);
+			jobs = dao.getJobsByJobType(jtypes, skill, location);
 		} else {
 			jobs = dao.getJobs();
 		}
@@ -508,7 +518,42 @@ public class StudentController extends HttpServlet {
 			throws ServletException, IOException, SQLException {
 		List<Employee> emps = dao.getEmployees();
 		request.setAttribute("employees", emps);
-		List<Job> jobs = dao.getJobs();
+//		List<Job> jobs = dao.getJobs();
+		
+		String companytype = request.getParameter("companytype");
+		String jobtype = request.getParameter("jobtype");
+		String skill = request.getParameter("skill");
+		String location = request.getParameter("location");
+		System.out.println("search: " + skill);
+		List<String> ctypes = new ArrayList<>();
+		List<String> jtypes = new ArrayList<>();
+		System.out.println("ctype:" + companytype);
+		List<Job> jobs = null;
+		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
+			String[] c = companytype.split(",");
+			for (String ch : c)
+				ctypes.add("'" + ch + "'");
+			String[] j = jobtype.split(",");
+			for (String ch : j)
+				jtypes.add("'" + ch + "'");
+			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0, skill, location);
+		} else if (companytype != null && !companytype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
+			String[] c = companytype.split(",");
+			for (String ch : c)
+				ctypes.add("'" + ch + "'");
+			jobs = dao.getJobsByCompanyType(ctypes, skill, location);
+		} else if (jobtype != null && !jobtype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
+			String[] c = jobtype.split(",");
+			for (String ch : c)
+				jtypes.add("'" + ch + "'");
+			jobs = dao.getJobsByJobType(jtypes, skill, location);
+		} else {
+			jobs = dao.getJobs();
+		}
+		
 		request.setAttribute("jobs", jobs);
 		List<Employee> uemps = dao.getUnactivatedEmployees();
 		request.setAttribute("uemps", uemps);
@@ -554,26 +599,31 @@ public class StudentController extends HttpServlet {
 		String jobtype = request.getParameter("jobtype");
 		List<String> ctypes = new ArrayList<>();
 		List<String> jtypes = new ArrayList<>();
+		String skill = request.getParameter("skill");
+		String location = request.getParameter("location");
 		System.out.println("ctype:" + companytype);
 		List<Job> jobs = null;
-		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty()) {
+		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = companytype.split(",");
 			for (String ch : c)
 				ctypes.add("'" + ch + "'");
 			String[] j = jobtype.split(",");
 			for (String ch : j)
 				jtypes.add("'" + ch + "'");
-			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0);
-		} else if (companytype != null && !companytype.isEmpty()) {
+			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0, skill, location);
+		} else if (companytype != null && !companytype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = companytype.split(",");
 			for (String ch : c)
 				ctypes.add("'" + ch + "'");
-			jobs = dao.getJobsByCompanyType(ctypes);
-		} else if (jobtype != null && !jobtype.isEmpty()) {
+			jobs = dao.getJobsByCompanyType(ctypes, skill, location);
+		} else if (jobtype != null && !jobtype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = jobtype.split(",");
 			for (String ch : c)
 				jtypes.add("'" + ch + "'");
-			jobs = dao.getJobsByJobType(jtypes);
+			jobs = dao.getJobsByJobType(jtypes, skill, location);
 		} else {
 			jobs = dao.getJobsByEmprId(empid);
 		}
@@ -595,30 +645,37 @@ public class StudentController extends HttpServlet {
 			throws ServletException, IOException, SQLException {
 		String companytype = request.getParameter("companytype");
 		String jobtype = request.getParameter("jobtype");
+		String location = request.getParameter("location");
+		String skill = request.getParameter("skill");
 		int id = Integer.parseInt(request.getParameter("id"));
 		List<String> ctypes = new ArrayList<>();
 		List<String> jtypes = new ArrayList<>();
 		System.out.println("ctype:" + companytype);
 		System.out.println("jtype:" + jobtype);
 		List<Job> jobs = null;
-		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty()) {
+		
+		if (companytype != null && !companytype.isEmpty() && jobtype != null && !jobtype.isEmpty()
+				&& skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = companytype.split(",");
 			for (String ch : c)
 				ctypes.add("'" + ch + "'");
 			String[] j = jobtype.split(",");
 			for (String ch : j)
 				jtypes.add("'" + ch + "'");
-			jobs = dao.getRcmdJobsByCompanyTypeAndJobType(ctypes, jtypes, id);
-		} else if (companytype != null && !companytype.isEmpty()) {
+			jobs = dao.getRcmdJobsByCompanyTypeAndJobType(ctypes, jtypes, id, skill, location);
+		} else if (companytype != null && !companytype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = companytype.split(",");
 			for (String ch : c)
 				ctypes.add("'" + ch + "'");
-			jobs = dao.getRcmdJobsByCompanyType(ctypes, id);
-		} else if (jobtype != null && !jobtype.isEmpty()) {
+			jobs = dao.getRcmdJobsByCompanyType(ctypes, id, skill, location);
+		} else if (jobtype != null && !jobtype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = jobtype.split(",");
 			for (String ch : c)
 				jtypes.add("'" + ch + "'");
-			jobs = dao.getRcmdJobsByJobType(jtypes, id);
+			jobs = dao.getRcmdJobsByJobType(jtypes, id, skill, location);
 		} else {
 			jobs = dao.getRcmdJobs(id);
 		}
@@ -627,7 +684,7 @@ public class StudentController extends HttpServlet {
 		request.setAttribute("jobs", jobs);
 		request.getRequestDispatcher("home.jsp").forward(request, response);
 	}
-
+//============================================
 	private void jobs_admin(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		String companytype = request.getParameter("companytype");
@@ -648,16 +705,18 @@ public class StudentController extends HttpServlet {
 			for (String ch : j)
 				jtypes.add("'" + ch + "'");
 			jobs = dao.getJobsByCompanyTypeAndJobType(ctypes, jtypes, 0, skill, location);
-		} else if (companytype != null && !companytype.isEmpty()) {
+		} else if (companytype != null && !companytype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = companytype.split(",");
 			for (String ch : c)
 				ctypes.add("'" + ch + "'");
-			jobs = dao.getJobsByCompanyType(ctypes);
-		} else if (jobtype != null && !jobtype.isEmpty()) {
+			jobs = dao.getJobsByCompanyType(ctypes, skill, location);
+		} else if (jobtype != null && !jobtype.isEmpty() && skill != null
+				&& !skill.isEmpty() && location != null && !location.isEmpty()) {
 			String[] c = jobtype.split(",");
 			for (String ch : c)
 				jtypes.add("'" + ch + "'");
-			jobs = dao.getJobsByJobType(jtypes);
+			jobs = dao.getJobsByJobType(jtypes, skill, location);
 		} else {
 			jobs = dao.getJobs();
 		}
